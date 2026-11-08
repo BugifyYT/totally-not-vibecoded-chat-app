@@ -70,7 +70,36 @@ input:focus{outline:2px solid var(--accent)}
 .ref{font-size:.8rem;color:var(--muted);margin-bottom:2px;cursor:pointer;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .ref b{color:var(--text);margin:0 6px 0 2px}
 .ref:hover{color:var(--text)}
-.mention-tag{color:#c9cdfb;background:#5865f233;border-radius:3px;padding:0 2px;font-weight:700}
+.mention-tag{color:#c9cdfb;background:#5865f24d;border-radius:3px;padding:0 2px;font-weight:500;transition:background-color .1s,color .1s}
+.mention-tag:hover{background:var(--accent);color:#fff}
+img.emoji{width:1.25em;height:1.25em;vertical-align:-.25em;margin:0 .05em;display:inline-block}
+.tx.jumbo img.emoji{width:48px;height:48px;vertical-align:-.1em;margin:2px .05em}
+#emob img.emoji{width:22px;height:22px;vertical-align:middle;margin:0;filter:grayscale(1);opacity:.7;transition:filter .15s,opacity .15s,transform .15s}
+#emob:hover img.emoji{filter:none;opacity:1;transform:scale(1.14)}
+/* reactions */
+.reacts{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.react{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 7px;border-radius:8px;background:#2b2d31;border:1px solid transparent;color:#b5bac1;font-size:.82rem;font-weight:600;line-height:1}
+.react img.emoji{width:16px;height:16px;margin:0;vertical-align:0}
+.react:hover{background:#383a40;border-color:#4e5058}
+.react.me{background:#5865f226;border-color:var(--accent);color:#dee0fc}
+.react.me:hover{background:#5865f240}
+.react.add{opacity:0;padding:0 6px;color:var(--muted)}
+.msg:hover .react.add,.msg.tap .react.add{opacity:1}
+.react.add svg{width:18px;height:18px;fill:currentColor}
+.react.pop{animation:reactpop .25s ease-out}
+@keyframes reactpop{0%{transform:scale(.8)}60%{transform:scale(1.08)}100%{transform:none}}
+.acts button.qr img.emoji{width:20px;height:20px;margin:0}
+.acts .sepv{width:1px;background:var(--line);margin:4px 2px}
+/* emoji picker footer */
+.efoot{display:flex;align-items:center;gap:8px;padding:6px 4px 0;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted);min-height:38px}
+.efoot img.emoji{width:28px;height:28px;margin:0}
+.efoot b{color:var(--head);font-weight:600}
+.etabs{overflow-x:auto;flex:none}
+.etabs button{padding:4px 6px;opacity:.6;filter:grayscale(.6);transition:opacity .1s,filter .1s}
+.etabs button.on,.etabs button:hover{opacity:1;filter:none}
+.etabs img.emoji{width:20px;height:20px;margin:0;vertical-align:middle}
+.egrid img.emoji{width:28px;height:28px;margin:0}
+.egrid button{transition:background-color .08s}
 .msg.hl{animation:hlfade 1.6s ease-out}
 @keyframes hlfade{0%,40%{background:#5865f22e}100%{background:transparent}}
 /* reply preview above a message, with the curved line like Discord */
@@ -134,7 +163,15 @@ input:focus{outline:2px solid var(--accent)}
 .cbar{display:flex;align-items:center;gap:2px;background:var(--input);border-radius:8px;padding:0 6px}
 .cbar:focus-within{outline:none}
 .cbar input#box{background:none;outline:none!important;flex:1;min-width:0}
-#mentionbox{position:absolute;left:16px;bottom:calc(100% + 8px);width:min(300px,calc(100vw - 32px));max-height:220px;overflow:auto;background:var(--side);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px #0009;z-index:19;padding:5px}
+#mentionbox{position:absolute;left:16px;right:16px;bottom:calc(100% + 8px);max-height:320px;overflow:auto;background:#2b2d31;border-radius:8px;box-shadow:0 8px 24px #0009;z-index:19;padding:8px 0}
+.achead{font-size:.7rem;font-weight:700;color:var(--muted);letter-spacing:.02em;padding:2px 16px 8px;text-transform:uppercase;display:flex;gap:6px}
+.achead span{color:var(--head);text-transform:none}
+.acopt{display:flex;align-items:center;gap:10px;width:calc(100% - 16px);margin:0 8px;background:none;color:var(--text);text-align:left;padding:6px 8px;border-radius:4px;font-weight:500;transition:none}
+.acopt.sel{background:#404249;color:#fff}
+.acopt img.emoji{width:24px;height:24px;margin:0}
+.acopt .acsub{margin-left:auto;color:var(--muted);font-size:.8rem;font-weight:400}
+.acopt .av.sm{width:26px;height:26px;font-size:.75rem}
+.av.everyone{background:var(--accent)!important}
 .mentionopt{display:flex;align-items:center;gap:9px;width:100%;background:none;color:var(--text);text-align:left;padding:7px}
 .mentionopt:hover{background:var(--hover)}
 .ehead{display:flex;gap:6px}
@@ -153,7 +190,7 @@ input:focus{outline:2px solid var(--accent)}
 .ib{background:none;color:var(--muted);padding:6px 8px;font-size:1.15rem;font-weight:700}
 .ib:hover{color:var(--text);background:none}
 #gifb{font-size:.74rem;border:1px solid var(--muted);padding:1px 6px;border-radius:4px;margin:0 4px}
-#picker{position:absolute;right:16px;bottom:calc(100% + 8px);width:min(340px,calc(100vw - 32px));height:340px;background:var(--side);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px #0009;display:flex;flex-direction:column;padding:8px;gap:8px;z-index:20}
+#picker{position:absolute;right:16px;bottom:calc(100% + 8px);width:min(380px,calc(100vw - 32px));height:400px;background:var(--side);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px #0009;display:flex;flex-direction:column;padding:8px;gap:8px;z-index:20}
 .etabs{display:flex;gap:2px}
 .etabs button{background:none;padding:4px 8px;font-size:1.1rem}
 .etabs button.on{background:var(--hover)}
@@ -313,8 +350,13 @@ input{transition:outline-color .15s}
     if (!d) { d = document.createElement("div"); d.id = "bootfail"; d.style.cssText = "position:fixed;inset:auto 12px 12px 12px;z-index:99999;background:#2b1111;color:#ffd7d7;border:1px solid #a33;border-radius:10px;padding:12px 14px;font:13px/1.45 system-ui,sans-serif;white-space:pre-wrap;max-height:50vh;overflow:auto"; document.body.appendChild(d); }
     d.textContent = "The app hit an error while loading. Send this to the person who made the site:\n\n" + errs.join("\n");
   }
-  window.addEventListener("error", function (e) { errs.push((e.message || "Script failed") + (e.filename ? " @ " + e.filename.split("/").pop() + ":" + e.lineno : "") + (e.target && e.target.src ? " (could not load " + e.target.src + ")" : "")); box(); }, true);
-  window.addEventListener("unhandledrejection", function (e) { errs.push("Promise: " + ((e.reason && (e.reason.stack || e.reason.message)) || e.reason)); box(); });
+  var appUp = function () { var a = document.getElementById("auth"), b = document.getElementById("app"); var vis = function (x) { return x && !x.classList.contains("hidden"); }; return vis(a) || vis(b); };
+  window.addEventListener("error", function (e) {
+    var t = e.target;
+    if (t && t !== window) { if (t.tagName === "SCRIPT") errs.push("Could not load " + t.src); return; } /* images etc. are ignored */
+    errs.push((e.message || "Error") + (e.filename ? " @ " + e.filename.split("/").pop() + ":" + e.lineno : ""));
+    if (!appUp()) box();
+  }, true);
   setTimeout(function () {
     var a = document.getElementById("auth"), b = document.getElementById("app");
     var hidden = function (x) { return !x || x.classList.contains("hidden") || getComputedStyle(x).display === "none"; };
@@ -325,7 +367,7 @@ input{transition:outline-color .15s}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, doc, addDoc, setDoc, getDoc, getDocs, updateDoc, deleteDoc, deleteField, arrayUnion, arrayRemove, query, where, orderBy, limit, onSnapshot, serverTimestamp, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, doc, addDoc, setDoc, getDoc, getDocs, updateDoc, deleteDoc, deleteField, arrayUnion, arrayRemove, query, where, orderBy, limit, onSnapshot, serverTimestamp, writeBatch, FieldPath } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // ====== YOUR FIREBASE CONFIG ======
 const firebaseConfig = {
@@ -508,19 +550,1965 @@ function openThread(col, chatRef, title, meta) {
 }
 
 /* ---------- emoji / GIF / images ---------- */
-const EMOJI = {
-  "😀": "😀 😃 😄 😁 😆 😅 😂 🤣 😊 🙂 😉 😍 🥰 😘 😋 😛 😜 🤪 😎 🤩 🥳 😏 😒 😞 😔 😟 😕 🙁 😣 😖 😫 😩 🥺 😢 😭 😤 😠 😡 🤬 🤯 😳 🥵 🥶 😱 😨 😰 🤗 🤔 🤭 🤫 😶 😐 🙄 😬 😴 🤤 😷 🤒 🤢 🤮 🥴 😇 🤠 🤡 👻 💀 👽 🤖 💩",
-  "👍": "👍 👎 👌 ✌️ 🤞 🤟 🤘 🤙 👈 👉 👆 👇 ☝️ ✋ 🖐️ 👋 🤝 👏 🙌 🙏 💪 🫶 ✍️ 🤳 👀 👅 👂 🧠 🫡 🫠 🫣",
-  "❤️": "❤️ 🧡 💛 💚 💙 💜 🖤 🤍 🤎 💔 ❣️ 💕 💞 💓 💗 💖 💘 💝 💯 💢 💥 💫 💦 💨 🔥 ✨ ⭐ 🌟 ⚡",
-  "🐶": "🐶 🐱 🐭 🐹 🐰 🦊 🐻 🐼 🐨 🐯 🦁 🐮 🐷 🐸 🐵 🙈 🙉 🙊 🐔 🐧 🐦 🦆 🦉 🐺 🐴 🦄 🐝 🦋 🐢 🐍 🐙 🐬 🐳 🦈 🐘 🦒",
-  "🍔": "🍎 🍌 🍉 🍇 🍓 🍒 🍑 🥭 🍍 🥑 🍅 🌽 🥕 🍞 🧀 🍗 🍔 🍟 🍕 🌭 🌮 🍣 🍜 🍩 🍪 🎂 🍫 🍿 ☕ 🍺 🍷 🥤",
-  "⚽": "⚽ 🏀 🏈 ⚾ 🎾 🏐 🎱 🏓 🥊 🎮 🎲 🎯 🎵 🎶 🎤 🎧 🎸 🏆 🥇 🎉 🎊 🎁 🚗 ✈️ 🚀 🏠 🌍 🌈 ☀️ 🌙 ❄️ 🌊",
-  "💡": "📱 💻 📷 🎬 📚 ✏️ 📌 🔔 🔑 💡 💰 💎 ⏰ ✅ ❌ ❓ ❗ 💬 🚫 ⚠️ 🔒"
+let pickerMode = null, emojiTab = "freq", gifTimer = null, gifReq = 0, emojiSearch = "", pickerReact = null;
+/* Full emoji list: group, emoji, Discord/Slack-style names, search keywords (from emojibase-data, MIT). */
+const EMOJI_RAW = `0	😀	grinning grinning_face	cheerful cheery face grin happy
+0	😃	smiley grinning_face_with_big_eyes	awesome big eyes face grin
+0	😄	smile grinning_face_with_closed_eyes	eye eyes face grin grinning
+0	😁	grin beaming_face	beaming eye eyes face grinning
+0	😆	laughing satisfied lol squinting_face	closed eyes face grinning haha
+0	😅	sweat_smile grinning_face_with_sweat	cold dejected excited face grinning
+0	🤣	rolling_on_the_floor_laughing rofl	crying face floor funny haha
+0	😂	joy lmao tears_of_joy	crying face feels funny haha
+0	🙂	slightly_smiling_face	face happy slightly smile smiling
+0	🙃	upside_down_face	face hehe smile upside-down
+0	🫠	melting_face melt	disappear dissolve embarrassed face haha
+0	😉	wink winking_face	face flirt heartbreaker sexy slide
+0	😊	blush smiling_face_with_closed_eyes	eye eyes face glad satisfied
+0	😇	innocent halo	angel angelic angels blessed face
+0	🥰	smiling_face_with_3_hearts smiling_face_with_three_hearts	3 adore crush face heart
+0	😍	heart_eyes smiling_face_with_heart_eyes	143 bae eye face feels
+0	🤩	star-struck grinning_face_with_star_eyes star_struck	excited eyes face grinning smile
+0	😘	kissing_heart blowing_a_kiss	adorbs bae blowing face flirt
+0	😗	kissing kissing_face	143 date dating face flirt
+0	☺️	relaxed smiling_face	face happy outlined smile smiling
+0	😚	kissing_closed_eyes kissing_face_with_closed_eyes	143 bae blush closed date
+0	😙	kissing_smiling_eyes kissing_face_with_smiling_eyes	143 closed date dating eye
+0	🥲	smiling_face_with_tear	face glad grateful happy joy
+0	😋	yum savoring_food	delicious eat face food full
+0	😛	stuck_out_tongue face_with_tongue	awesome cool face nice party
+0	😜	stuck_out_tongue_winking_eye	crazy epic eye face funny
+0	🤪	zany_face grinning_face_with_one_large_and_one_small_eye zany	crazy eye eyes face goofy
+0	😝	stuck_out_tongue_closed_eyes	closed eye eyes face gross
+0	🤑	money_mouth_face	face money money-mouth mouth paid
+0	🤗	hugging_face hugs hug hugging	face hands open smiling
+0	🤭	face_with_hand_over_mouth smiling_face_with_smiling_eyes_and_hand_covering_mouth hand_over_mouth	face giggle giggling hand mouth
+0	🫢	face_with_open_eyes_and_hand_over_mouth face_with_open_eyes_hand_over_mouth gasp	amazement awe disbelief embarrass eyes
+0	🫣	face_with_peeking_eye peek	captivated embarrass eye face hide
+0	🤫	shushing_face face_with_finger_covering_closed_lips shush	face quiet shh shushing
+0	🤔	thinking_face thinking wtf	chin consider face hmm ponder
+0	🫡	saluting_face salute	face good luck ma’am ok
+0	🤐	zipper_mouth_face zipper_mouth	face keep mouth quiet secret
+0	🤨	face_with_raised_eyebrow face_with_one_eyebrow_raised raised_eyebrow	disapproval disbelief distrust emoji eyebrow
+0	😐️	neutral_face neutral	awkward blank deadpan expressionless face
+0	😑	expressionless expressionless_face	awkward dead face fine inexpressive
+0	😶	no_mouth	awkward blank expressionless face mouth
+0	🫥	dotted_line_face	depressed disappear dotted face hidden
+0	😶‍🌫️	face_in_clouds in_clouds	absentminded clouds face fog head
+0	😏	smirk smirking smirking_face	boss dapper face flirt homie
+0	😒	unamused unamused_face	... bored face fine jealous
+0	🙄	face_with_rolling_eyes roll_eyes rolling_eyes	eyeroll eyes face rolling shade
+0	😬	grimacing grimacing_face	awk awkward dentist face grimace
+0	😮‍💨	face_exhaling exhale exhaling	blow blowing exhausted face gasp
+0	🤥	lying_face lying	face liar lie pinocchio
+0	🫨	shaking_face shaking	crazy daze earthquake face omg
+0	🙂‍↔️	head_shaking_horizontally	head horizontally no shake shaking
+0	🙂‍↕️	head_shaking_vertically	head nod shaking vertically yes
+0	😌	relieved relieved_face	calm face peace relief zen
+0	😔	pensive pensive_face	awful bored dejected died disappointed
+0	😪	sleepy sleepy_face	crying face good night sad
+0	🤤	drooling_face drooling	face
+0	😴	sleeping sleeping_face	bed bedtime face good goodnight
+0	🫩	face_with_eye_bags	bags bored exhausted eyes face
+0	😷	mask medical_mask	cold dentist dermatologist doctor dr
+0	🤒	face_with_thermometer	face ill sick thermometer
+0	🤕	face_with_head_bandage	bandage face head-bandage hurt injury
+0	🤢	nauseated_face nauseated	face gross nasty sick vomit
+0	🤮	face_vomiting face_with_open_mouth_vomiting vomiting_face vomiting	barf ew face gross puke
+0	🤧	sneezing_face sneezing	face fever flu gesundheit sick
+0	🥵	hot_face hot	dying face feverish heat panting
+0	🥶	cold_face cold	blue blue-faced face freezing frostbite
+0	🥴	woozy_face woozy	dizzy drunk eyes face intoxicated
+0	😵	dizzy_face knocked_out	crossed-out dead dizzy eyes face
+0	😵‍💫	face_with_spiral_eyes dizzy_eyes	confused dizzy eyes face hypnotized
+0	🤯	exploding_head shocked_face_with_exploding_head	blown explode exploding head mind
+0	🤠	face_with_cowboy_hat cowboy_hat_face cowboy cowboy_face	cowgirl face hat
+0	🥳	partying_face hooray partying	bday birthday celebrate celebration excited
+0	🥸	disguised_face disguised	disguise eyebrow face glasses incognito
+0	😎	sunglasses smiling_face_with_sunglasses sunglasses_cool too_cool	awesome beach bright bro chilling
+0	🤓	nerd_face nerd	brainy clever expert face geek
+0	🧐	face_with_monocle monocle_face	classy face fancy monocle rich
+0	😕	confused confused_face	befuddled confusing dunno face frown
+0	🫤	face_with_diagonal_mouth	confused confusion diagonal disappointed doubt
+0	😟	worried worried_face	anxious butterflies face nerves nervous
+0	🙁	slightly_frowning_face	face frown frowning sad slightly
+0	☹️	white_frowning_face frowning_face	face frown frowning sad
+0	😮	open_mouth face_with_open_mouth	believe face forgot mouth omg
+0	😯	hushed hushed_face	epic face omg stunned surprised
+0	😲	astonished astonished_face	cost face no omg shocked
+0	😳	flushed flushed_face	amazed awkward crazy dazed dead
+0	🥺	pleading_face pleading	begging big eyes face mercy
+0	🥹	face_holding_back_tears watery_eyes	admiration aww back cry embarrassed
+0	😦	frowning frowning_face	caught face frown guard mouth
+0	😧	anguished anguished_face	face forgot scared scary stressed
+0	😨	fearful fearful_face	afraid anxious blame face fear
+0	😰	cold_sweat anxious anxious_face	blue cold eek face mouth
+0	😥	disappointed_relieved sad_relieved_face	anxious call close complicated disappointed
+0	😢	cry crying_face	awful crying face feels miss
+0	😭	sob loudly_crying_face	bawling cry crying face loudly
+0	😱	scream screaming_in_fear	epic face fear fearful munch
+0	😖	confounded confounded_face	annoyed confused cringe distraught face
+0	😣	persevere persevering_face	concentrate concentration face focus headache
+0	😞	disappointed disappointed_face	awful blame dejected face fail
+0	😓	sweat downcast_face	close cold downcast face feels
+0	😩	weary weary_face	crying face fail feels hungry
+0	😫	tired_face tired	cost face feels nap sad
+0	🥱	yawning_face yawn yawning	bedtime bored face goodnight nap
+0	😤	triumph nose_steam	anger angry face feels fume
+0	😡	rage pout pouting_face	anger angry enraged face feels
+0	😠	angry angry_face	anger blame face feels frustrated
+0	🤬	face_with_symbols_on_mouth serious_face_with_symbols_covering_mouth cursing_face censored	censor cursing cussing face mad
+0	😈	smiling_imp	demon devil evil face fairy
+0	👿	imp angry_imp	angry demon devil evil face
+0	💀	skull	body dead death face fairy
+0	☠️	skull_and_crossbones	bone crossbones dead death face
+0	💩	hankey poop shit	bs comic doo dung face
+0	🤡	clown_face clown	face
+0	👹	japanese_ogre ogre	creature devil face fairy fairytale
+0	👺	japanese_goblin goblin	angry creature face fairy fairytale
+0	👻	ghost	boo creature excited face fairy
+0	👽️	alien	creature extraterrestrial face fairy fairytale
+0	👾	space_invader alien_monster	alien creature extraterrestrial face fairy
+0	🤖	robot_face robot	face monster
+0	😺	smiley_cat grinning_cat	animal cat face grinning mouth
+0	😸	smile_cat grinning_cat_with_closed_eyes	animal cat eye eyes face
+0	😹	joy_cat tears_of_joy_cat	animal cat face joy laugh
+0	😻	heart_eyes_cat smiling_cat_with_heart_eyes	animal cat eye face heart
+0	😼	smirk_cat wry_smile_cat	animal cat face ironic smile
+0	😽	kissing_cat	animal cat closed eye eyes
+0	🙀	scream_cat weary_cat	animal cat face oh surprised
+0	😿	crying_cat_face crying_cat	animal cat cry crying face
+0	😾	pouting_cat	animal cat face pouting
+0	🙈	see_no_evil	embarrassed evil face forbidden forgot
+0	🙉	hear_no_evil	animal ears evil face forbidden
+0	🙊	speak_no_evil	animal evil face forbidden gesture
+0	💌	love_letter	heart letter love mail romance
+0	💘	cupid heart_with_arrow	143 adorbs arrow date emotion
+0	💝	gift_heart heart_with_ribbon	143 anniversary emotion heart ily
+0	💖	sparkling_heart	143 emotion excited good heart
+0	💗	heartpulse growing_heart	143 emotion excited growing heart
+0	💓	heartbeat beating_heart	143 beating cardio emotion heart
+0	💞	revolving_hearts	143 adorbs anniversary emotion heart
+0	💕	two_hearts	143 anniversary date dating emotion
+0	💟	heart_decoration	143 decoration emotion heart hearth
+0	❣️	heavy_heart_exclamation_mark_ornament heavy_heart_exclamation heart_exclamation	exclamation heart heavy mark punctuation
+0	💔	broken_heart	break broken crushed emotion heart
+0	❤️‍🔥	heart_on_fire	burn fire heart love lust
+0	❤️‍🩹	mending_heart	healthier heart improving mending recovering
+0	❤️	heart red_heart	emotion love red
+0	🩷	pink_heart	143 adorable cute emotion heart
+0	🧡	orange_heart	143 heart orange
+0	💛	yellow_heart	143 cardiac emotion heart ily
+0	💚	green_heart	143 emotion green heart ily
+0	💙	blue_heart	143 blue emotion heart ily
+0	🩵	light_blue_heart	143 blue cute cyan emotion
+0	💜	purple_heart	143 bestest emotion heart ily
+0	🤎	brown_heart	143 brown heart
+0	🖤	black_heart	black evil heart wicked
+0	🩶	grey_heart gray_heart	143 emotion gray grey heart
+0	🤍	white_heart	143 heart white
+0	💋	kiss	dating emotion heart kissing lips
+0	💯	100	a+ agree clearly definitely faithful
+0	💢	anger	angry comic mad symbol upset
+0	💥	boom collision	bomb collide comic explode
+0	💫	dizzy	comic shining shooting star stars
+0	💦	sweat_drops	comic drip droplet droplets drops
+0	💨	dash dashing_away	away cloud comic dashing fart
+0	🕳️	hole	
+0	💬	speech_balloon	balloon bubble comic dialog message
+0	👁️‍🗨️	eye-in-speech-bubble eye_speech_bubble eye_in_speech_bubble	balloon bubble eye speech witness
+0	🗨️	left_speech_bubble	balloon bubble dialog left speech
+0	🗯️	right_anger_bubble	anger angry balloon bubble mad
+0	💭	thought_balloon	balloon bubble cartoon cloud comic
+0	💤	zzz	comic good goodnight night sleep
+1	👋	wave waving_hand	bye cya g2g greetings gtg
+1	🤚	raised_back_of_hand	back backhand hand raised
+1	🖐️	raised_hand_with_fingers_splayed	finger fingers hand raised splayed
+1	✋️	hand raised_hand high_five	5 five high raised stop
+1	🖖	spock-hand vulcan_salute vulcan	finger hand hands salute
+1	🫱	rightwards_hand	hand handshake hold reach right
+1	🫲	leftwards_hand	hand handshake hold left leftward
+1	🫳	palm_down_hand palm_down	dismiss down drop dropped hand
+1	🫴	palm_up_hand palm_up	beckon catch come hand hold
+1	🫷	leftwards_pushing_hand	block five halt hand high
+1	🫸	rightwards_pushing_hand	block five halt hand high
+1	👌	ok_hand	awesome bet dope fleek fosho
+1	🤌	pinched_fingers pinch	fingers gesture hand hold huh
+1	🤏	pinching_hand	amount bit fingers hand little
+1	✌️	v victory	hand peace
+1	🤞	crossed_fingers hand_with_index_and_middle_fingers_crossed fingers_crossed	cross crossed finger fingers hand
+1	🫰	hand_with_index_finger_and_thumb_crossed	<3 crossed expensive finger hand
+1	🤟	i_love_you_hand_sign love_you_gesture	fingers gesture hand ily love
+1	🤘	the_horns sign_of_the_horns metal	finger hand horns rock-on sign
+1	🤙	call_me_hand	call hand hang loose me
+1	👈️	point_left	backhand finger hand index left
+1	👉️	point_right	backhand finger hand index point
+1	👆️	point_up_2 point_up	backhand finger hand index point
+1	🖕	middle_finger reversed_hand_with_middle_finger_extended fu	finger hand middle
+1	👇️	point_down	backhand down finger hand index
+1	☝️	point_up point_up_2	finger hand index point pointing
+1	🫵	index_pointing_at_the_viewer point_forward	at finger hand index pointing
+1	👍️	+1 thumbsup yes	good hand like thumb up
+1	👎️	-1 thumbsdown no	bad dislike down good hand
+1	✊️	fist fist_raised	clenched hand punch raised solidarity
+1	👊	facepunch punch fist_oncoming	absolutely agree boom bro bruh
+1	🤛	left-facing_fist fist_left left_facing_fist	fist left-facing leftwards
+1	🤜	right-facing_fist fist_right right_facing_fist	fist right-facing rightwards
+1	👏	clap clapping_hands	applause approval awesome congrats congratulations
+1	🙌	raised_hands	celebration gesture hand hands hooray
+1	🫶	heart_hands	<3 hands heart love you
+1	👐	open_hands	hand hands hug jazz open
+1	🤲	palms_up_together	cupped dua hands palms pray
+1	🤝	handshake	agreement deal hand meeting shake
+1	🙏	pray folded_hands	appreciate ask beg blessed bow
+1	✍️	writing_hand	hand write writing
+1	💅	nail_care nail_polish	bored care cosmetics done makeup
+1	🤳	selfie	camera phone
+1	💪	muscle right_bicep	arm beast bench biceps bodybuilder
+1	🦾	mechanical_arm	accessibility arm mechanical prosthetic
+1	🦿	mechanical_leg	accessibility leg mechanical prosthetic
+1	🦵	leg	bent foot kick knee limb
+1	🦶	foot	ankle feet kick stomp
+1	👂️	ear	body ears hear hearing listen
+1	🦻	ear_with_hearing_aid hearing_aid	accessibility aid ear hard hearing
+1	👃	nose	body noses nosey odor smell
+1	🧠	brain	intelligent smart
+1	🫀	anatomical_heart	anatomical beat cardiology heart heartbeat
+1	🫁	lungs	breath breathe exhalation inhalation lung
+1	🦷	tooth	dentist pearly teeth white
+1	🦴	bone	bones dog skeleton wishbone
+1	👀	eyes	body eye face googly look
+1	👁️	eye	1 body one
+1	👅	tongue	body lick slurp
+1	👄	lips mouth	beauty body kiss kissing lipstick
+1	🫦	biting_lip	anxious bite biting fear flirt
+1	👶	baby	babies children goo infant newborn
+1	🧒	child	bright-eyed grandchild kid young younger
+1	👦	boy	bright-eyed child grandson kid son
+1	👧	girl	bright-eyed child daughter granddaughter kid
+1	🧑	adult	
+1	👱	person_with_blond_hair blond_haired_person blond_haired	blond blond-haired human person
+1	👨	man	adult bro
+1	🧔	bearded_person person_bearded	beard bearded person whiskers
+1	🧔‍♂️	man_with_beard man_beard man_bearded	beard bearded man whiskers
+1	🧔‍♀️	woman_with_beard woman_beard woman_bearded	beard bearded whiskers woman
+1	👨‍🦰	red_haired_man man_red_haired	adult bro man
+1	👨‍🦱	curly_haired_man man_curly_haired	adult bro man
+1	👨‍🦳	white_haired_man man_white_haired	adult bro man
+1	👨‍🦲	bald_man man_bald	adult bald bro man
+1	👩	woman	adult lady
+1	👩‍🦰	red_haired_woman woman_red_haired	adult lady woman
+1	🧑‍🦰	red_haired_person person_red_hair red_haired	adult person
+1	👩‍🦱	curly_haired_woman woman_curly_haired	adult lady woman
+1	🧑‍🦱	curly_haired_person person_curly_hair curly_haired	adult person
+1	👩‍🦳	white_haired_woman woman_white_haired	adult lady woman
+1	🧑‍🦳	white_haired_person person_white_hair white_haired	adult person
+1	👩‍🦲	bald_woman woman_bald	adult bald lady woman
+1	🧑‍🦲	bald_person person_bald bald	adult person
+1	👱‍♀️	blond-haired-woman blond_haired_woman blonde_woman woman_blond_haired	blond blond-haired blonde hair woman
+1	👱‍♂️	blond-haired-man blond_haired_man man_blond_haired	blond blond-haired hair man
+1	🧓	older_adult	adult elderly grandparent old person
+1	👴	older_man	adult bald elderly gramps grandfather
+1	👵	older_woman	adult elderly grandma grandmother granny
+1	🙍	person_frowning frowning_person	annoyed disappointed disgruntled disturbed frown
+1	🙍‍♂️	man-frowning frowning_man man_frowning	annoyed disappointed disgruntled disturbed frown
+1	🙍‍♀️	woman-frowning frowning_woman woman_frowning	annoyed disappointed disgruntled disturbed frown
+1	🙎	person_with_pouting_face pouting_face person_pouting pouting	disappointed downtrodden frown grimace person
+1	🙎‍♂️	man-pouting pouting_man man_pouting	disappointed downtrodden frown grimace man
+1	🙎‍♀️	woman-pouting pouting_woman woman_pouting	disappointed downtrodden frown grimace pouting
+1	🙅	no_good person_gesturing_no	forbidden gesture hand no not
+1	🙅‍♂️	man-gesturing-no ng_man no_good_man man_gesturing_no	forbidden gesture hand man no
+1	🙅‍♀️	woman-gesturing-no ng_woman no_good_woman woman_gesturing_no	forbidden gesture hand no not
+1	🙆	ok_woman ok_person all_good person_gesturing_ok	exercise gesture gesturing hand ok
+1	🙆‍♂️	man-gesturing-ok ok_man man_gesturing_ok	exercise gesture gesturing hand man
+1	🙆‍♀️	woman-gesturing-ok ok_woman woman_gesturing_ok	exercise gesture gesturing hand ok
+1	💁	information_desk_person tipping_hand_person person_tipping_hand	fetch flick flip gossip hand
+1	💁‍♂️	man-tipping-hand sassy_man tipping_hand_man man_tipping_hand	fetch flick flip gossip hand
+1	💁‍♀️	woman-tipping-hand sassy_woman tipping_hand_woman woman_tipping_hand	fetch flick flip gossip hand
+1	🙋	raising_hand person_raising_hand	gesture hand here know me
+1	🙋‍♂️	man-raising-hand raising_hand_man man_raising_hand	gesture hand here know man
+1	🙋‍♀️	woman-raising-hand raising_hand_woman woman_raising_hand	gesture hand here know me
+1	🧏	deaf_person	accessibility deaf ear gesture hear
+1	🧏‍♂️	deaf_man	accessibility deaf ear gesture hear
+1	🧏‍♀️	deaf_woman	accessibility deaf ear gesture hear
+1	🙇	bow person_bowing	apology ask beg bowing favor
+1	🙇‍♂️	man-bowing bowing_man man_bowing	apology ask beg bow bowing
+1	🙇‍♀️	woman-bowing bowing_woman woman_bowing	apology ask beg bow bowing
+1	🤦	face_palm facepalm person_facepalming	again bewilder disbelief exasperation no
+1	🤦‍♂️	man-facepalming man_facepalming	again bewilder disbelief exasperation facepalm
+1	🤦‍♀️	woman-facepalming woman_facepalming	again bewilder disbelief exasperation facepalm
+1	🤷	shrug person_shrugging	doubt dunno guess idk ignorance
+1	🤷‍♂️	man-shrugging man_shrugging	doubt dunno guess idk ignorance
+1	🤷‍♀️	woman-shrugging woman_shrugging	doubt dunno guess idk ignorance
+1	🧑‍⚕️	health_worker	doctor health healthcare nurse therapist
+1	👨‍⚕️	male-doctor man_health_worker	doctor health healthcare man nurse
+1	👩‍⚕️	female-doctor woman_health_worker	doctor health healthcare nurse therapist
+1	🧑‍🎓	student	graduate
+1	👨‍🎓	male-student man_student	graduate man student
+1	👩‍🎓	female-student woman_student	graduate student woman
+1	🧑‍🏫	teacher	instructor lecturer professor
+1	👨‍🏫	male-teacher man_teacher	instructor lecturer man professor teacher
+1	👩‍🏫	female-teacher woman_teacher	instructor lecturer professor teacher woman
+1	🧑‍⚖️	judge	justice law scales
+1	👨‍⚖️	male-judge man_judge	judge justice law man scales
+1	👩‍⚖️	female-judge woman_judge	judge justice law scales woman
+1	🧑‍🌾	farmer	gardener rancher
+1	👨‍🌾	male-farmer man_farmer	farmer gardener man rancher
+1	👩‍🌾	female-farmer woman_farmer	farmer gardener rancher woman
+1	🧑‍🍳	cook	chef
+1	👨‍🍳	male-cook man_cook	chef cook man
+1	👩‍🍳	female-cook woman_cook	chef cook woman
+1	🧑‍🔧	mechanic	electrician plumber tradesperson
+1	👨‍🔧	male-mechanic man_mechanic	electrician man mechanic plumber tradesperson
+1	👩‍🔧	female-mechanic woman_mechanic	electrician mechanic plumber tradesperson woman
+1	🧑‍🏭	factory_worker	assembly factory industrial worker
+1	👨‍🏭	male-factory-worker man_factory_worker	assembly factory industrial man worker
+1	👩‍🏭	female-factory-worker woman_factory_worker	assembly factory industrial woman worker
+1	🧑‍💼	office_worker	architect business manager office white-collar
+1	👨‍💼	male-office-worker man_office_worker	architect business man manager office
+1	👩‍💼	female-office-worker woman_office_worker	architect business manager office white-collar
+1	🧑‍🔬	scientist	biologist chemist engineer mathematician physicist
+1	👨‍🔬	male-scientist man_scientist	biologist chemist engineer man mathematician
+1	👩‍🔬	female-scientist woman_scientist	biologist chemist engineer mathematician physicist
+1	🧑‍💻	technologist	coder computer developer inventor software
+1	👨‍💻	male-technologist man_technologist	coder computer developer inventor man
+1	👩‍💻	female-technologist woman_technologist	coder computer developer inventor software
+1	🧑‍🎤	singer	actor entertainer rock rockstar star
+1	👨‍🎤	male-singer man_singer	actor entertainer man rock rockstar
+1	👩‍🎤	female-singer woman_singer	actor entertainer rock rockstar singer
+1	🧑‍🎨	artist	palette
+1	👨‍🎨	male-artist man_artist	artist man palette
+1	👩‍🎨	female-artist woman_artist	artist palette woman
+1	🧑‍✈️	pilot	plane
+1	👨‍✈️	male-pilot man_pilot	man pilot plane
+1	👩‍✈️	female-pilot woman_pilot	pilot plane woman
+1	🧑‍🚀	astronaut	rocket space
+1	👨‍🚀	male-astronaut man_astronaut	astronaut man rocket space
+1	👩‍🚀	female-astronaut woman_astronaut	astronaut rocket space woman
+1	🧑‍🚒	firefighter	fire firetruck
+1	👨‍🚒	male-firefighter man_firefighter	fire firefighter firetruck man
+1	👩‍🚒	female-firefighter woman_firefighter	fire firefighter firetruck woman
+1	👮	cop police_officer	apprehend arrest citation law officer
+1	👮‍♂️	male-police-officer policeman man_police_officer	apprehend arrest citation cop law
+1	👮‍♀️	female-police-officer policewoman woman_police_officer	apprehend arrest citation cop law
+1	🕵️	sleuth_or_spy detective	sleuth spy
+1	🕵️‍♂️	male-detective male_detective man_detective	detective man sleuth spy
+1	🕵️‍♀️	female-detective female_detective woman_detective	detective sleuth spy woman
+1	💂	guardsman guard	buckingham helmet london palace
+1	💂‍♂️	male-guard guardsman man_guard	buckingham guard helmet london man
+1	💂‍♀️	female-guard guardswoman woman_guard	buckingham guard helmet london palace
+1	🥷	ninja	assassin fight fighter hidden person
+1	👷	construction_worker	build construction fix hardhat hat
+1	👷‍♂️	male-construction-worker construction_worker_man man_construction_worker	build construction fix hardhat hat
+1	👷‍♀️	female-construction-worker construction_worker_woman woman_construction_worker	build construction fix hardhat hat
+1	🫅	person_with_crown royalty	crown monarch noble person regal
+1	🤴	prince	crown fairy fairytale fantasy king
+1	👸	princess	crown fairy fairytale fantasy queen
+1	👳	man_with_turban person_with_turban person_wearing_turban	person turban wearing
+1	👳‍♂️	man-wearing-turban man_with_turban man_wearing_turban	man turban wearing
+1	👳‍♀️	woman-wearing-turban woman_with_turban woman_wearing_turban	turban wearing woman
+1	👲	man_with_gua_pi_mao person_with_skullcap	cap chinese gua guapi hat
+1	🧕	person_with_headscarf woman_with_headscarf	bandana head headscarf hijab kerchief
+1	🤵	person_in_tuxedo	formal person tuxedo wedding
+1	🤵‍♂️	man_in_tuxedo	formal groom man tuxedo wedding
+1	🤵‍♀️	woman_in_tuxedo	formal tuxedo wedding woman
+1	👰	bride_with_veil person_with_veil	person veil wedding
+1	👰‍♂️	man_with_veil	man veil wedding
+1	👰‍♀️	woman_with_veil bride_with_veil	bride veil wedding woman
+1	🤰	pregnant_woman	pregnant woman
+1	🫃	pregnant_man	belly bloated full man overeat
+1	🫄	pregnant_person	belly bloated full overeat person
+1	🤱	breast-feeding breast_feeding	baby breast feeding mom mother
+1	👩‍🍼	woman_feeding_baby	baby feed feeding mom mother
+1	👨‍🍼	man_feeding_baby	baby dad father feed feeding
+1	🧑‍🍼	person_feeding_baby	baby feed feeding nanny newborn
+1	👼	angel	baby church face fairy fairytale
+1	🎅	santa	celebration christmas claus fairy fantasy
+1	🤶	mrs_claus mother_christmas	celebration christmas claus fairy fantasy
+1	🧑‍🎄	mx_claus	celebration christmas claus fairy fantasy
+1	🦸	superhero	good hero superpower
+1	🦸‍♂️	male_superhero superhero_man man_superhero	good hero man superhero superpower
+1	🦸‍♀️	female_superhero superhero_woman woman_superhero	good hero heroine superhero superpower
+1	🦹	supervillain	bad criminal evil superpower villain
+1	🦹‍♂️	male_supervillain supervillain_man man_supervillain	bad criminal evil man superpower
+1	🦹‍♀️	female_supervillain supervillain_woman woman_supervillain	bad criminal evil superpower supervillain
+1	🧙	mage	fantasy magic play sorcerer sorceress
+1	🧙‍♂️	male_mage mage_man man_mage	fantasy mage magic man play
+1	🧙‍♀️	female_mage mage_woman woman_mage	fantasy mage magic play sorcerer
+1	🧚	fairy	fairytale fantasy myth person pixie
+1	🧚‍♂️	male_fairy fairy_man man_fairy	fairy fairytale fantasy man myth
+1	🧚‍♀️	female_fairy fairy_woman woman_fairy	fairy fairytale fantasy myth person
+1	🧛	vampire	blood dracula fangs halloween scary
+1	🧛‍♂️	male_vampire vampire_man man_vampire	blood fangs halloween man scary
+1	🧛‍♀️	female_vampire vampire_woman woman_vampire	blood fangs halloween scary supernatural
+1	🧜	merperson	creature fairytale folklore ocean sea
+1	🧜‍♂️	merman	creature fairytale folklore neptune ocean
+1	🧜‍♀️	mermaid	creature fairytale folklore merwoman ocean
+1	🧝	elf	elves enchantment fantasy folklore magic
+1	🧝‍♂️	male_elf elf_man man_elf	elf elves enchantment fantasy folklore
+1	🧝‍♀️	female_elf elf_woman woman_elf	elf elves enchantment fantasy folklore
+1	🧞	genie	djinn fantasy jinn lamp myth
+1	🧞‍♂️	male_genie genie_man man_genie	djinn fantasy genie jinn lamp
+1	🧞‍♀️	female_genie genie_woman woman_genie	djinn fantasy genie jinn lamp
+1	🧟	zombie	apocalypse dead halloween horror scary
+1	🧟‍♂️	male_zombie zombie_man man_zombie	apocalypse dead halloween horror man
+1	🧟‍♀️	female_zombie zombie_woman woman_zombie	apocalypse dead halloween horror scary
+1	🧌	troll	fairy fantasy monster tale trolling
+1	💆	massage person_getting_massage	face getting headache person relax
+1	💆‍♂️	man-getting-massage massage_man man_getting_massage	face getting headache man massage
+1	💆‍♀️	woman-getting-massage massage_woman woman_getting_massage	face getting headache massage relax
+1	💇	haircut person_getting_haircut	barber beauty chop cosmetology cut
+1	💇‍♂️	man-getting-haircut haircut_man man_getting_haircut	barber beauty chop cosmetology cut
+1	💇‍♀️	woman-getting-haircut haircut_woman woman_getting_haircut	barber beauty chop cosmetology cut
+1	🚶	walking person_walking	amble gait hike man pace
+1	🚶‍♂️	man-walking walking_man man_walking	amble gait hike man pace
+1	🚶‍♀️	woman-walking walking_woman woman_walking	amble gait hike man pace
+1	🚶‍➡️	person_walking_facing_right person_walking_right	amble gait hike man pace
+1	🚶‍♀️‍➡️	woman_walking_facing_right woman_walking_right	amble gait hike man pace
+1	🚶‍♂️‍➡️	man_walking_facing_right man_walking_right	amble gait hike man pace
+1	🧍	standing_person person_standing standing	person stand
+1	🧍‍♂️	man_standing standing_man	man stand standing
+1	🧍‍♀️	woman_standing standing_woman	stand standing woman
+1	🧎	kneeling_person kneeling person_kneeling	kneel knees person
+1	🧎‍♂️	man_kneeling kneeling_man	kneel kneeling knees man
+1	🧎‍♀️	woman_kneeling kneeling_woman	kneel kneeling knees woman
+1	🧎‍➡️	person_kneeling_facing_right person_kneeling_right	kneel kneeling knees person
+1	🧎‍♀️‍➡️	woman_kneeling_facing_right woman_kneeling_right	kneel kneeling knees woman
+1	🧎‍♂️‍➡️	man_kneeling_facing_right man_kneeling_right	kneel kneeling knees man
+1	🧑‍🦯	person_with_probing_cane person_with_white_cane	accessibility blind cane person probing
+1	🧑‍🦯‍➡️	person_with_white_cane_facing_right person_with_white_cane_right	accessibility blind cane person probing
+1	👨‍🦯	man_with_probing_cane man_with_white_cane	accessibility blind cane man probing
+1	👨‍🦯‍➡️	man_with_white_cane_facing_right man_with_white_cane_right	accessibility blind cane man probing
+1	👩‍🦯	woman_with_probing_cane woman_with_white_cane	accessibility blind cane probing white
+1	👩‍🦯‍➡️	woman_with_white_cane_facing_right woman_with_white_cane_right	accessibility blind cane probing white
+1	🧑‍🦼	person_in_motorized_wheelchair	accessibility motorized person wheelchair
+1	🧑‍🦼‍➡️	person_in_motorized_wheelchair_facing_right person_in_motorized_wheelchair_right	accessibility motorized person wheelchair
+1	👨‍🦼	man_in_motorized_wheelchair	accessibility man motorized wheelchair
+1	👨‍🦼‍➡️	man_in_motorized_wheelchair_facing_right man_in_motorized_wheelchair_right	accessibility man motorized wheelchair
+1	👩‍🦼	woman_in_motorized_wheelchair	accessibility motorized wheelchair woman
+1	👩‍🦼‍➡️	woman_in_motorized_wheelchair_facing_right woman_in_motorized_wheelchair_right	accessibility motorized wheelchair woman
+1	🧑‍🦽	person_in_manual_wheelchair	accessibility manual person wheelchair
+1	🧑‍🦽‍➡️	person_in_manual_wheelchair_facing_right person_in_manual_wheelchair_right	accessibility manual person wheelchair
+1	👨‍🦽	man_in_manual_wheelchair	accessibility man manual wheelchair
+1	👨‍🦽‍➡️	man_in_manual_wheelchair_facing_right man_in_manual_wheelchair_right	accessibility man manual wheelchair
+1	👩‍🦽	woman_in_manual_wheelchair	accessibility manual wheelchair woman
+1	👩‍🦽‍➡️	woman_in_manual_wheelchair_facing_right woman_in_manual_wheelchair_right	accessibility manual wheelchair woman
+1	🏃	runner running person_running	fast hurry marathon move person
+1	🏃‍♂️	man-running running_man man_running	fast hurry man marathon move
+1	🏃‍♀️	woman-running running_woman woman_running	fast hurry marathon move quick
+1	🏃‍➡️	person_running_facing_right person_running_right	fast hurry marathon move person
+1	🏃‍♀️‍➡️	woman_running_facing_right woman_running_right	fast hurry marathon move quick
+1	🏃‍♂️‍➡️	man_running_facing_right man_running_right	fast hurry man marathon move
+1	💃	dancer woman_dancing	dance dancing elegant festive flair
+1	🕺	man_dancing	dance dancer dancing elegant festive
+1	🕴️	man_in_business_suit_levitating business_suit_levitating levitate levitating person_in_suit_levitating	business person suit
+1	👯	dancers people_with_bunny_ears_partying	bestie bff bunny counterpart dancer
+1	👯‍♂️	men-with-bunny-ears-partying man-with-bunny-ears-partying dancing_men men_with_bunny_ears_partying	bestie bff bunny counterpart dancer
+1	👯‍♀️	women-with-bunny-ears-partying woman-with-bunny-ears-partying dancing_women women_with_bunny_ears_partying	bestie bff bunny counterpart dancer
+1	🧖	person_in_steamy_room sauna_person	day luxurious pamper person relax
+1	🧖‍♂️	man_in_steamy_room sauna_man	day luxurious man pamper relax
+1	🧖‍♀️	woman_in_steamy_room sauna_woman	day luxurious pamper relax room
+1	🧗	person_climbing climbing	climb climber mountain person rock
+1	🧗‍♂️	man_climbing climbing_man	climb climber climbing man mountain
+1	🧗‍♀️	woman_climbing climbing_woman	climb climber climbing mountain rock
+1	🤺	fencer person_fencing fencing	person sword
+1	🏇	horse_racing	horse jockey racehorse racing riding
+1	⛷️	skier person_skiing skiing	ski snow
+1	🏂️	snowboarder person_snowboarding snowboarding	ski snow snowboard sport
+1	🏌️	golfer golfing person_golfing	ball birdie caddy driving golf
+1	🏌️‍♂️	man-golfing golfing_man man_golfing	ball birdie caddy driving golf
+1	🏌️‍♀️	woman-golfing golfing_woman woman_golfing	ball birdie caddy driving golf
+1	🏄️	surfer person_surfing surfing	beach ocean person sport surf
+1	🏄‍♂️	man-surfing surfing_man man_surfing	beach man ocean sport surf
+1	🏄‍♀️	woman-surfing surfing_woman woman_surfing	beach ocean person sport surf
+1	🚣	rowboat person_rowing_boat	boat canoe cruise fishing lake
+1	🚣‍♂️	man-rowing-boat rowing_man man_rowing_boat	boat canoe cruise fishing lake
+1	🚣‍♀️	woman-rowing-boat rowing_woman woman_rowing_boat	boat canoe cruise fishing lake
+1	🏊️	swimmer person_swimming swimming	freestyle person sport swim triathlon
+1	🏊‍♂️	man-swimming swimming_man man_swimming	freestyle man sport swim swimmer
+1	🏊‍♀️	woman-swimming swimming_woman woman_swimming	freestyle man sport swim swimmer
+1	⛹️	person_with_ball bouncing_ball_person person_bouncing_ball	athletic ball basketball bouncing championship
+1	⛹️‍♂️	man-bouncing-ball basketball_man bouncing_ball_man man_bouncing_ball	athletic ball basketball bouncing championship
+1	⛹️‍♀️	woman-bouncing-ball basketball_woman bouncing_ball_woman woman_bouncing_ball	athletic ball basketball bouncing championship
+1	🏋️	weight_lifter weight_lifting person_lifting_weights	barbell bodybuilder deadlift lifter lifting
+1	🏋️‍♂️	man-lifting-weights weight_lifting_man man_lifting_weights	barbell bodybuilder deadlift lifter lifting
+1	🏋️‍♀️	woman-lifting-weights weight_lifting_woman woman_lifting_weights	barbell bodybuilder deadlift lifter lifting
+1	🚴	bicyclist biking person_biking	bicycle bike cycle cyclist person
+1	🚴‍♂️	man-biking biking_man man_biking	bicycle bicyclist bike biking cycle
+1	🚴‍♀️	woman-biking biking_woman woman_biking	bicycle bicyclist bike biking cycle
+1	🚵	mountain_bicyclist mountain_biking person_mountain_biking	bicycle bicyclist bike biking cycle
+1	🚵‍♂️	man-mountain-biking mountain_biking_man man_mountain_biking	bicycle bicyclist bike biking cycle
+1	🚵‍♀️	woman-mountain-biking mountain_biking_woman woman_mountain_biking	bicycle bicyclist bike biking cycle
+1	🤸	person_doing_cartwheel cartwheeling person_cartwheel	active cartwheel excited flip gymnastics
+1	🤸‍♂️	man-cartwheeling man_cartwheeling	active cartwheel cartwheeling excited flip
+1	🤸‍♀️	woman-cartwheeling woman_cartwheeling	active cartwheel cartwheeling excited flip
+1	🤼	wrestlers wrestling people_wrestling	combat duel grapple people ring
+1	🤼‍♂️	man-wrestling men_wrestling	combat duel grapple men ring
+1	🤼‍♀️	woman-wrestling women_wrestling	combat duel grapple ring tournament
+1	🤽	water_polo person_playing_water_polo	person playing polo sport swimming
+1	🤽‍♂️	man-playing-water-polo man_playing_water_polo	man playing polo sport swimming
+1	🤽‍♀️	woman-playing-water-polo woman_playing_water_polo	playing polo sport swimming water
+1	🤾	handball handball_person person_playing_handball	athletics ball catch chuck hurl
+1	🤾‍♂️	man-playing-handball man_playing_handball	athletics ball catch chuck handball
+1	🤾‍♀️	woman-playing-handball woman_playing_handball	athletics ball catch chuck handball
+1	🤹	juggling juggling_person juggler person_juggling	act balance balancing handle juggle
+1	🤹‍♂️	man-juggling man_juggling	act balance balancing handle juggle
+1	🤹‍♀️	woman-juggling woman_juggling	act balance balancing handle juggle
+1	🧘	person_in_lotus_position lotus_position	cross legged legs lotus meditation
+1	🧘‍♂️	man_in_lotus_position lotus_position_man	cross legged legs lotus man
+1	🧘‍♀️	woman_in_lotus_position lotus_position_woman	cross legged legs lotus meditation
+1	🛀	bath person_taking_bath	bathtub person taking tub
+1	🛌	sleeping_accommodation sleeping_bed person_in_bed	bed bedtime good goodnight hotel
+1	🧑‍🤝‍🧑	people_holding_hands	bae bestie bff couple dating
+1	👭	two_women_holding_hands women_holding_hands	bae bestie bff couple dating
+1	👫	man_and_woman_holding_hands woman_and_man_holding_hands couple	bae bestie bff dating flirt
+1	👬	two_men_holding_hands men_holding_hands	bae bestie bff boys brothers
+1	💏	couplekiss couple_kiss	anniversary babe bae couple date
+1	👩‍❤️‍💋‍👨	woman-kiss-man couplekiss_man_woman kiss_mw kiss_wm	anniversary babe bae couple date
+1	👨‍❤️‍💋‍👨	man-kiss-man couplekiss_man_man kiss_mm	anniversary babe bae couple date
+1	👩‍❤️‍💋‍👩	woman-kiss-woman couplekiss_woman_woman kiss_ww	anniversary babe bae couple date
+1	💑	couple_with_heart	anniversary babe bae couple dating
+1	👩‍❤️‍👨	woman-heart-man couple_with_heart_woman_man couple_with_heart_mw couple_with_heart_wm	anniversary babe bae couple dating
+1	👨‍❤️‍👨	man-heart-man couple_with_heart_man_man couple_with_heart_mm	anniversary babe bae couple dating
+1	👩‍❤️‍👩	woman-heart-woman couple_with_heart_woman_woman couple_with_heart_ww	anniversary babe bae couple dating
+1	👨‍👩‍👦	man-woman-boy family_man_woman_boy family_mwb	boy child family man woman
+1	👨‍👩‍👧	man-woman-girl family_man_woman_girl family_mwg	child family girl man woman
+1	👨‍👩‍👧‍👦	man-woman-girl-boy family_man_woman_girl_boy family_mwgb	boy child family girl man
+1	👨‍👩‍👦‍👦	man-woman-boy-boy family_man_woman_boy_boy family_mwbb	boy child family man woman
+1	👨‍👩‍👧‍👧	man-woman-girl-girl family_man_woman_girl_girl family_mwgg	child family girl man woman
+1	👨‍👨‍👦	man-man-boy family_man_man_boy family_mmb	boy child family man
+1	👨‍👨‍👧	man-man-girl family_man_man_girl family_mmg	child family girl man
+1	👨‍👨‍👧‍👦	man-man-girl-boy family_man_man_girl_boy family_mmgb	boy child family girl man
+1	👨‍👨‍👦‍👦	man-man-boy-boy family_man_man_boy_boy family_mmbb	boy child family man
+1	👨‍👨‍👧‍👧	man-man-girl-girl family_man_man_girl_girl family_mmgg	child family girl man
+1	👩‍👩‍👦	woman-woman-boy family_woman_woman_boy family_wwb	boy child family woman
+1	👩‍👩‍👧	woman-woman-girl family_woman_woman_girl family_wwg	child family girl woman
+1	👩‍👩‍👧‍👦	woman-woman-girl-boy family_woman_woman_girl_boy family_wwgb	boy child family girl woman
+1	👩‍👩‍👦‍👦	woman-woman-boy-boy family_woman_woman_boy_boy family_wwbb	boy child family woman
+1	👩‍👩‍👧‍👧	woman-woman-girl-girl family_woman_woman_girl_girl family_wwgg	child family girl woman
+1	👨‍👦	man-boy family_man_boy family_mb	boy child family man
+1	👨‍👦‍👦	man-boy-boy family_man_boy_boy family_mbb	boy child family man
+1	👨‍👧	man-girl family_man_girl family_mg	child family girl man
+1	👨‍👧‍👦	man-girl-boy family_man_girl_boy family_mgb	boy child family girl man
+1	👨‍👧‍👧	man-girl-girl family_man_girl_girl family_mgg	child family girl man
+1	👩‍👦	woman-boy family_woman_boy family_wb	boy child family woman
+1	👩‍👦‍👦	woman-boy-boy family_woman_boy_boy family_wbb	boy child family woman
+1	👩‍👧	woman-girl family_woman_girl family_wg	child family girl woman
+1	👩‍👧‍👦	woman-girl-boy family_woman_girl_boy family_wgb	boy child family girl woman
+1	👩‍👧‍👧	woman-girl-girl family_woman_girl_girl family_wgg	child family girl woman
+1	🗣️	speaking_head_in_silhouette speaking_head	face head silhouette speak speaking
+1	👤	bust_in_silhouette	bust mysterious shadow silhouette
+1	👥	busts_in_silhouette	bff bust busts everyone friend
+1	🫂	people_hugging	comfort embrace farewell friendship goodbye
+1	👪️	family	child
+1	🧑‍🧑‍🧒	family_adult_adult_child family_aac	adult child family
+1	🧑‍🧑‍🧒‍🧒	family_adult_adult_child_child family_aacc	adult child family
+1	🧑‍🧒	family_adult_child family_ac	adult child family
+1	🧑‍🧒‍🧒	family_adult_child_child family_acc	adult child family
+1	👣	footprints	barefoot clothing footprint omw print
+1	🫆	fingerprint	clue crime detective forensics identity
+3	🐵	monkey_face	animal banana face monkey
+3	🐒	monkey	animal banana
+3	🦍	gorilla	animal
+3	🦧	orangutan	animal ape monkey
+3	🐶	dog dog_face	adorbs animal face pet puppies
+3	🐕️	dog2 dog	animal animals dogs pet
+3	🦮	guide_dog	accessibility animal blind dog guide
+3	🐕‍🦺	service_dog	accessibility animal assistance dog service
+3	🐩	poodle	animal dog fluffy
+3	🐺	wolf wolf_face	animal face
+3	🦊	fox_face fox	animal face
+3	🦝	raccoon	animal curious sly
+3	🐱	cat cat_face	animal face kitten kitty pet
+3	🐈️	cat2 cat	animal animals cats kitten pet
+3	🐈‍⬛	black_cat	animal black cat feline halloween
+3	🦁	lion_face lion	alpha animal face leo mane
+3	🐯	tiger tiger_face	animal big cat face predator
+3	🐅	tiger2 tiger	animal big cat predator zoo
+3	🐆	leopard	animal big cat predator zoo
+3	🐴	horse horse_face	animal dressage equine face farm
+3	🫎	moose	alces animal antlers elk mammal
+3	🫏	donkey	animal ass burro hinny mammal
+3	🐎	racehorse horse	animal equestrian farm racing
+3	🦄	unicorn_face unicorn	face
+3	🦓	zebra_face zebra	animal stripe
+3	🦌	deer	animal
+3	🦬	bison	animal buffalo herd wisent
+3	🐮	cow cow_face	animal face farm milk moo
+3	🐂	ox	animal animals bull farm taurus
+3	🐃	water_buffalo	animal buffalo water zoo
+3	🐄	cow2 cow	animal animals farm milk moo
+3	🐷	pig pig_face	animal bacon face farm pork
+3	🐖	pig2 pig	animal bacon farm pork sow
+3	🐗	boar	animal pig
+3	🐽	pig_nose	animal face farm nose pig
+3	🐏	ram	animal aries horns male sheep
+3	🐑	sheep ewe	animal baa farm female fluffy
+3	🐐	goat	animal capricorn farm milk zodiac
+3	🐪	dromedary_camel	animal desert dromedary hump one
+3	🐫	camel	animal bactrian desert hump two
+3	🦙	llama	alpaca animal guanaco vicuña wool
+3	🦒	giraffe_face giraffe	animal spots
+3	🐘	elephant	animal
+3	🦣	mammoth	animal extinction large tusk wooly
+3	🦏	rhinoceros rhino	animal
+3	🦛	hippopotamus hippo	animal
+3	🐭	mouse mouse_face	animal face
+3	🐁	mouse2 mouse	animal animals
+3	🐀	rat	animal
+3	🐹	hamster hamster_face	animal face pet
+3	🐰	rabbit rabbit_face	animal bunny face pet
+3	🐇	rabbit2 rabbit	animal bunny pet
+3	🐿️	chipmunk	animal squirrel
+3	🦫	beaver	animal dam teeth
+3	🦔	hedgehog	animal spiny
+3	🦇	bat	animal vampire
+3	🐻	bear bear_face	animal face grizzly growl honey
+3	🐻‍❄️	polar_bear polar_bear_face	animal arctic bear polar white
+3	🐨	koala koala_face	animal australia bear down face
+3	🐼	panda_face panda	animal bamboo face
+3	🦥	sloth	lazy slow
+3	🦦	otter	animal fishing playful
+3	🦨	skunk	animal stink
+3	🦘	kangaroo	animal joey jump marsupial
+3	🦡	badger	animal honey pester
+3	🐾	feet paw_prints	paw paws print prints
+3	🦃	turkey	bird gobble thanksgiving
+3	🐔	chicken chicken_face	animal bird ornithology
+3	🐓	rooster	animal bird ornithology
+3	🐣	hatching_chick	animal baby bird chick egg
+3	🐤	baby_chick	animal baby bird chick ornithology
+3	🐥	hatched_chick	animal baby bird chick front-facing
+3	🐦️	bird bird_face	animal ornithology
+3	🐧	penguin penguin_face	animal antarctica bird ornithology
+3	🕊️	dove_of_peace dove	bird fly ornithology peace
+3	🦅	eagle	animal bird ornithology
+3	🦆	duck	animal bird ornithology
+3	🦢	swan	animal bird cygnet duckling ornithology
+3	🦉	owl	animal bird ornithology wise
+3	🦤	dodo	animal bird extinction large ornithology
+3	🪶	feather	bird flight light plumage
+3	🦩	flamingo	animal bird flamboyant ornithology tropical
+3	🦚	peacock	animal bird colorful ornithology ostentatious
+3	🦜	parrot	animal bird ornithology pirate talk
+3	🪽	wing	angelic ascend aviation bird fly
+3	🐦‍⬛	black_bird	animal beak bird black caw
+3	🪿	goose	animal bird duck flock fowl
+3	🐦‍🔥	phoenix	ascend ascension emerge fantasy firebird
+3	🐸	frog frog_face	animal face
+3	🐊	crocodile	animal zoo
+3	🐢	turtle	animal terrapin tortoise
+3	🦎	lizard	animal reptile
+3	🐍	snake	animal bearer ophiuchus serpent zodiac
+3	🐲	dragon_face	animal dragon face fairy fairytale
+3	🐉	dragon	animal fairy fairytale knights tale
+3	🦕	sauropod	brachiosaurus brontosaurus dinosaur diplodocus
+3	🦖	t-rex trex	dinosaur rex t tyrannosaurus
+3	🐳	whale spouting_whale	animal beach face ocean spouting
+3	🐋	whale2 whale	animal beach ocean
+3	🐬	dolphin flipper	animal beach ocean
+3	🦭	seal	animal lion ocean sea
+3	🐟️	fish	animal dinner fishes fishing pisces
+3	🐠	tropical_fish	animal fish fishes tropical
+3	🐡	blowfish	animal fish
+3	🦈	shark	animal fish
+3	🐙	octopus	animal creature ocean
+3	🐚	shell	animal beach conch sea spiral
+3	🪸	coral	change climate ocean reef sea
+3	🪼	jellyfish	animal aquarium burn invertebrate jelly
+3	🦀	crab	cancer zodiac
+3	🦞	lobster	animal bisque claws seafood
+3	🦐	shrimp	food shellfish small
+3	🦑	squid	animal food mollusk
+3	🦪	oyster	diving pearl
+3	🐌	snail	animal escargot garden nature slug
+3	🦋	butterfly	insect pretty
+3	🐛	bug	animal garden insect
+3	🐜	ant	animal garden insect
+3	🐝	bee honeybee	animal bumblebee honey insect nature
+3	🪲	beetle	animal bug insect
+3	🐞	ladybug lady_beetle	animal beetle garden insect lady
+3	🦗	cricket	animal bug grasshopper insect orthoptera
+3	🪳	cockroach	animal insect pest roach
+3	🕷️	spider	animal insect
+3	🕸️	spider_web	spider web
+3	🦂	scorpion	scorpio scorpius zodiac
+3	🦟	mosquito	bite disease fever insect malaria
+3	🪰	fly	animal disease insect maggot pest
+3	🪱	worm	animal annelid earthworm parasite
+3	🦠	microbe	amoeba bacteria science virus
+3	💐	bouquet	anniversary birthday date flower love
+3	🌸	cherry_blossom	blossom cherry flower plant spring
+3	💮	white_flower	flower white
+3	🪷	lotus	beauty buddhism calm flower hinduism
+3	🏵️	rosette	plant
+3	🌹	rose	beauty elegant flower love plant
+3	🥀	wilted_flower	dying flower wilted
+3	🌺	hibiscus	flower plant
+3	🌻	sunflower	flower outdoors plant sun
+3	🌼	blossom	buttercup dandelion flower plant
+3	🌷	tulip	blossom flower growth plant
+3	🪻	hyacinth	bloom bluebonnet flower indigo lavender
+3	🌱	seedling	plant sapling sprout young
+3	🪴	potted_plant	decor grow house nurturing plant
+3	🌲	evergreen_tree	christmas evergreen forest pine tree
+3	🌳	deciduous_tree	deciduous forest green habitat shedding
+3	🌴	palm_tree	beach palm plant tree tropical
+3	🌵	cactus	desert drought nature plant
+3	🌾	ear_of_rice sheaf_of_rice	ear grain grains plant rice
+3	🌿	herb	leaf plant
+3	☘️	shamrock	irish plant
+3	🍀	four_leaf_clover	4 clover four four-leaf irish
+3	🍁	maple_leaf	falling leaf maple
+3	🍂	fallen_leaf	autumn fall fallen falling leaf
+3	🍃	leaves	blow flutter fluttering leaf wind
+3	🪹	empty_nest nest	branch empty home nesting
+3	🪺	nest_with_eggs	bird branch egg eggs nest
+3	🍄	mushroom	fungus toadstool
+3	🪾	leafless_tree	bare barren branches dead drought
+4	🍇	grapes	dionysus fruit grape
+4	🍈	melon	cantaloupe fruit
+4	🍉	watermelon	fruit
+4	🍊	tangerine mandarin orange	c citrus fruit nectarine vitamin
+4	🍋	lemon	citrus fruit sour
+4	🍋‍🟩	lime	acidity citrus cocktail fruit garnish
+4	🍌	banana	fruit potassium
+4	🍍	pineapple	colada fruit pina tropical
+4	🥭	mango	food fruit tropical
+4	🍎	apple red_apple	diet food fruit health red
+4	🍏	green_apple	apple fruit green
+4	🍐	pear	fruit
+4	🍑	peach	fruit
+4	🍒	cherries	berries cherry fruit red
+4	🍓	strawberry	berry fruit
+4	🫐	blueberries	berries berry bilberry blue blueberry
+4	🥝	kiwifruit kiwi_fruit kiwi	food fruit
+4	🍅	tomato	food fruit vegetable
+4	🫒	olive	food
+4	🥥	coconut	colada palm piña
+4	🥑	avocado	food fruit
+4	🍆	eggplant	aubergine vegetable
+4	🥔	potato	food vegetable
+4	🥕	carrot	food vegetable
+4	🌽	corn ear_of_corn	crops ear farm maize maze
+4	🌶️	hot_pepper	hot pepper
+4	🫑	bell_pepper	bell capsicum food pepper vegetable
+4	🥒	cucumber	food pickle vegetable
+4	🥬	leafy_green	bok burgers cabbage choy green
+4	🥦	broccoli	cabbage wild
+4	🧄	garlic	flavoring
+4	🧅	onion	flavoring
+4	🥜	peanuts	food nut peanut vegetable
+4	🫘	beans	food kidney legume small
+4	🌰	chestnut	almond plant
+4	🫚	ginger_root ginger	beer health herb natural root
+4	🫛	pea_pod pea	beans beanstalk edamame legume pod
+4	🍄‍🟫	brown_mushroom	food fungi fungus mushroom nature
+4	🫜	root_vegetable	beet food garden radish root
+4	🍞	bread	carbs food grain loaf restaurant
+4	🥐	croissant	bread breakfast crescent food french
+4	🥖	baguette_bread	baguette bread food french
+4	🫓	flatbread	arepa bread food gordita lavash
+4	🥨	pretzel	convoluted twisted
+4	🥯	bagel	bakery bread breakfast schmear
+4	🥞	pancakes	breakfast crêpe food hotcake pancake
+4	🧇	waffle	breakfast indecisive iron
+4	🧀	cheese_wedge cheese	wedge
+4	🍖	meat_on_bone	bone meat
+4	🍗	poultry_leg	bone chicken drumstick hungry leg
+4	🥩	cut_of_meat	chop cut lambchop meat porkchop
+4	🥓	bacon	breakfast food meat
+4	🍔	hamburger	burger eat fast food hungry
+4	🍟	fries french_fries	fast food french
+4	🍕	pizza	cheese food hungry pepperoni slice
+4	🌭	hotdog	dog frankfurter hot sausage
+4	🥪	sandwich	bread
+4	🌮	taco	mexican
+4	🌯	burrito	mexican wrap
+4	🫔	tamale	food mexican pamonha wrapped
+4	🥙	stuffed_flatbread	falafel flatbread food gyro kebab
+4	🧆	falafel	chickpea meatball
+4	🥚	egg	breakfast food
+4	🍳	fried_egg cooking	breakfast easy egg fry frying
+4	🥘	shallow_pan_of_food	casserole food paella pan shallow
+4	🍲	stew pot_of_food	food pot soup
+4	🫕	fondue	cheese chocolate food melted pot
+4	🥣	bowl_with_spoon	bowl breakfast cereal congee oatmeal
+4	🥗	green_salad salad	food green
+4	🍿	popcorn	corn movie pop
+4	🧈	butter	dairy
+4	🧂	salt	condiment flavor mad salty shaker
+4	🥫	canned_food	can canned food
+4	🍱	bento bento_box	box food
+4	🍘	rice_cracker	cracker food rice
+4	🍙	rice_ball	ball food japanese rice
+4	🍚	rice cooked_rice	cooked food
+4	🍛	curry curry_rice	food rice
+4	🍜	ramen steaming_bowl	bowl chopsticks food noodle pho
+4	🍝	spaghetti	food meatballs pasta restaurant
+4	🍠	sweet_potato	food potato roasted sweet
+4	🍢	oden	food kebab restaurant seafood skewer
+4	🍣	sushi	food
+4	🍤	fried_shrimp	fried prawn shrimp tempura
+4	🍥	fish_cake	cake fish food pastry restaurant
+4	🥮	moon_cake	autumn cake festival moon yuèbǐng
+4	🍡	dango	dessert japanese skewer stick sweet
+4	🥟	dumpling	empanada gyōza jiaozi pierogi potsticker
+4	🥠	fortune_cookie	cookie fortune prophecy
+4	🥡	takeout_box	box chopsticks delivery food oyster
+4	🍦	icecream soft_serve	cream dessert food ice restaurant
+4	🍧	shaved_ice	dessert ice restaurant shaved sweet
+4	🍨	ice_cream	cream dessert food ice restaurant
+4	🍩	doughnut	breakfast dessert donut food sweet
+4	🍪	cookie	chip chocolate dessert sweet
+4	🎂	birthday birthday_cake	bday cake celebration dessert happy
+4	🍰	cake shortcake	dessert pastry slice sweet
+4	🧁	cupcake	bakery dessert sprinkles sugar sweet
+4	🥧	pie	apple filling fruit meat pastry
+4	🍫	chocolate_bar	bar candy chocolate dessert halloween
+4	🍬	candy	cavities dessert halloween restaurant sweet
+4	🍭	lollipop	candy dessert food restaurant sweet
+4	🍮	custard	dessert pudding sweet
+4	🍯	honey_pot	barrel bear food honey honeypot
+4	🍼	baby_bottle	babies baby birth born bottle
+4	🥛	glass_of_milk milk_glass milk	drink glass
+4	☕️	coffee	beverage cafe caffeine chai drink
+4	🫖	teapot	brew drink food pot tea
+4	🍵	tea	beverage cup drink handle oolong
+4	🍶	sake	bar beverage bottle cup drink
+4	🍾	champagne	bar bottle cork drink popping
+4	🍷	wine_glass	alcohol bar beverage booze club
+4	🍸️	cocktail	alcohol bar booze club drink
+4	🍹	tropical_drink	alcohol bar booze club cocktail
+4	🍺	beer	alcohol ale bar booze drink
+4	🍻	beers	alcohol bar beer booze bottoms
+4	🥂	clinking_glasses	celebrate clink clinking drink glass
+4	🥃	tumbler_glass whisky	glass liquor scotch shot tumbler
+4	🫗	pouring_liquid pour	accident drink empty glass liquid
+4	🥤	cup_with_straw	cup drink juice malt soda
+4	🧋	bubble_tea boba_drink	boba bubble food milk pearl
+4	🧃	beverage_box juice_box	beverage box juice straw sweet
+4	🧉	mate_drink mate	drink
+4	🧊	ice_cube ice	cold cube iceberg
+4	🥢	chopsticks	hashi jeotgarak kuaizi
+4	🍽️	knife_fork_plate plate_with_cutlery fork_knife_plate	cooking dinner eat fork knife
+4	🍴	fork_and_knife	breakfast breaky cooking cutlery delicious
+4	🥄	spoon	eat tableware
+4	🔪	hocho knife	chef cooking kitchen tool weapon
+4	🫙	jar	condiment container empty nothing sauce
+4	🏺	amphora	aquarius cooking drink jug tool
+5	🌍️	earth_africa earth_europe	africa earth europe europe-africa globe
+5	🌎️	earth_americas	americas earth globe showing world
+5	🌏️	earth_asia	asia asia-australia australia earth globe
+5	🌐	globe_with_meridians	earth globe internet meridians web
+5	🗺️	world_map	map world
+5	🗾	japan japan_map	map
+5	🧭	compass	direction magnetic navigation orienteering
+5	🏔️	snow_capped_mountain mountain_snow	cold mountain snow snow-capped
+5	⛰️	mountain	
+5	🌋	volcano	eruption mountain nature
+5	🗻	mount_fuji	fuji mount mountain nature
+5	🏕️	camping	
+5	🏖️	beach_with_umbrella beach_umbrella beach	umbrella
+5	🏜️	desert	
+5	🏝️	desert_island island	desert
+5	🏞️	national_park	national park
+5	🏟️	stadium	
+5	🏛️	classical_building	building classical
+5	🏗️	building_construction construction_site	building construction crane
+5	🧱	bricks	clay mortar wall
+5	🪨	rock	boulder heavy solid stone tough
+5	🪵	wood	log lumber timber
+5	🛖	hut	home house roundhouse shelter yurt
+5	🏘️	house_buildings houses homes	house
+5	🏚️	derelict_house_building derelict_house house_abandoned	derelict home house
+5	🏠️	house	building country heart home ranch
+5	🏡	house_with_garden	building country garden heart home
+5	🏢	office	building city cubical job
+5	🏣	post_office	building japanese office post
+5	🏤	european_post_office	building european office post
+5	🏥	hospital	building doctor medicine
+5	🏦	bank	building
+5	🏨	hotel	building
+5	🏩	love_hotel	building hotel love
+5	🏪	convenience_store	24 building convenience hours store
+5	🏫	school	building
+5	🏬	department_store	building department store
+5	🏭️	factory	building
+5	🏯	japanese_castle	building castle japanese
+5	🏰	european_castle castle	building european
+5	💒	wedding	chapel hitched nuptials romance
+5	🗼	tokyo_tower	tokyo tower
+5	🗽	statue_of_liberty	liberty new ny nyc statue
+5	⛪️	church	bless chapel christian cross religion
+5	🕌	mosque	islam masjid muslim religion
+5	🛕	hindu_temple	hindu temple
+5	🕍	synagogue	jew jewish judaism religion temple
+5	⛩️	shinto_shrine	religion shinto shrine
+5	🕋	kaaba	hajj islam muslim religion umrah
+5	⛲️	fountain	
+5	⛺️	tent	camping
+5	🌁	foggy	fog
+5	🌃	night_with_stars	night star stars
+5	🏙️	cityscape	city
+5	🌄	sunrise_over_mountains	morning mountains over sun sunrise
+5	🌅	sunrise	morning nature sun
+5	🌆	city_sunset city_dusk	at building city cityscape dusk
+5	🌇	city_sunrise city_sunset	building dusk sun
+5	🌉	bridge_at_night	at bridge night
+5	♨️	hotsprings	hot springs steaming
+5	🎠	carousel_horse	carousel entertainment horse
+5	🛝	playground_slide slide	amusement park play playground playing
+5	🎡	ferris_wheel	amusement ferris park theme wheel
+5	🎢	roller_coaster	amusement coaster park roller theme
+5	💈	barber barber_pole	cut fresh haircut pole shave
+5	🎪	circus_tent	circus tent
+5	🚂	steam_locomotive	caboose engine railway steam train
+5	🚃	railway_car	car electric railway train tram
+5	🚄	bullettrain_side	high-speed railway shinkansen speed train
+5	🚅	bullettrain_front	bullet high-speed nose railway shinkansen
+5	🚆	train2 train	arrived choo railway
+5	🚇️	metro	subway travel
+5	🚈	light_rail	arrived light monorail rail railway
+5	🚉	station	railway train
+5	🚊	tram	trolleybus
+5	🚝	monorail	vehicle
+5	🚞	mountain_railway	car mountain railway trip
+5	🚋	train tram_car	bus car tram trolley trolleybus
+5	🚌	bus	school vehicle
+5	🚍️	oncoming_bus	bus cars oncoming
+5	🚎	trolleybus	bus tram trolley
+5	🚐	minibus	bus drive van vehicle
+5	🚑️	ambulance	emergency vehicle
+5	🚒	fire_engine	engine fire truck
+5	🚓	police_car	5–0 car cops patrol police
+5	🚔️	oncoming_police_car	car oncoming police
+5	🚕	taxi	cab cabbie car drive vehicle
+5	🚖	oncoming_taxi	cab cabbie cars drove hail
+5	🚗	car red_car	driving vehicle
+5	🚘️	oncoming_automobile	automobile car cars drove oncoming
+5	🚙	blue_car suv	car drive recreational sport sportutility
+5	🛻	pickup_truck	automobile car flatbed pick-up pickup
+5	🚚	truck delivery_truck	car delivery drive vehicle
+5	🚛	articulated_lorry	articulated car drive lorry move
+5	🚜	tractor	vehicle
+5	🏎️	racing_car	car racing zoom
+5	🏍️	racing_motorcycle motorcycle	racing
+5	🛵	motor_scooter	motor scooter
+5	🦽	manual_wheelchair	accessibility manual wheelchair
+5	🦼	motorized_wheelchair	accessibility motorized wheelchair
+5	🛺	auto_rickshaw	auto rickshaw tuk
+5	🚲️	bike bicycle	class cycle cycling cyclist gang
+5	🛴	scooter kick_scooter	kick
+5	🛹	skateboard	board skate skater wheels
+5	🛼	roller_skate	blades roller skate skates sport
+5	🚏	busstop	bus stop
+5	🛣️	motorway	highway road
+5	🛤️	railway_track	railway track train
+5	🛢️	oil_drum	drum oil
+5	⛽️	fuelpump	diesel fuel gas gasoline pump
+5	🛞	wheel	car circle tire turn vehicle
+5	🚨	rotating_light	alarm alert beacon car emergency
+5	🚥	traffic_light	horizontal intersection light signal stop
+5	🚦	vertical_traffic_light	drove intersection light signal stop
+5	🛑	octagonal_sign stop_sign	octagonal sign stop
+5	🚧	construction	barrier
+5	⚓️	anchor	ship tool
+5	🛟	ring_buoy lifebuoy	buoy float life lifesaver preserver
+5	⛵️	boat sailboat	resort sailing sea yacht
+5	🛶	canoe	boat
+5	🚤	speedboat	billionaire boat lake luxury millionaire
+5	🛳️	passenger_ship cruise_ship	passenger ship
+5	⛴️	ferry	boat passenger
+5	🛥️	motor_boat motorboat	boat motor
+5	🚢	ship	boat passenger travel
+5	✈️	airplane	aeroplane fly flying jet plane
+5	🛩️	small_airplane	aeroplane airplane plane small
+5	🛫	airplane_departure flight_departure	aeroplane airplane check-in departure departures
+5	🛬	airplane_arriving flight_arrival	aeroplane airplane arrival arrivals arriving
+5	🪂	parachute	hang-glide parasail skydive
+5	💺	seat	chair
+5	🚁	helicopter	copter roflcopter travel vehicle
+5	🚟	suspension_railway	railway suspension
+5	🚠	mountain_cableway	cable cableway gondola lift mountain
+5	🚡	aerial_tramway	aerial cable car gondola ropeway
+5	🛰️	satellite artificial_satellite	space
+5	🚀	rocket	launch rockets space travel
+5	🛸	flying_saucer	aliens extra flying saucer terrestrial
+5	🛎️	bellhop_bell bellhop	bell hotel
+5	🧳	luggage	bag packing roller suitcase travel
+5	⌛️	hourglass	done sand time timer
+5	⏳️	hourglass_flowing_sand	done flowing hourglass hours not
+5	⌚️	watch	clock time
+5	⏰️	alarm_clock	alarm clock hours hrs late
+5	⏱️	stopwatch	clock time
+5	⏲️	timer_clock	clock timer
+5	🕰️	mantelpiece_clock clock	mantelpiece time
+5	🕛️	clock12	12 12:00 clock o’clock time
+5	🕧️	clock1230	12 12:30 30 clock thirty
+5	🕐️	clock1	1 1:00 clock one o’clock
+5	🕜️	clock130	1 1:30 30 clock one
+5	🕑️	clock2	2 2:00 clock o’clock time
+5	🕝️	clock230	2 2:30 30 clock thirty
+5	🕒️	clock3	3 3:00 clock o’clock three
+5	🕞️	clock330	3 30 3:30 clock thirty
+5	🕓️	clock4	4 4:00 clock four o’clock
+5	🕟️	clock430	30 4 4:30 clock four
+5	🕔️	clock5	5 5:00 clock five o’clock
+5	🕠️	clock530	30 5 5:30 clock five
+5	🕕️	clock6	6 6:00 clock o’clock six
+5	🕡️	clock630	30 6 6:30 clock six
+5	🕖️	clock7	0 7 7:00 clock o’clock
+5	🕢️	clock730	30 7 7:30 clock seven
+5	🕗️	clock8	8 8:00 clock eight o’clock
+5	🕣️	clock830	30 8 8:30 clock eight
+5	🕘️	clock9	9 9:00 clock nine o’clock
+5	🕤️	clock930	30 9 9:30 clock nine
+5	🕙️	clock10	0 10 10:00 clock o’clock
+5	🕥️	clock1030	10 10:30 30 clock ten
+5	🕚️	clock11	11 11:00 clock eleven o’clock
+5	🕦️	clock1130	11 11:30 30 clock eleven
+5	🌑	new_moon	dark moon new space
+5	🌒	waxing_crescent_moon	crescent dreams moon space waxing
+5	🌓	first_quarter_moon	first moon quarter space
+5	🌔	moon waxing_gibbous_moon	gibbous space waxing
+5	🌕️	full_moon	full moon space
+5	🌖	waning_gibbous_moon	gibbous moon space waning
+5	🌗	last_quarter_moon	last moon quarter space
+5	🌘	waning_crescent_moon	crescent moon space waning
+5	🌙	crescent_moon	crescent moon ramadan space
+5	🌚	new_moon_with_face	face moon new space
+5	🌛	first_quarter_moon_with_face	face first moon quarter space
+5	🌜️	last_quarter_moon_with_face	dreams face last moon quarter
+5	🌡️	thermometer	weather
+5	☀️	sunny sun	bright rays space weather
+5	🌝	full_moon_with_face	bright face full moon
+5	🌞	sun_with_face	beach bright day face heat
+5	🪐	ringed_planet saturn	planet ringed saturnine
+5	⭐️	star	astronomy medium stars white
+5	🌟	star2 glowing_star	glittery glow glowing night shining
+5	🌠	stars shooting_star	falling night shooting space star
+5	🌌	milky_way	milky space way
+5	☁️	cloud	weather
+5	⛅️	partly_sunny sun_behind_cloud	behind cloud cloudy sun weather
+5	⛈️	thunder_cloud_and_rain cloud_with_lightning_and_rain stormy	cloud lightning rain thunder thunderstorm
+5	🌤️	mostly_sunny sun_small_cloud sun_behind_small_cloud sunny	behind cloud sun weather
+5	🌥️	barely_sunny sun_behind_cloud sun_behind_large_cloud cloudy	behind cloud sun weather
+5	🌦️	partly_sunny_rain sun_behind_rain_cloud sun_and_rain	behind cloud rain sun weather
+5	🌧️	rain_cloud cloud_with_rain rainy	cloud rain weather
+5	🌨️	snow_cloud cloud_with_snow snowy	cloud cold snow weather
+5	🌩️	lightning lightning_cloud cloud_with_lightning	cloud weather
+5	🌪️	tornado tornado_cloud	cloud weather whirlwind
+5	🌫️	fog	cloud weather
+5	🌬️	wind_blowing_face wind_face	blow cloud face wind
+5	🌀	cyclone	dizzy hurricane twister typhoon weather
+5	🌈	rainbow	gay genderqueer glbt glbtq lesbian
+5	🌂	closed_umbrella	closed clothing rain umbrella
+5	☂️	umbrella open_umbrella	clothing rain
+5	☔️	umbrella_with_rain_drops umbrella umbrella_with_rain	clothing drop drops rain weather
+5	⛱️	umbrella_on_ground parasol_on_ground beach_umbrella	ground rain sun umbrella
+5	⚡️	zap high_voltage	danger electric electricity high lightning
+5	❄️	snowflake	cold snow weather
+5	☃️	snowman snowman_with_snow snowman2	cold man snow
+5	⛄️	snowman_without_snow snowman	cold man snow
+5	☄️	comet	space
+5	🔥	fire	af burn flame hot lit
+5	💧	droplet	cold comic drop nature sad
+5	🌊	ocean water_wave	nature surf surfer surfing water
+6	🎃	jack_o_lantern	celebration halloween jack lantern pumpkin
+6	🎄	christmas_tree	celebration christmas tree
+6	🎆	fireworks	boom celebration entertainment yolo
+6	🎇	sparkler	boom celebration fireworks sparkle
+6	🧨	firecracker	dynamite explosive fire fireworks light
+6	✨️	sparkles	* magic sparkle star
+6	🎈	balloon	birthday celebrate celebration
+6	🎉	tada party party_popper	awesome birthday celebrate celebration excited
+6	🎊	confetti_ball	ball celebrate celebration confetti party
+6	🎋	tanabata_tree	banner celebration japanese tanabata tree
+6	🎍	bamboo	celebration decoration japanese pine plant
+6	🎎	dolls	celebration doll festival japanese
+6	🎏	flags carp_streamer	carp celebration streamer
+6	🎐	wind_chime	bell celebration chime wind
+6	🎑	rice_scene moon_ceremony	celebration ceremony moon viewing
+6	🧧	red_envelope	envelope gift good hóngbāo lai
+6	🎀	ribbon	celebration
+6	🎁	gift	birthday bow box celebration christmas
+6	🎗️	reminder_ribbon	celebration reminder ribbon
+6	🎟️	admission_tickets tickets	admission ticket
+6	🎫	ticket	admission stub
+6	🎖️	medal medal_military military_medal	award celebration military
+6	🏆️	trophy	champion champs prize slay sport
+6	🏅	sports_medal medal_sports	award gold medal sports winner
+6	🥇	first_place_medal 1st_place_medal 1st	first gold medal place
+6	🥈	second_place_medal 2nd_place_medal 2nd	medal place second silver
+6	🥉	third_place_medal 3rd_place_medal 3rd	bronze medal place third
+6	⚽️	soccer	ball football futbol sport
+6	⚾️	baseball	ball sport
+6	🥎	softball	ball glove sports underarm
+6	🏀	basketball	ball hoop sport
+6	🏐	volleyball	ball game
+6	🏈	football	american ball bowl sport super
+6	🏉	rugby_football	ball football rugby sport
+6	🎾	tennis	ball racquet sport
+6	🥏	flying_disc	disc flying ultimate
+6	🎳	bowling	ball game sport strike
+6	🏏	cricket_bat_and_ball cricket_game	ball bat cricket game
+6	🏑	field_hockey_stick_and_ball field_hockey	ball field game hockey stick
+6	🏒	ice_hockey_stick_and_puck ice_hockey hockey	game ice puck stick
+6	🥍	lacrosse	ball goal sports stick
+6	🏓	table_tennis_paddle_and_ball ping_pong	ball bat game paddle ping
+6	🏸	badminton_racquet_and_shuttlecock badminton	birdie game racquet shuttlecock
+6	🥊	boxing_glove	boxing glove
+6	🥋	martial_arts_uniform	arts judo karate martial taekwondo
+6	🥅	goal_net	goal net
+6	⛳️	golf	flag hole sport
+6	⛸️	ice_skate	ice skate skating
+6	🎣	fishing_pole_and_fish fishing_pole	entertainment fish fishing pole sport
+6	🤿	diving_mask	diving mask scuba snorkeling
+6	🎽	running_shirt_with_sash running_shirt	athletics running sash shirt
+6	🎿	ski	snow sport
+6	🛷	sled	luge sledge sleigh snow toboggan
+6	🥌	curling_stone	curling game rock stone
+6	🎯	dart bullseye direct_hit	bull direct entertainment game hit
+6	🪀	yo-yo yo_yo	fluctuate toy
+6	🪁	kite	fly soar
+6	🔫	gun pistol	handgun revolver tool water weapon
+6	🎱	8ball billiards	8 ball billiard eight game
+6	🔮	crystal_ball	ball crystal fairy fairytale fantasy
+6	🪄	magic_wand	magic magician wand witch wizard
+6	🎮️	video_game controller	entertainment game video
+6	🕹️	joystick	game video videogame
+6	🎰	slot_machine	casino gamble gambling game machine
+6	🎲	game_die	dice die entertainment game
+6	🧩	jigsaw puzzle_piece	clue interlocking piece puzzle
+6	🧸	teddy_bear	bear plaything plush stuffed teddy
+6	🪅	pinata	candy celebrate celebration cinco de
+6	🪩	mirror_ball disco disco_ball	ball dance glitter mirror party
+6	🪆	nesting_dolls	babooshka baboushka babushka doll dolls
+6	♠️	spades	card game spade suit
+6	♥️	hearts	card emotion game heart suit
+6	♦️	diamonds	card diamond game suit
+6	♣️	clubs	card club game suit
+6	♟️	chess_pawn	chess dupe expendable pawn
+6	🃏	black_joker	card game wildcard
+6	🀄️	mahjong	dragon game red
+6	🎴	flower_playing_cards	card cards flower game japanese
+6	🎭️	performing_arts	actor actress art arts entertainment
+6	🖼️	frame_with_picture framed_picture	art frame framed museum painting
+6	🎨	art palette	artist artsy arty colorful creative
+6	🧵	thread	needle sewing spool string
+6	🪡	sewing_needle	embroidery needle sew sewing stitches
+6	🧶	yarn	ball crochet knit
+6	🪢	knot	cord rope tangled tie twine
+7	👓️	eyeglasses glasses	clothing eye eyewear
+7	🕶️	dark_sunglasses sunglasses	dark eye eyewear glasses
+7	🥽	goggles	dive eye protection scuba swimming
+7	🥼	lab_coat	clothes coat doctor dr experiment
+7	🦺	safety_vest	emergency safety vest
+7	👔	necktie	clothing employed serious shirt tie
+7	👕	shirt tshirt	blue casual clothes clothing collar
+7	👖	jeans	blue casual clothes clothing denim
+7	🧣	scarf	bundle cold neck up
+7	🧤	gloves	hand
+7	🧥	coat	brr bundle cold jacket up
+7	🧦	socks	stocking
+7	👗	dress	clothes clothing dressed fancy shopping
+7	👘	kimono	clothing comfortable
+7	🥻	sari	clothing dress
+7	🩱	one-piece_swimsuit one_piece_swimsuit	bathing one-piece suit swimsuit
+7	🩲	briefs swim_brief	bathing one-piece suit swimsuit underwear
+7	🩳	shorts	bathing pants suit swimsuit underwear
+7	👙	bikini	bathing beach clothing pool suit
+7	👚	womans_clothes	blouse clothes clothing collar dress
+7	🪭	folding_hand_fan folding_fan	clack clap cool cooling dance
+7	👛	purse	clothes clothing coin dress fancy
+7	👜	handbag	bag clothes clothing dress lady
+7	👝	pouch clutch_bag	bag clothes clothing clutch dress
+7	🛍️	shopping_bags shopping	bag bags hotel
+7	🎒	school_satchel backpack	backpacking bag bookbag education rucksack
+7	🩴	thong_sandal	beach flip flop sandal sandals
+7	👞	mans_shoe shoe	brown clothes clothing feet foot
+7	👟	athletic_shoe sneaker	athletic clothes clothing fast kick
+7	🥾	hiking_boot	backpacking boot brown camping hiking
+7	🥿	womans_flat_shoe flat_shoe	ballet comfy flat flats shoe
+7	👠	high_heel	clothes clothing dress fashion heel
+7	👡	sandal	clothing shoe woman woman’s
+7	🩰	ballet_shoes	ballet dance shoes
+7	👢	boot	clothes clothing dress shoe shoes
+7	🪮	hair_pick	afro comb groom hair pick
+7	👑	crown	clothing family king medieval queen
+7	👒	womans_hat	clothes clothing garden hat hats
+7	🎩	tophat top_hat	clothes clothing fancy formal hat
+7	🎓️	mortar_board graduation_cap	cap celebration clothing education graduation
+7	🧢	billed_cap	baseball bent billed cap dad
+7	🪖	military_helmet	army helmet military soldier war
+7	⛑️	helmet_with_white_cross rescue_worker_helmet helmet_with_cross	aid cross face hat helmet
+7	📿	prayer_beads	beads clothing necklace prayer religion
+7	💄	lipstick	cosmetics date makeup
+7	💍	ring	diamond engaged engagement married romance
+7	💎	gem	diamond engagement jewel money romance
+7	🔇	mute no_sound	muted quiet silent sound speaker
+7	🔈️	speaker low_volume quiet_sound	low soft sound volume
+7	🔉	sound medium_volumne	medium speaker volume
+7	🔊	loud_sound high_volume	high loud music sound speaker
+7	📢	loudspeaker	address communication loud public sound
+7	📣	mega megaphone	cheering sound
+7	📯	postal_horn	horn post postal
+7	🔔	bell	break church sound
+7	🔕	no_bell	bell forbidden mute no not
+7	🎼	musical_score	music musical note score
+7	🎵	musical_note	music musical note sound
+7	🎶	notes musical_notes	music musical note sound
+7	🎙️	studio_microphone	mic microphone music studio
+7	🎚️	level_slider	level music slider
+7	🎛️	control_knobs	control knobs music
+7	🎤	microphone	karaoke mic music sing sound
+7	🎧️	headphones	earbud sound
+7	📻️	radio	entertainment tbt video
+7	🎷	saxophone	instrument music sax
+7	🪗	accordion	box concertina instrument music squeeze
+7	🎸	guitar	instrument music strat
+7	🎹	musical_keyboard	instrument keyboard music musical piano
+7	🎺	trumpet	instrument music
+7	🎻	violin	instrument music
+7	🪕	banjo	music stringed
+7	🥁	drum_with_drumsticks drum	drumsticks music
+7	🪘	long_drum	beat conga drum instrument long
+7	🪇	maracas	cha dance instrument music party
+7	🪈	flute	band fife flautist instrument marching
+7	🪉	harp	cupid instrument love music orchestra
+7	📱	iphone android mobile_phone	cell communication mobile phone telephone
+7	📲	calling mobile_phone_arrow	arrow build call cell communication
+7	☎️	phone telephone	
+7	📞	telephone_receiver	communication phone receiver telephone voip
+7	📟️	pager	communication
+7	📠	fax fax_machine	communication machine
+7	🔋	battery	
+7	🪫	low_battery	battery drained electronic energy low
+7	🔌	electric_plug	electric electricity plug
+7	💻️	computer laptop	office pc personal
+7	🖥️	desktop_computer computer	desktop monitor
+7	🖨️	printer	computer
+7	⌨️	keyboard	computer
+7	🖱️	three_button_mouse computer_mouse	computer mouse
+7	🖲️	trackball	computer
+7	💽	minidisc computer_disk	computer disk minidisk optical
+7	💾	floppy_disk	computer disk floppy
+7	💿️	cd optical_disk	blu-ray computer disk dvd optical
+7	📀	dvd	blu-ray cd computer disk optical
+7	🧮	abacus	calculation calculator
+7	🎥	movie_camera	bollywood camera cinema film hollywood
+7	🎞️	film_frames film_strip	cinema film frames movie
+7	📽️	film_projector	cinema film movie projector video
+7	🎬️	clapper	action board movie
+7	📺️	tv	video
+7	📷️	camera	photo selfie snap tbt trip
+7	📸	camera_with_flash camera_flash	camera flash video
+7	📹️	video_camera	camcorder camera tbt video
+7	📼	vhs videocassette	old school tape vcr video
+7	🔍️	mag	glass lab left left-pointing magnifying
+7	🔎	mag_right	contact glass lab magnifying right
+7	🕯️	candle	light
+7	💡	bulb light_bulb	comic electric idea light
+7	🔦	flashlight	electric light tool torch
+7	🏮	izakaya_lantern lantern red_paper_lantern	bar light paper red restaurant
+7	🪔	diya_lamp	diya lamp light oil
+7	📔	notebook_with_decorative_cover	book cover decorated decorative education
+7	📕	closed_book	book closed education
+7	📖	book open_book	education fantasy knowledge library novels
+7	📗	green_book	book education fantasy green library
+7	📘	blue_book	blue book education fantasy library
+7	📙	orange_book	book education fantasy library orange
+7	📚️	books	book education fantasy knowledge library
+7	📓	notebook	
+7	📒	ledger	notebook
+7	📃	page_with_curl	curl document page paper
+7	📜	scroll	paper
+7	📄	page_facing_up	document facing page paper up
+7	📰	newspaper	communication news paper
+7	🗞️	rolled_up_newspaper newspaper_roll	news newspaper paper rolled rolled-up
+7	📑	bookmark_tabs	bookmark mark marker tabs
+7	🔖	bookmark	mark
+7	🏷️	label	tag
+7	💰️	moneybag	bag bank bet billion cash
+7	🪙	coin	dollar euro gold metal money
+7	💴	yen	bank banknote bill currency money
+7	💵	dollar	bank banknote bill currency money
+7	💶	euro	100 bank banknote bill currency
+7	💷	pound	bank banknote bill billion cash
+7	💸	money_with_wings	bank banknote bill billion cash
+7	💳️	credit_card	bank card cash charge credit
+7	🧾	receipt	accounting bookkeeping evidence invoice proof
+7	💹	chart	bank currency graph growth increasing
+7	✉️	email envelope	e-mail letter
+7	📧	e-mail email	letter mail
+7	📨	incoming_envelope	delivering e-mail email envelope incoming
+7	📩	envelope_with_arrow	arrow communication down e-mail email
+7	📤️	outbox_tray	box email letter mail outbox
+7	📥️	inbox_tray	box email inbox letter mail
+7	📦️	package	box communication delivery parcel shipping
+7	📫️	mailbox	closed communication flag mail postbox
+7	📪️	mailbox_closed	closed flag lowered mail mailbox
+7	📬️	mailbox_with_mail	flag mail mailbox open postbox
+7	📭️	mailbox_with_no_mail	flag lowered mail mailbox open
+7	📮	postbox	mail mailbox
+7	🗳️	ballot_box_with_ballot ballot_box	ballot box
+7	✏️	pencil2 pencil	
+7	✒️	black_nib	black nib pen
+7	🖋️	lower_left_fountain_pen fountain_pen	fountain pen
+7	🖊️	lower_left_ballpoint_pen pen	ballpoint
+7	🖌️	lower_left_paintbrush paintbrush	painting
+7	🖍️	lower_left_crayon crayon	
+7	📝	memo pencil	communication media notes
+7	💼	briefcase	office
+7	📁	file_folder	file folder
+7	📂	open_file_folder	file folder open
+7	🗂️	card_index_dividers	card dividers index
+7	📅	date	
+7	📆	calendar	tear-off
+7	🗒️	spiral_note_pad spiral_notepad notepad_spiral	note notepad pad spiral
+7	🗓️	spiral_calendar_pad spiral_calendar calendar_spiral	calendar pad spiral
+7	📇	card_index	card index old rolodex school
+7	📈	chart_with_upwards_trend chart_increasing	chart data graph growth increasing
+7	📉	chart_with_downwards_trend chart_decreasing	chart data decreasing down downward
+7	📊	bar_chart	bar chart data graph
+7	📋️	clipboard	do list notes
+7	📌	pushpin	collage pin
+7	📍	round_pushpin	location map pin pushpin round
+7	📎	paperclip	
+7	🖇️	linked_paperclips paperclips	link linked paperclip
+7	📏	straight_ruler	angle edge math ruler straight
+7	📐	triangular_ruler	angle math rule ruler set
+7	✂️	scissors	cut cutting paper tool
+7	🗃️	card_file_box	box card file
+7	🗄️	file_cabinet	cabinet file filing paper
+7	🗑️	wastebasket trashcan	can garbage trash waste
+7	🔒️	lock locked	closed private
+7	🔓️	unlock unlocked	cracked lock open
+7	🔏	lock_with_ink_pen locked_with_pen	ink lock locked nib pen
+7	🔐	closed_lock_with_key locked_with_key	bike closed key lock locked
+7	🔑	key	keys lock major password unlock
+7	🗝️	old_key	clue key lock old
+7	🔨	hammer	home improvement repairs tool
+7	🪓	axe	ax chop hatchet split wood
+7	⛏️	pick	hammer mining tool
+7	⚒️	hammer_and_pick	hammer pick tool
+7	🛠️	hammer_and_wrench	hammer spanner tool wrench
+7	🗡️	dagger_knife dagger	knife weapon
+7	⚔️	crossed_swords	crossed swords weapon
+7	💣️	bomb	boom comic dangerous explosion hot
+7	🪃	boomerang	rebound repercussion weapon
+7	🏹	bow_and_arrow	archer archery arrow bow sagittarius
+7	🛡️	shield	weapon
+7	🪚	carpentry_saw	carpenter carpentry cut lumber saw
+7	🔧	wrench	home improvement spanner tool
+7	🪛	screwdriver	flathead handy screw tool
+7	🔩	nut_and_bolt	bolt home improvement nut tool
+7	⚙️	gear	cog cogwheel tool
+7	🗜️	compression clamp	compress tool vice
+7	⚖️	scales balance_scale	balance justice libra scale tool
+7	🦯	probing_cane white_cane	accessibility blind cane probing white
+7	🔗	link	links
+7	⛓️‍💥	broken_chain	break breaking broken chain cuffs
+7	⛓️	chains	chain
+7	🪝	hook	catch crook curve ensnare point
+7	🧰	toolbox	box chest mechanic red tool
+7	🧲	magnet	attraction horseshoe magnetic negative positive
+7	🪜	ladder	climb rung step
+7	🪏	shovel	bury dig garden hole plant
+7	⚗️	alembic	chemistry tool
+7	🧪	test_tube	chemist chemistry experiment lab science
+7	🧫	petri_dish	bacteria biologist biology culture dish
+7	🧬	dna double_helix	biologist evolution gene genetics life
+7	🔬	microscope	experiment lab science tool
+7	🔭	telescope	contact extraterrestrial science tool
+7	📡	satellite_antenna satellite	aliens antenna contact dish science
+7	💉	syringe	doctor flu medicine needle shot
+7	🩸	drop_of_blood	bleed blood donation drop injury
+7	💊	pill	doctor drugs medicated medicine pills
+7	🩹	adhesive_bandage bandaid	adhesive bandage
+7	🩼	crutch	aid cane disability help hurt
+7	🩺	stethoscope	doctor heart medicine
+7	🩻	x-ray x_ray xray	bones doctor medical skeleton skull
+7	🚪	door	back closet front
+7	🛗	elevator	accessibility hoist lift
+7	🪞	mirror	makeup reflection reflector speculum
+7	🪟	window	air frame fresh opening transparent
+7	🛏️	bed	hotel sleep
+7	🛋️	couch_and_lamp	couch hotel lamp
+7	🪑	chair	seat sit
+7	🚽	toilet	bathroom
+7	🪠	plunger	cup force plumber poop suction
+7	🚿	shower	water
+7	🛁	bathtub	bath
+7	🪤	mouse_trap	bait cheese lure mouse mousetrap
+7	🪒	razor	sharp shave
+7	🧴	lotion_bottle	bottle lotion moisturizer shampoo sunscreen
+7	🧷	safety_pin	diaper pin punk rock safety
+7	🧹	broom	cleaning sweeping witch
+7	🧺	basket	farming laundry picnic
+7	🧻	roll_of_paper toilet_paper	paper roll toilet towels
+7	🪣	bucket	cask pail vat
+7	🧼	soap	bar bathing clean cleaning lather
+7	🫧	bubbles	bubble burp clean floating pearl
+7	🪥	toothbrush	bathroom brush clean dental hygiene
+7	🧽	sponge	absorbing cleaning porous soak
+7	🧯	fire_extinguisher	extinguish extinguisher fire quench
+7	🛒	shopping_trolley shopping_cart	cart shopping trolley
+7	🚬	smoking cigarette	
+7	⚰️	coffin	dead death vampire
+7	🪦	headstone	cemetery dead grave graveyard memorial
+7	⚱️	funeral_urn	ashes death funeral urn
+7	🧿	nazar_amulet	amulet bead blue charm evil-eye
+7	🪬	hamsa	amulet fatima fortune guide hand
+7	🗿	moyai moai	face statue stoneface travel
+7	🪧	placard	card demonstration notice picket plaque
+7	🪪	identification_card id_card	card credentials document id identification
+8	🏧	atm	automated bank cash money sign
+8	🚮	put_litter_in_its_place litter_bin	bin litter litterbin sign
+8	🚰	potable_water	drinking potable water
+8	♿️	wheelchair handicapped	access handicap symbol
+8	🚹️	mens	bathroom lavatory man men’s restroom
+8	🚺️	womens	bathroom lavatory restroom room toilet
+8	🚻	restroom bathroom	lavatory toilet wc
+8	🚼️	baby_symbol	baby changing symbol
+8	🚾	wc water_closet	bathroom closet lavatory restroom toilet
+8	🛂	passport_control	control passport
+8	🛃	customs	packing
+8	🛄	baggage_claim	arrived baggage bags case checked
+8	🛅	left_luggage	baggage case left locker luggage
+8	⚠️	warning	caution
+8	🚸	children_crossing	child children crossing pedestrian traffic
+8	⛔️	no_entry	do entry fail forbidden no
+8	🚫	no_entry_sign	entry forbidden no not smoke
+8	🚳	no_bicycles	bicycle bicycles bike forbidden no
+8	🚭️	no_smoking	forbidden no not prohibited smoke
+8	🚯	do_not_litter no_littering	forbidden litter littering no not
+8	🚱	non-potable_water	dry non-drinking non-potable prohibited water
+8	🚷	no_pedestrians	forbidden no not pedestrian pedestrians
+8	📵	no_mobile_phones	cell forbidden mobile no not
+8	🔞	underage no_one_under_18	18 age eighteen forbidden no
+8	☢️	radioactive_sign radioactive	sign
+8	☣️	biohazard_sign biohazard	sign
+8	⬆️	arrow_up	arrow cardinal direction north up
+8	↗️	arrow_upper_right	arrow direction intercardinal northeast up-right
+8	➡️	arrow_right	arrow cardinal direction east right
+8	↘️	arrow_lower_right	arrow direction down-right intercardinal southeast
+8	⬇️	arrow_down	arrow cardinal direction down south
+8	↙️	arrow_lower_left	arrow direction down-left intercardinal southwest
+8	⬅️	arrow_left	arrow cardinal direction left west
+8	↖️	arrow_upper_left	arrow direction intercardinal northwest up-left
+8	↕️	arrow_up_down	arrow up-down
+8	↔️	left_right_arrow	arrow left-right
+8	↩️	leftwards_arrow_with_hook arrow_left_hook	arrow curving left right
+8	↪️	arrow_right_hook rightwards_arrow_with_hook	arrow curving left right
+8	⤴️	arrow_heading_up	arrow curving right up
+8	⤵️	arrow_heading_down	arrow curving down right
+8	🔃	arrows_clockwise clockwise	arrow arrows refresh reload vertical
+8	🔄	arrows_counterclockwise counterclockwise	again anticlockwise arrow arrows button
+8	🔙	back	arrow
+8	🔚	end	arrow
+8	🔛	on	arrow mark on!
+8	🔜	soon	arrow brb omw
+8	🔝	top	arrow homie up
+8	🛐	place_of_worship	place pray religion worship
+8	⚛️	atom_symbol atom	atheist symbol
+8	🕉️	om_symbol om	hindu religion
+8	✡️	star_of_david	david jew jewish judaism religion
+8	☸️	wheel_of_dharma	buddhist dharma religion wheel
+8	☯️	yin_yang	difficult lives religion tao taoist
+8	✝️	latin_cross	christ christian cross latin religion
+8	☦️	orthodox_cross	christian cross orthodox religion
+8	☪️	star_and_crescent	crescent islam muslim ramadan religion
+8	☮️	peace_symbol peace	healing peaceful symbol
+8	🕎	menorah_with_nine_branches menorah	candelabrum candlestick hanukkah jewish judaism
+8	🔯	six_pointed_star	dotted fortune jewish judaism six-pointed
+8	🪯	khanda	deg fateh khalsa religion sikh
+8	♈️	aries	horoscope ram zodiac
+8	♉️	taurus	bull horoscope ox zodiac
+8	♊️	gemini	horoscope twins zodiac
+8	♋️	cancer	crab horoscope zodiac
+8	♌️	leo	horoscope lion zodiac
+8	♍️	virgo	horoscope zodiac
+8	♎️	libra	balance horoscope justice scales zodiac
+8	♏️	scorpius	horoscope scorpio scorpion zodiac
+8	♐️	sagittarius	archer horoscope zodiac
+8	♑️	capricorn	goat horoscope zodiac
+8	♒️	aquarius	bearer horoscope water zodiac
+8	♓️	pisces	fish horoscope zodiac
+8	⛎️	ophiuchus	bearer serpent snake zodiac
+8	🔀	twisted_rightwards_arrows shuffle	arrow button crossed tracks
+8	🔁	repeat	arrow button clockwise
+8	🔂	repeat_one	arrow button clockwise once repeat
+8	▶️	arrow_forward play	arrow button right triangle
+8	⏩️	fast_forward	arrow button double fast fast-forward
+8	⏭️	black_right_pointing_double_triangle_with_vertical_bar next_track_button next_track	arrow button next scene track
+8	⏯️	black_right_pointing_triangle_with_double_vertical_bar play_or_pause_button play_pause	arrow button pause play right
+8	◀️	arrow_backward reverse	arrow button left triangle
+8	⏪️	rewind fast_reverse	arrow button double fast reverse
+8	⏮️	black_left_pointing_double_triangle_with_vertical_bar previous_track_button previous_track	arrow button last previous scene
+8	🔼	arrow_up_small up	arrow button red upwards
+8	⏫️	arrow_double_up fast_up	arrow button double fast up
+8	🔽	arrow_down_small down	arrow button downwards red
+8	⏬️	arrow_double_down fast_down	arrow button double down fast
+8	⏸️	double_vertical_bar pause_button pause	bar button double vertical
+8	⏹️	black_square_for_stop stop_button stop	button square
+8	⏺️	black_circle_for_record record_button record	button circle
+8	⏏️	eject eject_button	button
+8	🎦	cinema	camera film movie
+8	🔅	low_brightness dim_button	brightness button dim low
+8	🔆	high_brightness bright_button	bright brightness button light
+8	📶	signal_strength antenna_bars	antenna bar bars cell communication
+8	🛜	wireless	broadband computer connectivity hotspot internet
+8	📳	vibration_mode	cell communication mobile mode phone
+8	📴	mobile_phone_off	cell mobile off phone telephone
+8	♀️	female_sign female	sign woman
+8	♂️	male_sign male	man sign
+8	⚧️	transgender_symbol	symbol transgender
+8	✖️	heavy_multiplication_x multiplication multiply	cancel sign x ×
+8	➕️	heavy_plus_sign plus	+
+8	➖️	heavy_minus_sign minus	- heavy math sign −
+8	➗️	heavy_division_sign divide division	heavy math sign ÷
+8	🟰	heavy_equals_sign	answer equal equality equals heavy
+8	♾️	infinity	forever unbounded universal
+8	‼️	bangbang double_exclamation	! !! double exclamation mark
+8	⁉️	interrobang exclamation_question	! !? ? exclamation mark
+8	❓️	question	? mark punctuation red
+8	❔️	grey_question white_question	? mark outlined punctuation question
+8	❕️	grey_exclamation white_exclamation	! exclamation mark outlined punctuation
+8	❗️	exclamation heavy_exclamation_mark	! mark punctuation red
+8	〰️	wavy_dash	dash punctuation wavy
+8	💱	currency_exchange	bank currency exchange money
+8	💲	heavy_dollar_sign	billion cash charge currency dollar
+8	⚕️	medical_symbol staff_of_aesculapius medical	aesculapius medicine staff symbol
+8	♻️	recycle recycling_symbol	recycling symbol
+8	⚜️	fleur_de_lis fleur-de-lis	knights
+8	🔱	trident	anchor emblem poseidon ship tool
+8	📛	name_badge	badge name
+8	🔰	beginner	chevron green japanese leaf symbol
+8	⭕️	o hollow_red_circle red_o	circle heavy hollow large red
+8	✅️	white_check_mark check_mark_button	button check checked checkmark complete
+8	☑️	ballot_box_with_check	ballot box check checked done
+8	✔️	heavy_check_mark check_mark	check checked checkmark done heavy
+8	❌️	x cross_mark	cancel cross mark multiplication multiply
+8	❎️	negative_squared_cross_mark cross_mark_button	button cross mark multiplication multiply
+8	➰️	curly_loop	curl curly loop
+8	➿️	loop double_curly_loop	curl curly double
+8	〽️	part_alternation_mark	alternation mark part
+8	✳️	eight_spoked_asterisk	* asterisk eight-spoked
+8	✴️	eight_pointed_black_star	* eight-pointed star
+8	❇️	sparkle	*
+8	©️	copyright	c
+8	®️	registered	r
+8	™️	tm trade_mark	mark trade trademark
+8	🫟	splatter	drip holi ink liquid mess
+8	#️⃣	hash number_sign	keycap
+8	*️⃣	keycap_star asterisk	keycap
+8	0️⃣	zero	keycap
+8	1️⃣	one	keycap
+8	2️⃣	two	keycap
+8	3️⃣	three	keycap
+8	4️⃣	four	keycap
+8	5️⃣	five	keycap
+8	6️⃣	six	keycap
+8	7️⃣	seven	keycap
+8	8️⃣	eight	keycap
+8	9️⃣	nine	keycap
+8	🔟	keycap_ten ten	keycap
+8	🔠	capital_abcd	abcd input latin letters uppercase
+8	🔡	abcd	input latin letters lowercase
+8	🔢	1234	input numbers
+8	🔣	symbols	% & input ♪ 〒
+8	🔤	abc	alphabet input latin letters
+8	🅰️	a a_blood	blood button type
+8	🆎	ab ab_blood	blood button type
+8	🅱️	b b_blood	blood button type
+8	🆑	cl	button
+8	🆒	cool	button
+8	🆓	free	button
+8	ℹ️	information_source info	i
+8	🆔	id	button identity
+8	Ⓜ️	m	circle circled
+8	🆕	new	button
+8	🆖	ng	button
+8	🅾️	o2 o o_blood	blood button type
+8	🆗	ok	button okay
+8	🅿️	parking	button p
+8	🆘	sos	button help
+8	🆙	up up2	button mark up!
+8	🆚	vs	button versus
+8	🈁	koko ja_here	button here japanese katakana
+8	🈂️	sa ja_service_charge	button charge japanese katakana service
+8	🈷️	u6708 ja_monthly_amount	amount button ideograph japanese monthly
+8	🈶	u6709 ja_not_free_of_carge	button charge free ideograph japanese
+8	🈯️	u6307 ja_reserved	button ideograph japanese reserved
+8	🉐	ideograph_advantage ja_bargain	bargain button ideograph japanese
+8	🈹	u5272 ja_discount	button discount ideograph japanese
+8	🈚️	u7121 ja_free_of_charge	button charge free ideograph japanese
+8	🈲	u7981 ja_prohibited	button ideograph japanese prohibited
+8	🉑	accept ja_acceptable	acceptable button ideograph japanese
+8	🈸	u7533 ja_application	application button ideograph japanese
+8	🈴	u5408 ja_passing_grade	button grade ideograph japanese passing
+8	🈳	u7a7a ja_vacancy	button ideograph japanese vacancy
+8	㊗️	congratulations ja_congratulations	button ideograph japanese
+8	㊙️	secret ja_secret	button ideograph japanese
+8	🈺	u55b6 ja_open_for_business	business button ideograph japanese open
+8	🈵	u6e80 ja_no_vacancy	button ideograph japanese no vacancy
+8	🔴	red_circle	circle geometric red
+8	🟠	large_orange_circle orange_circle	circle orange
+8	🟡	large_yellow_circle yellow_circle	circle yellow
+8	🟢	large_green_circle green_circle	circle green
+8	🔵	large_blue_circle blue_circle	blue circle geometric
+8	🟣	large_purple_circle purple_circle	circle purple
+8	🟤	large_brown_circle brown_circle	brown circle
+8	⚫️	black_circle	black circle geometric
+8	⚪️	white_circle	circle geometric white
+8	🟥	large_red_square red_square	card penalty red square
+8	🟧	large_orange_square orange_square	orange square
+8	🟨	large_yellow_square yellow_square	card penalty square yellow
+8	🟩	large_green_square green_square	green square
+8	🟦	large_blue_square blue_square	blue square
+8	🟪	large_purple_square purple_square	purple square
+8	🟫	large_brown_square brown_square	brown square
+8	⬛️	black_large_square	black geometric large square
+8	⬜️	white_large_square	geometric large square white
+8	◼️	black_medium_square	black geometric medium square
+8	◻️	white_medium_square	geometric medium square white
+8	◾️	black_medium_small_square	black geometric medium-small square
+8	◽️	white_medium_small_square	geometric medium-small square white
+8	▪️	black_small_square	black geometric small square
+8	▫️	white_small_square	geometric small square white
+8	🔶	large_orange_diamond	diamond geometric large orange
+8	🔷	large_blue_diamond	blue diamond geometric large
+8	🔸	small_orange_diamond	diamond geometric orange small
+8	🔹	small_blue_diamond	blue diamond geometric small
+8	🔺	small_red_triangle	geometric pointed red triangle up
+8	🔻	small_red_triangle_down	down geometric pointed red triangle
+8	💠	diamond_shape_with_a_dot_inside diamond_with_a_dot	comic diamond dot geometric
+8	🔘	radio_button	button geometric radio
+8	🔳	white_square_button	button geometric outlined square white
+8	🔲	black_square_button	black button geometric square
+9	🏁	checkered_flag	checkered chequered finish flag flags
+9	🚩	triangular_flag_on_post triangular_flag	construction flag golf post triangular
+9	🎌	crossed_flags	celebration cross crossed flags japanese
+9	🏴	waving_black_flag black_flag	black flag waving
+9	🏳️	waving_white_flag white_flag	flag waving white
+9	🏳️‍🌈	rainbow-flag rainbow_flag	bisexual flag gay genderqueer glbt
+9	🏳️‍⚧️	transgender_flag	blue flag light pink transgender
+9	🏴‍☠️	pirate_flag jolly_roger	flag jolly pirate plunder roger
+9	🇦🇨	flag-ac ascension_island flag_ac	ac flag
+9	🇦🇩	flag-ad andorra flag_ad	ad flag
+9	🇦🇪	flag-ae united_arab_emirates flag_ae	ae flag
+9	🇦🇫	flag-af afghanistan flag_af	af flag
+9	🇦🇬	flag-ag antigua_barbuda flag_ag	ag flag
+9	🇦🇮	flag-ai anguilla flag_ai	ai flag
+9	🇦🇱	flag-al albania flag_al	al flag
+9	🇦🇲	flag-am armenia flag_am	am flag
+9	🇦🇴	flag-ao angola flag_ao	ao flag
+9	🇦🇶	flag-aq antarctica flag_aq	aq flag
+9	🇦🇷	flag-ar argentina flag_ar	ar flag
+9	🇦🇸	flag-as american_samoa flag_as	as flag
+9	🇦🇹	flag-at austria flag_at	at flag
+9	🇦🇺	flag-au australia flag_au	au flag
+9	🇦🇼	flag-aw aruba flag_aw	aw flag
+9	🇦🇽	flag-ax aland_islands flag_ax	ax flag
+9	🇦🇿	flag-az azerbaijan flag_az	az flag
+9	🇧🇦	flag-ba bosnia_herzegovina flag_ba	ba flag
+9	🇧🇧	flag-bb barbados flag_bb	bb flag
+9	🇧🇩	flag-bd bangladesh flag_bd	bd flag
+9	🇧🇪	flag-be belgium flag_be	be flag
+9	🇧🇫	flag-bf burkina_faso flag_bf	bf flag
+9	🇧🇬	flag-bg bulgaria flag_bg	bg flag
+9	🇧🇭	flag-bh bahrain flag_bh	bh flag
+9	🇧🇮	flag-bi burundi flag_bi	bi flag
+9	🇧🇯	flag-bj benin flag_bj	bj flag
+9	🇧🇱	flag-bl st_barthelemy flag_bl	bl flag
+9	🇧🇲	flag-bm bermuda flag_bm	bm flag
+9	🇧🇳	flag-bn brunei flag_bn	bn flag
+9	🇧🇴	flag-bo bolivia flag_bo	bo flag
+9	🇧🇶	flag-bq caribbean_netherlands flag_bq	bq flag
+9	🇧🇷	flag-br brazil flag_br	br flag
+9	🇧🇸	flag-bs bahamas flag_bs	bs flag
+9	🇧🇹	flag-bt bhutan flag_bt	bt flag
+9	🇧🇻	flag-bv bouvet_island flag_bv	bv flag
+9	🇧🇼	flag-bw botswana flag_bw	bw flag
+9	🇧🇾	flag-by belarus flag_by	by flag
+9	🇧🇿	flag-bz belize flag_bz	bz flag
+9	🇨🇦	flag-ca canada flag_ca	ca flag
+9	🇨🇨	flag-cc cocos_islands flag_cc	cc flag
+9	🇨🇩	flag-cd congo_kinshasa flag_cd	cd flag
+9	🇨🇫	flag-cf central_african_republic flag_cf	cf flag
+9	🇨🇬	flag-cg congo_brazzaville flag_cg	cg flag
+9	🇨🇭	flag-ch switzerland flag_ch	ch flag
+9	🇨🇮	flag-ci cote_divoire flag_ci	ci flag
+9	🇨🇰	flag-ck cook_islands flag_ck	ck flag
+9	🇨🇱	flag-cl chile flag_cl	cl flag
+9	🇨🇲	flag-cm cameroon flag_cm	cm flag
+9	🇨🇳	cn flag-cn china flag_cn	flag
+9	🇨🇴	flag-co colombia flag_co	co flag
+9	🇨🇵	flag-cp clipperton_island flag_cp	cp flag
+9	🇨🇶	flag_cq sark	cq flag
+9	🇨🇷	flag-cr costa_rica flag_cr	cr flag
+9	🇨🇺	flag-cu cuba flag_cu	cu flag
+9	🇨🇻	flag-cv cape_verde flag_cv	cv flag
+9	🇨🇼	flag-cw curacao flag_cw	cw flag
+9	🇨🇽	flag-cx christmas_island flag_cx	cx flag
+9	🇨🇾	flag-cy cyprus flag_cy	cy flag
+9	🇨🇿	flag-cz czech_republic czechia flag_cz	cz flag
+9	🇩🇪	de flag-de flag_de germany	flag
+9	🇩🇬	flag-dg diego_garcia flag_dg	dg flag
+9	🇩🇯	flag-dj djibouti flag_dj	dj flag
+9	🇩🇰	flag-dk denmark flag_dk	dk flag
+9	🇩🇲	flag-dm dominica flag_dm	dm flag
+9	🇩🇴	flag-do dominican_republic flag_do	do flag
+9	🇩🇿	flag-dz algeria flag_dz	dz flag
+9	🇪🇦	flag-ea ceuta_melilla flag_ea	ea flag
+9	🇪🇨	flag-ec ecuador flag_ec	ec flag
+9	🇪🇪	flag-ee estonia flag_ee	ee flag
+9	🇪🇬	flag-eg egypt flag_eg	eg flag
+9	🇪🇭	flag-eh western_sahara flag_eh	eh flag
+9	🇪🇷	flag-er eritrea flag_er	er flag
+9	🇪🇸	es flag-es flag_es spain	flag
+9	🇪🇹	flag-et ethiopia flag_et	et flag
+9	🇪🇺	flag-eu eu european_union flag_eu	flag
+9	🇫🇮	flag-fi finland flag_fi	fi flag
+9	🇫🇯	flag-fj fiji flag_fj	fj flag
+9	🇫🇰	flag-fk falkland_islands flag_fk	fk flag
+9	🇫🇲	flag-fm micronesia flag_fm	fm flag
+9	🇫🇴	flag-fo faroe_islands flag_fo	fo flag
+9	🇫🇷	fr flag-fr flag_fr france	flag
+9	🇬🇦	flag-ga gabon flag_ga	ga flag
+9	🇬🇧	gb uk flag-gb flag_gb united_kingdom	flag
+9	🇬🇩	flag-gd grenada flag_gd	gd flag
+9	🇬🇪	flag-ge georgia flag_ge	ge flag
+9	🇬🇫	flag-gf french_guiana flag_gf	gf flag
+9	🇬🇬	flag-gg guernsey flag_gg	gg flag
+9	🇬🇭	flag-gh ghana flag_gh	gh flag
+9	🇬🇮	flag-gi gibraltar flag_gi	gi flag
+9	🇬🇱	flag-gl greenland flag_gl	gl flag
+9	🇬🇲	flag-gm gambia flag_gm	gm flag
+9	🇬🇳	flag-gn guinea flag_gn	gn flag
+9	🇬🇵	flag-gp guadeloupe flag_gp	gp flag
+9	🇬🇶	flag-gq equatorial_guinea flag_gq	gq flag
+9	🇬🇷	flag-gr greece flag_gr	gr flag
+9	🇬🇸	flag-gs south_georgia_south_sandwich_islands flag_gs	gs flag
+9	🇬🇹	flag-gt guatemala flag_gt	gt flag
+9	🇬🇺	flag-gu guam flag_gu	gu flag
+9	🇬🇼	flag-gw guinea_bissau flag_gw	gw flag
+9	🇬🇾	flag-gy guyana flag_gy	gy flag
+9	🇭🇰	flag-hk hong_kong flag_hk	hk flag
+9	🇭🇲	flag-hm heard_mcdonald_islands flag_hm	hm flag
+9	🇭🇳	flag-hn honduras flag_hn	hn flag
+9	🇭🇷	flag-hr croatia flag_hr	hr flag
+9	🇭🇹	flag-ht haiti flag_ht	ht flag
+9	🇭🇺	flag-hu hungary flag_hu	hu flag
+9	🇮🇨	flag-ic canary_islands flag_ic	ic flag
+9	🇮🇩	flag-id indonesia flag_id	id flag
+9	🇮🇪	flag-ie ireland flag_ie	ie flag
+9	🇮🇱	flag-il israel flag_il	il flag
+9	🇮🇲	flag-im isle_of_man flag_im	im flag
+9	🇮🇳	flag-in india flag_in	in flag
+9	🇮🇴	flag-io british_indian_ocean_territory flag_io	io flag
+9	🇮🇶	flag-iq iraq flag_iq	iq flag
+9	🇮🇷	flag-ir iran flag_ir	ir flag
+9	🇮🇸	flag-is iceland flag_is	is flag
+9	🇮🇹	it flag-it flag_it italy	flag
+9	🇯🇪	flag-je jersey flag_je	je flag
+9	🇯🇲	flag-jm jamaica flag_jm	jm flag
+9	🇯🇴	flag-jo jordan flag_jo	jo flag
+9	🇯🇵	jp flag-jp flag_jp japan	flag
+9	🇰🇪	flag-ke kenya flag_ke	ke flag
+9	🇰🇬	flag-kg kyrgyzstan flag_kg	kg flag
+9	🇰🇭	flag-kh cambodia flag_kh	kh flag
+9	🇰🇮	flag-ki kiribati flag_ki	ki flag
+9	🇰🇲	flag-km comoros flag_km	km flag
+9	🇰🇳	flag-kn st_kitts_nevis flag_kn	kn flag
+9	🇰🇵	flag-kp north_korea flag_kp	kp flag
+9	🇰🇷	kr flag-kr flag_kr south_korea	flag
+9	🇰🇼	flag-kw kuwait flag_kw	kw flag
+9	🇰🇾	flag-ky cayman_islands flag_ky	ky flag
+9	🇰🇿	flag-kz kazakhstan flag_kz	kz flag
+9	🇱🇦	flag-la laos flag_la	la flag
+9	🇱🇧	flag-lb lebanon flag_lb	lb flag
+9	🇱🇨	flag-lc st_lucia flag_lc	lc flag
+9	🇱🇮	flag-li liechtenstein flag_li	li flag
+9	🇱🇰	flag-lk sri_lanka flag_lk	lk flag
+9	🇱🇷	flag-lr liberia flag_lr	lr flag
+9	🇱🇸	flag-ls lesotho flag_ls	ls flag
+9	🇱🇹	flag-lt lithuania flag_lt	lt flag
+9	🇱🇺	flag-lu luxembourg flag_lu	lu flag
+9	🇱🇻	flag-lv latvia flag_lv	lv flag
+9	🇱🇾	flag-ly libya flag_ly	ly flag
+9	🇲🇦	flag-ma morocco flag_ma	ma flag
+9	🇲🇨	flag-mc monaco flag_mc	mc flag
+9	🇲🇩	flag-md moldova flag_md	md flag
+9	🇲🇪	flag-me montenegro flag_me	me flag
+9	🇲🇫	flag-mf st_martin flag_mf	mf flag
+9	🇲🇬	flag-mg madagascar flag_mg	mg flag
+9	🇲🇭	flag-mh marshall_islands flag_mh	mh flag
+9	🇲🇰	flag-mk macedonia flag_mk	mk flag
+9	🇲🇱	flag-ml mali flag_ml	ml flag
+9	🇲🇲	flag-mm myanmar burma flag_mm	mm flag
+9	🇲🇳	flag-mn mongolia flag_mn	mn flag
+9	🇲🇴	flag-mo macau flag_mo macao	mo flag
+9	🇲🇵	flag-mp northern_mariana_islands flag_mp	mp flag
+9	🇲🇶	flag-mq martinique flag_mq	mq flag
+9	🇲🇷	flag-mr mauritania flag_mr	mr flag
+9	🇲🇸	flag-ms montserrat flag_ms	ms flag
+9	🇲🇹	flag-mt malta flag_mt	mt flag
+9	🇲🇺	flag-mu mauritius flag_mu	mu flag
+9	🇲🇻	flag-mv maldives flag_mv	mv flag
+9	🇲🇼	flag-mw malawi flag_mw	mw flag
+9	🇲🇽	flag-mx mexico flag_mx	mx flag
+9	🇲🇾	flag-my malaysia flag_my	my flag
+9	🇲🇿	flag-mz mozambique flag_mz	mz flag
+9	🇳🇦	flag-na namibia flag_na	na flag
+9	🇳🇨	flag-nc new_caledonia flag_nc	nc flag
+9	🇳🇪	flag-ne niger flag_ne	ne flag
+9	🇳🇫	flag-nf norfolk_island flag_nf	nf flag
+9	🇳🇬	flag-ng nigeria flag_ng	ng flag
+9	🇳🇮	flag-ni nicaragua flag_ni	ni flag
+9	🇳🇱	flag-nl netherlands flag_nl	nl flag
+9	🇳🇴	flag-no norway flag_no	no flag
+9	🇳🇵	flag-np nepal flag_np	np flag
+9	🇳🇷	flag-nr nauru flag_nr	nr flag
+9	🇳🇺	flag-nu niue flag_nu	nu flag
+9	🇳🇿	flag-nz new_zealand flag_nz	nz flag
+9	🇴🇲	flag-om oman flag_om	om flag
+9	🇵🇦	flag-pa panama flag_pa	pa flag
+9	🇵🇪	flag-pe peru flag_pe	pe flag
+9	🇵🇫	flag-pf french_polynesia flag_pf	pf flag
+9	🇵🇬	flag-pg papua_new_guinea flag_pg	pg flag
+9	🇵🇭	flag-ph philippines flag_ph	ph flag
+9	🇵🇰	flag-pk pakistan flag_pk	pk flag
+9	🇵🇱	flag-pl poland flag_pl	pl flag
+9	🇵🇲	flag-pm st_pierre_miquelon flag_pm	pm flag
+9	🇵🇳	flag-pn pitcairn_islands flag_pn	pn flag
+9	🇵🇷	flag-pr puerto_rico flag_pr	pr flag
+9	🇵🇸	flag-ps palestinian_territories flag_ps	ps flag
+9	🇵🇹	flag-pt portugal flag_pt	pt flag
+9	🇵🇼	flag-pw palau flag_pw	pw flag
+9	🇵🇾	flag-py paraguay flag_py	py flag
+9	🇶🇦	flag-qa qatar flag_qa	qa flag
+9	🇷🇪	flag-re reunion flag_re	re flag
+9	🇷🇴	flag-ro romania flag_ro	ro flag
+9	🇷🇸	flag-rs serbia flag_rs	rs flag
+9	🇷🇺	ru flag-ru flag_ru russia	flag
+9	🇷🇼	flag-rw rwanda flag_rw	rw flag
+9	🇸🇦	flag-sa saudi_arabia flag_sa	sa flag
+9	🇸🇧	flag-sb solomon_islands flag_sb	sb flag
+9	🇸🇨	flag-sc seychelles flag_sc	sc flag
+9	🇸🇩	flag-sd sudan flag_sd	sd flag
+9	🇸🇪	flag-se sweden flag_se	se flag
+9	🇸🇬	flag-sg singapore flag_sg	sg flag
+9	🇸🇭	flag-sh st_helena flag_sh	sh flag
+9	🇸🇮	flag-si slovenia flag_si	si flag
+9	🇸🇯	flag-sj svalbard_jan_mayen flag_sj	sj flag
+9	🇸🇰	flag-sk slovakia flag_sk	sk flag
+9	🇸🇱	flag-sl sierra_leone flag_sl	sl flag
+9	🇸🇲	flag-sm san_marino flag_sm	sm flag
+9	🇸🇳	flag-sn senegal flag_sn	sn flag
+9	🇸🇴	flag-so somalia flag_so	so flag
+9	🇸🇷	flag-sr suriname flag_sr	sr flag
+9	🇸🇸	flag-ss south_sudan flag_ss	ss flag
+9	🇸🇹	flag-st sao_tome_principe flag_st	st flag
+9	🇸🇻	flag-sv el_salvador flag_sv	sv flag
+9	🇸🇽	flag-sx sint_maarten flag_sx	sx flag
+9	🇸🇾	flag-sy syria flag_sy	sy flag
+9	🇸🇿	flag-sz swaziland eswatini flag_sz	sz flag
+9	🇹🇦	flag-ta tristan_da_cunha flag_ta	ta flag
+9	🇹🇨	flag-tc turks_caicos_islands flag_tc	tc flag
+9	🇹🇩	flag-td chad flag_td	td flag
+9	🇹🇫	flag-tf french_southern_territories flag_tf	tf flag
+9	🇹🇬	flag-tg togo flag_tg	tg flag
+9	🇹🇭	flag-th thailand flag_th	th flag
+9	🇹🇯	flag-tj tajikistan flag_tj	tj flag
+9	🇹🇰	flag-tk tokelau flag_tk	tk flag
+9	🇹🇱	flag-tl timor_leste flag_tl	tl flag
+9	🇹🇲	flag-tm turkmenistan flag_tm	tm flag
+9	🇹🇳	flag-tn tunisia flag_tn	tn flag
+9	🇹🇴	flag-to tonga flag_to	to flag
+9	🇹🇷	flag-tr tr flag_tr turkey_tr	flag
+9	🇹🇹	flag-tt trinidad_tobago flag_tt	tt flag
+9	🇹🇻	flag-tv tuvalu flag_tv	tv flag
+9	🇹🇼	flag-tw taiwan flag_tw	tw flag
+9	🇹🇿	flag-tz tanzania flag_tz	tz flag
+9	🇺🇦	flag-ua ukraine flag_ua	ua flag
+9	🇺🇬	flag-ug uganda flag_ug	ug flag
+9	🇺🇲	flag-um us_outlying_islands flag_um	um flag
+9	🇺🇳	flag-un united_nations flag_un un	flag
+9	🇺🇸	us flag-us flag_us united_states usa	flag
+9	🇺🇾	flag-uy uruguay flag_uy	uy flag
+9	🇺🇿	flag-uz uzbekistan flag_uz	uz flag
+9	🇻🇦	flag-va vatican_city flag_va	va flag
+9	🇻🇨	flag-vc st_vincent_grenadines flag_vc	vc flag
+9	🇻🇪	flag-ve venezuela flag_ve	ve flag
+9	🇻🇬	flag-vg british_virgin_islands flag_vg	vg flag
+9	🇻🇮	flag-vi us_virgin_islands flag_vi	vi flag
+9	🇻🇳	flag-vn vietnam flag_vn	vn flag
+9	🇻🇺	flag-vu vanuatu flag_vu	vu flag
+9	🇼🇫	flag-wf wallis_futuna flag_wf	wf flag
+9	🇼🇸	flag-ws samoa flag_ws	ws flag
+9	🇽🇰	flag-xk kosovo flag_xk	xk flag
+9	🇾🇪	flag-ye yemen flag_ye	ye flag
+9	🇾🇹	flag-yt mayotte flag_yt	yt flag
+9	🇿🇦	flag-za south_africa flag_za	za flag
+9	🇿🇲	flag-zm zambia flag_zm	zm flag
+9	🇿🇼	flag-zw zimbabwe flag_zw	zw flag
+9	🏴󠁧󠁢󠁥󠁮󠁧󠁿	flag-england england flag_gbeng	flag gbeng
+9	🏴󠁧󠁢󠁳󠁣󠁴󠁿	flag-scotland scotland flag_gbsct	flag gbsct
+9	🏴󠁧󠁢󠁷󠁬󠁳󠁿	flag-wales wales flag_gbwls	flag gbwls`;
+const EMOJI_GROUPS = [[0, "😀", "Smileys & Emotion"], [1, "👋", "People"], [3, "🐶", "Nature"], [4, "🍔", "Food & Drink"], [5, "🚗", "Travel & Places"], [6, "⚽", "Activities"], [7, "💡", "Objects"], [8, "❤️", "Symbols"], [9, "🏁", "Flags"]];
+const EMOJIS = EMOJI_RAW.split("\n").map(l => { const [g, u, n, t] = l.split("\t"); return { g: +g, u, n: n.split(" "), t: t ? t.split(" ") : [] }; });
+const EMOJI_BY_NAME = new Map(), EMOJI_BY_CHAR = new Map();
+EMOJIS.forEach(e => { EMOJI_BY_CHAR.set(e.u, e); e.n.forEach(n => { if (!EMOJI_BY_NAME.has(n)) EMOJI_BY_NAME.set(n, e.u); }); });
+const emojiName = u => (EMOJI_BY_CHAR.get(u) || EMOJI_BY_CHAR.get(u.replace(/\ufe0f/g, "")) || {}).n?.[0] || null;
+let emojiFreq = {}; try { emojiFreq = JSON.parse(localStorage.getItem("emojiFreq") || "{}") || {}; } catch (e) {}
+function bumpEmoji(u) { emojiFreq[u] = (emojiFreq[u] || 0) + 1; try { localStorage.setItem("emojiFreq", JSON.stringify(emojiFreq)); } catch (e) {} }
+function frequentEmojis(n) { const f = Object.entries(emojiFreq).sort((a, b) => b[1] - a[1]).map(x => x[0]); for (const d of ["👍", "😂", "❤️", "🔥", "😭", "💀", "👀", "🎉", "😮", "🙏", "✅", "😎", "🥺", "😡", "🤣", "💯"]) if (!f.includes(d)) f.push(d); return f.slice(0, n); }
+function searchEmoji(term, max) {
+  term = term.toLowerCase().replace(/^:|:$/g, ""); if (!term) return [];
+  const res = [];
+  for (const e of EMOJIS) {
+    let sc = 99;
+    for (const n of e.n) { if (n === term) sc = Math.min(sc, 0); else if (n.startsWith(term)) sc = Math.min(sc, 1); else if (n.split("_").some(p => p.startsWith(term))) sc = Math.min(sc, 2); else if (n.includes(term)) sc = Math.min(sc, 3); }
+    if (sc > 3) for (const t of e.t) { if (t === term) sc = Math.min(sc, 4); else if (t.startsWith(term)) sc = Math.min(sc, 5); }
+    if (sc < 99) res.push([sc - (emojiFreq[e.u] ? 0.5 : 0), e]);
+  }
+  return res.sort((x, y) => x[0] - y[0]).slice(0, max || 10).map(x => x[1]);
+}
+/* Twemoji everywhere (Discord-style emoji instead of the Windows ones). */
+const twFailed = new Set();
+function twCode(u) { const s2 = u.includes("\u200d") ? u : u.replace(/\ufe0f/g, ""); return [...s2].map(c => c.codePointAt(0).toString(16)).join("-"); }
+const TW_OPTS = {
+  base: "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/", folder: "72x72", ext: ".png",
+  callback: (icon, o) => twFailed.has(icon) ? false : o.base + o.size + "/" + icon + o.ext,
+  onerror() { const m = /\/([0-9a-f-]+)\.png$/.exec(this.src || ""); if (m) twFailed.add(m[1]); if (this.parentNode) this.parentNode.replaceChild(document.createTextNode(this.alt), this); }
 };
-let pickerMode = null, emojiTab = "😀", gifTimer = null, gifReq = 0, emojiSearch = "";
-const EMOJI_NAMES = {
-  pensive:"😔", sadface:"😔", smile:"😀 😃 😄 😁 😆 😊 🙂 🙃 😉", happy:"😀 😃 😄 😁 😆 🥰 😍 🤩 🥳", laugh:"😂 🤣 😆 😹", cry:"😢 😭 🥲", love:"❤️ 🧡 💛 💚 💙 💜 🖤 🤍 💕 💞 💓 💗 😍 🥰 😘", heart:"❤️ 🧡 💛 💚 💙 💜 🖤 🤍 🤎 💔 💕 💞 💓 💗", sad:"🙁 ☹️ 😞 😔 😟 😢 😭", angry:"😠 😡 🤬", cool:"😎 🆒", fire:"🔥", star:"⭐ 🌟 ✨", party:"🥳 🎉 🎊 🎁", thumbs:"👍 👎", yes:"👍 ✅ 🙌", no:"👎 ❌ 🚫", animal:"🐶 🐱 🐭 🐹 🐰 🦊 🐻 🐼 🐨 🐯 🦁 🐸 🐵 🐧 🦄", dog:"🐶 🐕 🦮", cat:"🐱 🐈 😹 😻", food:"🍎 🍌 🍉 🍇 🍓 🍒 🥑 🍕 🍔 🍟 🌮 🍣 🍜 🍩 🍪 🎂", pizza:"🍕", burger:"🍔", game:"🎮 🕹️ 🎲", music:"🎵 🎶 🎤 🎧 🎸", sport:"⚽ 🏀 🏈 ⚾ 🎾 🏐 🏆", car:"🚗 🚙 🏎️", travel:"✈️ 🚀 🚗 🚆", phone:"📱", computer:"💻 🖥️", money:"💰 💵 💸 🪙", sleep:"😴 💤", thinking:"🤔 🧐 💭", wave:"👋 🌊", clap:"👏", pray:"🙏", muscle:"💪", skull:"💀 ☠️", poop:"💩", ghost:"👻", robot:"🤖"
-};
+function emojiImg(u, cls) {
+  const code = twCode(u);
+  if (twFailed.has(code)) return document.createTextNode(u);
+  const i = el("img", "emoji" + (cls ? " " + cls : "")); i.src = TW_OPTS.base + "72x72/" + code + ".png"; i.alt = u; i.draggable = false; i.loading = "lazy";
+  i.onerror = () => { twFailed.add(code); i.replaceWith(document.createTextNode(u)); };
+  return i;
+}
+const EMOJI_TEST = /[\u00a9\u00ae\u203c\u2049\u2122\u2139\u2190-\u21ff\u2300-\u23ff\u24c2\u25a0-\u27bf\u2900-\u297f\u2b00-\u2bff\u3030\u303d\u3297\u3299\ud83c-\ud83e]/;
+function twParse(node) {
+  if (!window.twemoji || !node) return;
+  if (node.nodeType === 3) node = node.parentNode;
+  if (!node || node.nodeType !== 1 || !node.isConnected || node.closest("select,textarea,#bootfail")) return;
+  window.twemoji.parse(node, TW_OPTS);
+}
+new MutationObserver(list => {
+  if (!window.twemoji) return;
+  const todo = new Set();
+  for (const r of list) for (const n of r.addedNodes) {
+    if (n.nodeType === 3) { if (EMOJI_TEST.test(n.data)) todo.add(n.parentNode); }
+    else if (n.nodeType === 1 && n.nodeName !== "IMG" && EMOJI_TEST.test(n.textContent || "")) todo.add(n);
+  }
+  todo.forEach(twParse);
+}).observe(document.body, { childList: true, subtree: true });
+twParse(document.body);
 // Common Discord-style :shortcodes: converted to real Unicode before sending.
 const SHORTCODES = {
   pensive:"😔", sad:"😢", cry:"😢", sob:"😭", disappointed:"😞", worried:"😟", frowning:"😦", anguished:"😧",
@@ -537,12 +2525,13 @@ const SHORTCODES = {
 };
 const SHORTCODE_RE = /:([a-z0-9_+\-]{1,40}):/gi;
 function replaceEmojiShortcodes(value) {
-  return String(value || "").replace(SHORTCODE_RE, (full, name) => SHORTCODES[name.toLowerCase()] || full);
+  return String(value || "").replace(SHORTCODE_RE, (full, name) => EMOJI_BY_NAME.get(name.toLowerCase()) || SHORTCODES[name.toLowerCase()] || full);
 }
-function closePicker() { pickerMode = null; show("picker", false); }
+function closePicker() { pickerMode = null; pickerReact = null; show("picker", false); }
+function openReactPicker(m) { pickerReact = m; emojiSearch = ""; pickerMode = "emoji"; show("picker", true); renderEmoji(); setTimeout(() => { const q = $("picker").querySelector(".ehead input"); if (q) q.focus(); }, 0); }
 function togglePicker(mode) {
-  if (pickerMode === mode) { closePicker(); return; }
-  pickerMode = mode; show("picker", true);
+  if (pickerMode === mode && !pickerReact) { closePicker(); return; }
+  pickerReact = null; pickerMode = mode; show("picker", true);
   if (mode === "emoji") renderEmoji(); else renderGif();
 }
 document.addEventListener("click", e => {
@@ -554,20 +2543,29 @@ function insertAtCursor(t) {
   b.value = b.value.slice(0, st) + t + b.value.slice(en); const pos = st + t.length;
   b.focus(); b.setSelectionRange(pos, pos);
 }
-function emojiAsset(em) { return "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/72x72/" + [...em].map(c => c.codePointAt(0).toString(16)).join("-") + ".png"; }
+function emojiAsset(em) { return TW_OPTS.base + "72x72/" + twCode(em) + ".png"; }
+function pickEmoji(u) {
+  bumpEmoji(u);
+  if (pickerReact) { const m = pickerReact; closePicker(); toggleReaction(m, u); return; }
+  const n = emojiName(u); insertAtCursor(n ? ":" + n + ":" : u);
+}
 function renderEmoji() {
   const pk = $("picker"); pk.innerHTML = "";
-  const head = el("div", "ehead"), q = el("input"); q.placeholder = "Search emojis…"; q.value = emojiSearch;
-  const fav = el("button", "soft", "★ GIFs & images"); fav.onclick = renderFavorites; head.append(q, fav);
-  const tabs = el("div", "etabs"), grid = el("div", "egrid");
-  Object.keys(EMOJI).forEach(k => { const b = el("button", k === emojiTab ? "on" : "", k); b.onclick = () => { emojiTab = k; renderEmoji(); }; tabs.appendChild(b); });
-  const all = Object.values(EMOJI).join(" ").split(" ");
-  const terms = emojiSearch.toLowerCase().split(/\s+/).filter(Boolean);
-  const matched = terms.flatMap(t => Object.entries(EMOJI_NAMES).filter(([k]) => k.includes(t)).map(([,v]) => v.split(" ")).flat());
-  const list = emojiSearch ? [...new Set([...matched, ...all.filter(em => em.includes(emojiSearch))])] : EMOJI[emojiTab].split(" ");
-  list.forEach(em => { const b = el("button", ""); const im = el("img"); im.src = emojiAsset(em); im.alt = em; im.title = em; im.onerror = () => { im.remove(); b.textContent = em; }; b.appendChild(im); b.onclick = () => insertAtCursor(em); grid.appendChild(b); });
+  const head = el("div", "ehead"), q = el("input"); q.placeholder = pickerReact ? "Find the perfect reaction" : "Find the perfect emoji"; q.value = emojiSearch; head.appendChild(q);
+  if (!pickerReact) { const fav = el("button", "soft", "★ GIFs & images"); fav.onclick = renderFavorites; head.appendChild(fav); }
+  const tabs = el("div", "etabs"), grid = el("div", "egrid"), foot = el("div", "efoot");
+  [["freq", "🕒", "Frequently used"], ...EMOJI_GROUPS].forEach(([k, u, label]) => {
+    const b = el("button", k === emojiTab && !emojiSearch ? "on" : ""); b.title = label; b.appendChild(emojiImg(u));
+    b.onclick = () => { emojiTab = k; emojiSearch = ""; renderEmoji(); }; tabs.appendChild(b);
+  });
+  const list = emojiSearch ? searchEmoji(emojiSearch, 160).map(e => e.u) : emojiTab === "freq" ? frequentEmojis(40) : EMOJIS.filter(e => e.g === emojiTab).map(e => e.u);
+  const setFoot = u => { foot.innerHTML = ""; if (!u) { foot.append(pickerReact ? "Pick a reaction" : "No emoji found"); return; } foot.append(emojiImg(u), el("b", "", ":" + (emojiName(u) || "emoji") + ":")); };
+  list.forEach(u => { const b = el("button"); b.appendChild(emojiImg(u)); b.title = ":" + (emojiName(u) || "") + ":"; b.onmouseenter = () => setFoot(u); b.onclick = e => { e.stopPropagation(); pickEmoji(u); }; grid.appendChild(b); });
+  if (!list.length) grid.appendChild(el("div", "empty", "No emoji found."));
+  setFoot(list[0]);
   q.oninput = () => { emojiSearch = q.value.trim(); const pos = q.selectionStart; renderEmoji(); const nq = pk.querySelector(".ehead input"); nq.focus(); nq.setSelectionRange(pos, pos); };
-  pk.append(head, tabs, grid);
+  q.onkeydown = e => { if (e.key === "Enter" && list[0]) { e.preventDefault(); pickEmoji(list[0]); } };
+  pk.append(head, tabs, grid, foot);
 }
 function favoriteId(url) { let h = 2166136261; for (let i = 0; i < url.length; i++) { h ^= url.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36); }
 async function saveFavorite(kind, url) {
@@ -656,10 +2654,25 @@ const ICONS = {
   reply: '<svg viewBox="0 0 24 24"><path d="M10 8.26V4L3 11l7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-10.74z"/></svg>',
   edit: '<svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm17.71-10.21a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>',
   del: '<svg viewBox="0 0 24 24"><path d="M15 3.5 14 2.5h-4l-1 1H5v2h14v-2h-4zM6 7v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6z"/></svg>',
+  addReact: '<svg viewBox="0 0 24 24"><path d="M18 9V7h-2V2.84A10 10 0 0 0 12 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12c0-1.05-.17-2.05-.47-3H18zm-2.5-1a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm-7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm3.5 9.5c-2.33 0-4.31-1.46-5.11-3.5h10.22c-.8 2.04-2.78 3.5-5.11 3.5zM22 3h2v2h-2v2h-2V5h-2V3h2V1h2v2z"/></svg>',
   star: '<svg viewBox="0 0 24 24"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>'
 };
 function iconBtn(name, title, cls) { const b = el("button", cls || ""); b.innerHTML = ICONS[name]; b.title = title; b.setAttribute("aria-label", title); return b; }
 let replyPing = true;
+function reactTitle(u, list) {
+  const names = list.map(id => id === auth.currentUser.uid ? "You" : ((users.get(id) || {}).name || "someone"));
+  const shown = names.slice(0, 3).join(", ") + (names.length > 3 ? " and " + (names.length - 3) + " more" : "");
+  return shown + " reacted with :" + (emojiName(u) || u) + ":";
+}
+let lastReactKey = null;
+async function toggleReaction(m, u) {
+  if (!cur || !m.id) return;
+  const me = auth.currentUser.uid, r = m.reactions || {}, has = Array.isArray(r[u]) && r[u].includes(me);
+  if (!has && !(u in r) && Object.keys(r).length >= 20) { toast("This message already has the max number of reactions."); return; }
+  if (!has) { bumpEmoji(u); lastReactKey = m.id + "|" + u; }
+  try { await updateDoc(doc(cur.col, m.id), new FieldPath("reactions", u), has ? arrayRemove(me) : arrayUnion(me), "reactKey", u); }
+  catch (e) { console.warn("Reaction", e); toast("Couldn’t react. Make sure the new Firestore rules are published."); }
+}
 function markReplying() { document.querySelectorAll("#feed .msg.replying").forEach(x => x.classList.remove("replying")); if (replyTo) { const r = document.querySelector('#feed .msg[data-id="' + replyTo.id + '"]'); if (r) r.classList.add("replying"); } }
 function startReply(m) {
   const snip = (m.text || (m.gif ? "GIF" : m.img ? "📷 Image" : "")).slice(0, 100);
@@ -709,14 +2722,16 @@ function appendMessageText(node, value) {
     at = re.lastIndex;
   }
   node.append(document.createTextNode(text.slice(at)));
-  if (window.twemoji) window.twemoji.parse(node, { base: "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/", folder: "72x72", ext: ".png" });
+  if (window.twemoji) window.twemoji.parse(node, TW_OPTS);
+  const kids = [...node.childNodes], imgs = kids.filter(n => n.nodeName === "IMG");
+  if (imgs.length && imgs.length <= 27 && kids.every(n => n.nodeName === "IMG" || (n.nodeType === 3 && !n.data.trim()))) node.classList.add("jumbo");
 }
 let feedKey = null, feedSeen = new Set();
 function renderFeed(msgs) {
   lastMsgs = msgs;
   const fresh = !cur || cur.key !== feedKey; if (fresh) { feedKey = cur && cur.key; feedSeen = new Set(); }
   const byId = new Map(msgs.map(x => [x.id, x]));
-  ensureUsers([...new Set(msgs.map(m => m.uid))]).then(f => { if (f && lastMsgs === msgs) renderFeed(msgs); });
+  ensureUsers([...new Set(msgs.flatMap(m => [m.uid, ...Object.values(m.reactions || {}).flat()]))].filter(x => typeof x === "string")).then(f => { if (f && lastMsgs === msgs) renderFeed(msgs); });
   const feed = $("feed"), uid = auth.currentUser.uid;
   const near = feed.scrollHeight - feed.scrollTop - feed.clientHeight < 120 || feed.children.length < 2;
   if (editing && document.activeElement && document.activeElement.closest && document.activeElement.closest(".editw")) editing.focus = true;
@@ -728,7 +2743,7 @@ function renderFeed(msgs) {
     const row = el("div", "msg" + (cont ? " cont" : "")); if (m.id) row.dataset.id = m.id;
     if (m.id && !fresh && !feedSeen.has(m.id)) row.classList.add("enter");
     if (m.id) feedSeen.add(m.id);
-    if (m.uid !== uid && ((Array.isArray(m.mentionUids) && m.mentionUids.includes(uid)) || (m.replyTo && m.replyTo.uid === uid && Array.isArray(m.mentionUids) && m.mentionUids.includes(uid)))) row.classList.add("mentioned");
+    if (m.uid !== uid && (m.mentionAll || (Array.isArray(m.mentionUids) && m.mentionUids.includes(uid)))) row.classList.add("mentioned");
     if (replyTo && replyTo.id === m.id) row.classList.add("replying");
     if (m.replyTo) row.classList.add("hasref");
     row.addEventListener("click", ev => { if (ev.target.closest(".acts,.editw,img,.ref")) return; document.querySelectorAll(".msg.tap").forEach(x => x !== row && x.classList.remove("tap")); row.classList.toggle("tap"); });
@@ -751,11 +2766,25 @@ function renderFeed(msgs) {
       if (m.text || m.edited || !(m.gif || m.img)) { const tx = el("div", "tx"); appendMessageText(tx, m.text || ""); if (m.edited) tx.appendChild(el("span", "ed", " (edited)")); body.appendChild(tx); }
       if (m.gif && /^https:\/\/[a-z0-9.-]*klipy\.(com|co)\//.test(m.gif)) body.appendChild(mediaImg(m.gif, near, "gif"));
       if (m.img && m.img.startsWith("data:image/jpeg;base64,")) body.appendChild(mediaImg(m.img, near, "image"));
+      const rx = Object.entries(m.reactions || {}).filter(([, v]) => Array.isArray(v) && v.length);
+      if (rx.length && m.id) {
+        const bar = el("div", "reacts");
+        rx.forEach(([u, list]) => {
+          const mine = list.includes(uid), pill = el("button", "react" + (mine ? " me" : "") + (lastReactKey === m.id + "|" + u && mine ? " pop" : ""));
+          pill.append(emojiImg(u), el("span", "", String(list.length))); pill.title = reactTitle(u, list);
+          pill.onclick = ev => { ev.stopPropagation(); toggleReaction(m, u); }; bar.appendChild(pill);
+        });
+        const add = el("button", "react add"); add.innerHTML = ICONS.addReact; add.title = "Add Reaction";
+        add.onclick = ev => { ev.stopPropagation(); openReactPicker(m); }; bar.appendChild(add);
+        body.appendChild(bar);
+      }
     }
     row.appendChild(body);
     if (m.id && !isEd) {
       const acts = el("div", "acts");
       if (iAmOwner() && m.uid !== uid && ranks.get(m.uid) !== "owner") { const isOg = ranks.get(m.uid) === "og", og = iconBtn("star", isOg ? "Remove OG rank" : "Give OG rank", "og"); og.append(isOg ? "Remove OG" : "OG"); og.onclick = () => toggleOg(m); acts.appendChild(og); }
+      frequentEmojis(3).forEach(u => { const q = el("button", "qr"); q.appendChild(emojiImg(u)); q.title = ":" + (emojiName(u) || "") + ":"; q.onclick = ev => { ev.stopPropagation(); toggleReaction(m, u); }; acts.appendChild(q); });
+      const ar = iconBtn("addReact", "Add Reaction"); ar.onclick = ev => { ev.stopPropagation(); openReactPicker(m); }; acts.append(ar, el("div", "sepv"));
       const rp = iconBtn("reply", "Reply"); rp.onclick = () => startReply(m); acts.appendChild(rp);
       if (m.uid === uid) {
         const ed = iconBtn("edit", "Edit"), del = iconBtn("del", "Delete", "del");
@@ -784,27 +2813,74 @@ function startChill() {
   try { localStorage.setItem("chill:" + auth.currentUser.uid, String(chillUntil)); } catch (e) {}
   closePicker(); tickChill();
 }
-let mentionTimer = null, mentionReq = 0;
-function hideMentions() { show("mentionbox", false); }
-async function showMentionOptions() {
-  const box = $("box"), before = box.value.slice(0, box.selectionStart), match = before.match(/(?:^|\s)@([a-zA-Z0-9_.-]{1,24})$/);
-  if (!match) { hideMentions(); return; }
-  const term = match[1].toLowerCase(), id = ++mentionReq, panel = $("mentionbox");
-  try {
-    const snap = await getDocs(query(collection(db, "users"), where("nameLower", ">=", term), where("nameLower", "<=", term + "\uf8ff"), limit(8)));
-    if (id !== mentionReq) return;
-    panel.innerHTML = "";
-    snap.docs.filter(d => d.id !== auth.currentUser.uid).forEach(d => {
-      const name = d.data().name || "User", b = el("button", "mentionopt");
-      const av = el("div", "av sm"); paint(av, d.id, name); b.append(av, el("span", "", name));
-      b.onclick = () => { const st = box.selectionStart, left = box.value.slice(0, st).replace(/@([a-zA-Z0-9_.-]{1,24})$/, "@" + name.replace(/\s+/g, "_") ); box.value = left + " " + box.value.slice(st); hideMentions(); box.focus(); };
-      panel.appendChild(b);
-    });
-    if (!panel.children.length) panel.appendChild(el("div", "empty", "No users found."));
-    show("mentionbox", true);
-  } catch (e) { hideMentions(); }
+let mentionTimer = null, mentionReq = 0, ac = null;
+function hideMentions() { show("mentionbox", false); ac = null; }
+const canPingEveryone = () => !!cur && (cur.sid !== "public" || iAmOwner());
+function showAc(head, items, startIndex) {
+  const panel = $("mentionbox"); panel.innerHTML = "";
+  if (!items.length) { hideMentions(); return; }
+  panel.appendChild(head);
+  ac = { items: [], index: startIndex };
+  items.forEach((it, i) => {
+    const b = el("button", "acopt"); b.append(...it.parts);
+    b.onmousedown = e => e.preventDefault(); b.onclick = () => it.pick(); b.onmousemove = () => { if (ac && ac.index !== i) acSelect(i); };
+    ac.items.push({ node: b, pick: it.pick }); panel.appendChild(b);
+  });
+  show("mentionbox", true); acSelect(startIndex);
 }
-$("box").addEventListener("input", () => { clearTimeout(mentionTimer); mentionTimer = setTimeout(showMentionOptions, 180); });
+function acSelect(i) { if (!ac) return; ac.index = i; ac.items.forEach((it, j) => it.node.classList.toggle("sel", j === i)); if (i >= 0 && ac.items[i]) ac.items[i].node.scrollIntoView({ block: "nearest" }); }
+function acHead(label, term) { const h = el("div", "achead", label); if (term) h.appendChild(el("span", "", term)); return h; }
+function replaceBeforeCursor(re, text) {
+  const box = $("box"), st = box.selectionStart, left = box.value.slice(0, st).replace(re, text);
+  box.value = left + box.value.slice(st); box.focus(); box.setSelectionRange(left.length, left.length); hideMentions();
+}
+async function updateAutocomplete() {
+  const box = $("box"), before = box.value.slice(0, box.selectionStart ?? box.value.length);
+  /* :emoji  -> Discord-style emoji bar */
+  let mt = before.match(/(?:^|[^a-z0-9_:]):([a-z0-9_+\-]{2,30})$/i);
+  if (mt) {
+    const term = mt[1].toLowerCase(), res = searchEmoji(term, 9);
+    showAc(acHead("Emoji matching", ":" + term), res.map(e => ({ parts: [emojiImg(e.u), el("span", "", ":" + e.n[0] + ":")], pick: () => { bumpEmoji(e.u); replaceBeforeCursor(/:([a-z0-9_+\-]{2,30})$/i, ":" + e.n[0] + ": "); } })), 0);
+    return;
+  }
+  /* @name -> members list */
+  mt = before.match(/(?:^|\s)@([a-zA-Z0-9_.-]{0,24})$/);
+  if (mt) {
+    const term = mt[1].toLowerCase(), id = ++mentionReq;
+    let docs = [];
+    try { docs = (await getDocs(query(collection(db, "users"), where("nameLower", ">=", term), where("nameLower", "<=", term + "\uf8ff"), limit(8)))).docs; } catch (e) {}
+    if (id !== mentionReq) return;
+    const items = [];
+    if (canPingEveryone() && "everyone".startsWith(term)) { const av = el("div", "av sm everyone", "@"); items.push({ parts: [av, el("span", "", "@everyone"), el("span", "acsub", "Notify everyone who has access to this chat")], pick: () => replaceBeforeCursor(/@([a-zA-Z0-9_.-]{0,24})$/, "@everyone ") }); }
+    docs.filter(d => d.id !== auth.currentUser.uid).forEach(d => {
+      const name = d.data().name || "User", av = el("div", "av sm"); paint(av, d.id, name);
+      const parts = [av, el("span", "", name)]; const rb = rankBadge(d.id); if (rb) parts.push(rb);
+      items.push({ parts, pick: () => replaceBeforeCursor(/@([a-zA-Z0-9_.-]{0,24})$/, "@" + name.replace(/\s+/g, "_") + " ") });
+    });
+    showAc(acHead("Members", term ? "@" + term : ""), items, 0);
+    return;
+  }
+  /* plain word -> emoji suggestions (arrow keys or click to add) */
+  mt = before.match(/(?:^|\s)([a-z]{3,20})$/i);
+  if (mt) {
+    const w = mt[1].toLowerCase();
+    const res = EMOJIS.filter(e => e.n.some(n => n === w || n.split("_")[0] === w) || e.t.includes(w)).slice(0, 6);
+    if (res.length) { showAc(acHead("Emoji suggestions for", w + "  ·  ↑ to pick"), res.map(e => ({ parts: [emojiImg(e.u), el("span", "", ":" + e.n[0] + ":")], pick: () => { bumpEmoji(e.u); replaceBeforeCursor(/([a-z]{3,20})$/i, "$1 :" + e.n[0] + ": "); } })), -1); return; }
+  }
+  hideMentions();
+}
+$("box").addEventListener("input", () => {
+  clearTimeout(mentionTimer);
+  const before = $("box").value.slice(0, $("box").selectionStart);
+  if (/:[a-z0-9_+\-]{2,30}$/i.test(before)) updateAutocomplete(); else mentionTimer = setTimeout(updateAutocomplete, /@[\w.-]*$/.test(before) ? 120 : 350);
+});
+$("box").addEventListener("keydown", e => {
+  if (!ac || $("mentionbox").classList.contains("hidden")) return;
+  const n = ac.items.length;
+  if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); e.stopImmediatePropagation(); let i = ac.index + (e.key === "ArrowDown" ? 1 : -1); if (i < 0) i = n - 1; if (i >= n) i = 0; acSelect(i); }
+  else if ((e.key === "Enter" || e.key === "Tab") && ac.index >= 0) { e.preventDefault(); e.stopImmediatePropagation(); ac.items[ac.index].pick(); }
+  else if (e.key === "Escape") { e.preventDefault(); e.stopImmediatePropagation(); hideMentions(); }
+}, true);
 $("box").addEventListener("blur", () => setTimeout(hideMentions, 160));
 async function sendMsg(extra) {
   const u = auth.currentUser; if (!u || !cur) return;
@@ -822,8 +2898,9 @@ async function sendMsg(extra) {
   if (!extra) $("box").value = "";
   const rt = replyTo; replyTo = null; renderReplyBar();
   if (rt && replyPing && rt.uid !== u.uid) mentionUids.push(rt.uid);
+  const mentionAll = !extra && /(^|\s)@everyone\b/.test(text) && canPingEveryone();
   try {
-    await addDoc(cur.col, { uid: u.uid, name: myName(), text, ts: serverTimestamp(), ...(rt ? { replyTo: rt } : {}), ...(mentionUids.length ? { mentionUids: [...new Set(mentionUids)] } : {}), ...(extra || {}) });
+    await addDoc(cur.col, { uid: u.uid, name: myName(), text, ts: serverTimestamp(), ...(rt ? { replyTo: rt } : {}), ...(mentionUids.length ? { mentionUids: [...new Set(mentionUids)] } : {}), ...(mentionAll ? { mentionAll: true } : {}), ...(extra || {}) });
     if (cur.chatRef) updateDoc(cur.chatRef, { lastText: (text || (extra && extra.gif ? "GIF" : "📷 Image")).slice(0, 60), updatedAt: serverTimestamp() }).catch(() => {});
     $("feed").scrollTop = $("feed").scrollHeight;
   } catch (e) { if (!extra) $("box").value = text; replyTo = rt; renderReplyBar(); toast("Couldn’t send that."); }
@@ -1063,7 +3140,7 @@ function watch(k, col) {
     if (!first) snap.docChanges().forEach(ch => {
       if (ch.type !== "added" || ch.doc.metadata.hasPendingWrites) return;
       const m = ch.doc.data(); if (m.uid === me) return;
-      if (Array.isArray(m.mentionUids) && m.mentionUids.includes(me)) { toast("🔔 " + (m.name || "Someone") + " mentioned you"); ping(true); }
+      if (m.mentionAll || (Array.isArray(m.mentionUids) && m.mentionUids.includes(me))) { toast("🔔 " + (m.name || "Someone") + (m.mentionAll ? " pinged @everyone" : " mentioned you")); ping(true); }
       else if (!isOpen(k) || inactive()) ping();
     });
     first = false;

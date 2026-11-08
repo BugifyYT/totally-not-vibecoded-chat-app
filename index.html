@@ -71,15 +71,37 @@ input:focus{outline:2px solid var(--accent)}
 .ref b{color:var(--text);margin:0 6px 0 2px}
 .ref:hover{color:var(--text)}
 .mention-tag{color:#c9cdfb;background:#5865f233;border-radius:3px;padding:0 2px;font-weight:700}
-.msg.hl{background:#3d4270}
-#replybar{display:flex;align-items:center;gap:8px;background:var(--side);padding:4px 6px 4px 12px;border-radius:8px 8px 0 0;font-size:.82rem;color:var(--muted)}
+.msg.hl{animation:hlfade 1.6s ease-out}
+@keyframes hlfade{0%,40%{background:#5865f22e}100%{background:transparent}}
+/* reply preview above a message, with the curved line like Discord */
+.msg.hasref .av{margin-top:24px}
+.ref{overflow:visible!important;position:relative;display:flex;align-items:center;gap:5px;height:18px;margin-bottom:4px;font-size:.82rem;color:var(--muted);cursor:pointer;min-width:0}
+.ref::before{content:"";position:absolute;left:-35px;top:8px;width:29px;height:14px;border-left:2px solid #4e5058;border-top:2px solid #4e5058;border-top-left-radius:6px}
+.ref .rav{width:16px;height:16px;border-radius:50%;flex:none;font-size:.55rem;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+.ref b{color:var(--head);font-weight:600;flex:none;margin:0}
+.ref .rt{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;min-width:0}
+.ref .rt.gone{font-style:italic}
+.ref:hover .rt{color:var(--text)}
+/* messages that mention or reply to you */
+.msg.mentioned{background:#f0b2320f;box-shadow:inset 2px 0 #f0b232}
+.msg.mentioned:hover{background:#f0b23217}
+.msg.replying{background:#5865f21a;box-shadow:inset 2px 0 var(--accent)}
+/* reply bar above the message box */
+#replybar{display:flex;align-items:center;gap:10px;background:var(--side);padding:0 8px 0 16px;height:38px;border-radius:8px 8px 0 0;font-size:.86rem;color:var(--muted);animation:barup .14s ease-out}
+#replybar:not(.hidden)+.cbar{border-radius:0 0 8px 8px}
+@keyframes barup{from{transform:translateY(6px);opacity:0}to{transform:none;opacity:1}}
 #rtxt{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#rtxt b{color:var(--text)}
+#rtxt b{color:var(--text);font-weight:600}
+#rping{background:none;padding:2px 6px;font-size:.8rem;font-weight:700;color:var(--accent);border-radius:4px}
+#rping.off{color:var(--muted)}
+#rping:hover{background:var(--hover)}
+#rx{width:22px;height:22px;padding:0;border-radius:50%;background:var(--muted);color:var(--side);font-size:.7rem;display:flex;align-items:center;justify-content:center}
+#rx:hover{background:var(--text)}
 #cinput{margin:0}
 #chill{background:#3b2f1a;color:#ffd479;padding:8px 12px;border-radius:8px;margin-bottom:6px;font-size:.88rem}
 .editw button.link{font-size:.72rem;padding:0 2px}
 #cprev{display:flex;gap:12px;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--side);max-height:130px;overflow:auto}
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#111214;color:#fff;padding:10px 16px;border-radius:8px;z-index:100;box-shadow:0 4px 16px #0008}
+.toast{animation:toastin .18s ease-out;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#111214;color:#fff;padding:10px 16px;border-radius:8px;z-index:100;box-shadow:0 4px 16px #0008}
 .av.sm{width:32px;height:32px;margin:0;font-size:.85rem}
 #settings input[type=text]{max-width:320px}
 #settings .row2{display:flex;gap:8px;flex-wrap:wrap}
@@ -91,16 +113,26 @@ input:focus{outline:2px solid var(--accent)}
 .rank.og{background:#7c4dff;color:#fff}
 .tm,.ed{color:var(--muted);font-size:.72rem}
 .tx{white-space:pre-wrap;overflow-wrap:anywhere}.tx img.emoji{width:1.25em;height:1.25em;vertical-align:-.22em;display:inline-block;margin:0 .04em}
-.acts{position:absolute;right:16px;top:-14px;background:var(--main);border:1px solid var(--line);border-radius:6px;display:none;overflow:hidden}
-.msg:hover .acts{display:flex}
-@media (hover:none){.acts{top:0}.msg:hover .acts{display:none}.msg.tap .acts{display:flex}}
-.acts button{background:none;color:var(--muted);padding:4px 10px;font-size:.78rem;border-radius:0}
-.acts button:hover{background:var(--hover);color:#fff}
+.acts{position:absolute;right:16px;top:-16px;background:var(--main);border:1px solid var(--line);border-radius:6px;display:flex;padding:2px;gap:1px;opacity:0;visibility:hidden;transition:opacity .1s,visibility .1s;box-shadow:0 2px 8px #0003;z-index:2}
+.msg:hover .acts{opacity:1;visibility:visible}
+@media (hover:none){.acts{top:0}.msg:hover .acts{opacity:0;visibility:hidden}.msg.tap .acts{opacity:1;visibility:visible}}
+.acts button{background:none;color:#b5bac1;width:30px;height:28px;padding:0;border-radius:4px;display:flex;align-items:center;justify-content:center;transition:background-color .1s,color .1s}
+.acts button svg{width:18px;height:18px;fill:currentColor}
+.acts button:hover{background:var(--hover);color:var(--head)}
+.acts button.del:hover{color:var(--red)}
+.acts button.og{width:auto;padding:0 7px;font-size:.72rem;font-weight:800;gap:4px}
+.acts button.og:hover{color:#b39dff}
+/* time shown beside grouped messages on hover, like Discord */
+.sp{font-size:.66rem;color:var(--muted);text-align:right;padding-top:4px;opacity:0;white-space:nowrap;user-select:none}
+.msg:hover .sp{opacity:1}
+.msg{transition:background-color .08s}
+.msg.enter{animation:msgin .16s ease-out}
+@keyframes msgin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .composer{padding:0 16px calc(16px + env(safe-area-inset-bottom,0px))}
 .composer{position:relative}
 .composer input{padding:12px 14px;border-radius:8px}
 .cbar{display:flex;align-items:center;gap:2px;background:var(--input);border-radius:8px;padding:0 6px}
-.cbar:focus-within{outline:2px solid var(--accent)}
+.cbar:focus-within{outline:none}
 .cbar input#box{background:none;outline:none!important;flex:1;min-width:0}
 #mentionbox{position:absolute;left:16px;bottom:calc(100% + 8px);width:min(300px,calc(100vw - 32px));max-height:220px;overflow:auto;background:var(--side);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px #0009;z-index:19;padding:5px}
 .mentionopt{display:flex;align-items:center;gap:9px;width:100%;background:none;color:var(--text);text-align:left;padding:7px}
@@ -142,6 +174,28 @@ img.media{display:block;max-width:min(320px,100%);max-height:300px;border-radius
 .res button{padding:5px 12px;font-size:.82rem}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{background:var(--hover);border-radius:12px;padding:3px 10px;font-size:.85rem;cursor:pointer}
+/* ---------- motion (kept short and subtle, Discord-like) ---------- */
+@keyframes toastin{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes popin{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#modal,#cmodal,#lb{animation:fadein .15s ease-out}
+#modal .card,#cmodal .card,#lb img{animation:popin .18s cubic-bezier(.2,.9,.3,1.2)}
+#picker,#mentionbox{animation:rise .14s ease-out}
+#callui{animation:rise .2s ease-out}
+#auth .card{animation:rise .3s ease-out}
+button{transition:background-color .15s,color .15s,border-radius .15s}
+button:not([class]):hover{background:#4752c4}
+button.danger:hover{background:#da373c}
+button.soft:hover{background:#4e5058}
+.ch{transition:background-color .1s,color .1s}
+input{transition:outline-color .15s}
+/* server rail pill on the left, grows on hover and when selected */
+.srv:not(.add)::before{content:"";position:absolute;left:-12px;top:50%;width:4px;height:0;margin-top:0;background:var(--head);border-radius:0 4px 4px 0;transition:height .15s,margin-top .15s}
+.srv:not(.add):hover::before{height:20px;margin-top:-10px}
+.srv.on::before,.srv.on:hover::before{height:40px;margin-top:-20px}
+.srv:active{transform:translateY(1px)}
+@media (prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}}
 @media (max-width:720px){
   #nav{position:fixed;left:0;top:0;z-index:30;transform:translateX(-100%);transition:transform .2s}
   #nav.open{transform:none}
@@ -199,7 +253,7 @@ img.media{display:block;max-width:min(320px,100%);max-height:300px;border-radius
         <div id="mentionbox" class="hidden"></div>
         <div id="picker" class="hidden"></div>
         <div id="chill" class="hidden"></div>
-        <div id="replybar" class="hidden"><span id="rtxt"></span><button class="ib" id="rx" title="Cancel reply">✕</button></div>
+        <div id="replybar" class="hidden"><span id="rtxt"></span><button id="rping" title="Ping the person you are replying to">@ ON</button><button id="rx" title="Cancel reply (Esc)">✕</button></div>
         <div class="cbar">
           <button class="ib" id="attach" title="Upload an image">＋</button>
           <input id="box" autocomplete="off" maxlength="1000">
@@ -598,15 +652,29 @@ $("box").addEventListener("paste", e => {
   if (f) { e.preventDefault(); sendImage(f); }
 });
 
+const ICONS = {
+  reply: '<svg viewBox="0 0 24 24"><path d="M10 8.26V4L3 11l7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-10.74z"/></svg>',
+  edit: '<svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm17.71-10.21a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>',
+  del: '<svg viewBox="0 0 24 24"><path d="M15 3.5 14 2.5h-4l-1 1H5v2h14v-2h-4zM6 7v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6z"/></svg>',
+  star: '<svg viewBox="0 0 24 24"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>'
+};
+function iconBtn(name, title, cls) { const b = el("button", cls || ""); b.innerHTML = ICONS[name]; b.title = title; b.setAttribute("aria-label", title); return b; }
+let replyPing = true;
+function markReplying() { document.querySelectorAll("#feed .msg.replying").forEach(x => x.classList.remove("replying")); if (replyTo) { const r = document.querySelector('#feed .msg[data-id="' + replyTo.id + '"]'); if (r) r.classList.add("replying"); } }
 function startReply(m) {
   const snip = (m.text || (m.gif ? "GIF" : m.img ? "📷 Image" : "")).slice(0, 100);
   replyTo = { id: m.id, uid: m.uid, name: (users.get(m.uid) || {}).name || m.name || "Friend", text: snip };
+  replyPing = m.uid !== auth.currentUser.uid;
   renderReplyBar(); closePicker(); $("box").focus();
 }
 function renderReplyBar() {
-  show("replybar", !!replyTo); if (!replyTo) return;
+  show("replybar", !!replyTo); markReplying(); if (!replyTo) return;
   const t = $("rtxt"); t.innerHTML = ""; t.append("Replying to "); t.appendChild(el("b", "", replyTo.name));
+  const self = replyTo.uid === auth.currentUser.uid;
+  show("rping", !self); $("rping").textContent = replyPing ? "@ ON" : "@ OFF"; $("rping").classList.toggle("off", !replyPing);
+  $("rping").title = replyPing ? replyTo.name + " will be notified. Click to turn off." : replyTo.name + " won’t be notified. Click to turn on.";
 }
+$("rping").onclick = () => { replyPing = !replyPing; renderReplyBar(); $("box").focus(); };
 $("rx").onclick = () => { replyTo = null; renderReplyBar(); };
 function startEdit(m) { editing = { id: m.id, draft: m.text, focus: true }; renderFeed(lastMsgs); }
 function cancelEdit() { editing = null; renderFeed(lastMsgs); }
@@ -643,8 +711,11 @@ function appendMessageText(node, value) {
   node.append(document.createTextNode(text.slice(at)));
   if (window.twemoji) window.twemoji.parse(node, { base: "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/", folder: "72x72", ext: ".png" });
 }
+let feedKey = null, feedSeen = new Set();
 function renderFeed(msgs) {
   lastMsgs = msgs;
+  const fresh = !cur || cur.key !== feedKey; if (fresh) { feedKey = cur && cur.key; feedSeen = new Set(); }
+  const byId = new Map(msgs.map(x => [x.id, x]));
   ensureUsers([...new Set(msgs.map(m => m.uid))]).then(f => { if (f && lastMsgs === msgs) renderFeed(msgs); });
   const feed = $("feed"), uid = auth.currentUser.uid;
   const near = feed.scrollHeight - feed.scrollTop - feed.clientHeight < 120 || feed.children.length < 2;
@@ -655,13 +726,21 @@ function renderFeed(msgs) {
   msgs.forEach(m => {
     const t = m.ts ? m.ts.toMillis() : Date.now(), cont = last === m.uid && t - lastT < 300000 && !m.replyTo;
     const row = el("div", "msg" + (cont ? " cont" : "")); if (m.id) row.dataset.id = m.id;
+    if (m.id && !fresh && !feedSeen.has(m.id)) row.classList.add("enter");
+    if (m.id) feedSeen.add(m.id);
+    if (m.uid !== uid && ((Array.isArray(m.mentionUids) && m.mentionUids.includes(uid)) || (m.replyTo && m.replyTo.uid === uid && Array.isArray(m.mentionUids) && m.mentionUids.includes(uid)))) row.classList.add("mentioned");
+    if (replyTo && replyTo.id === m.id) row.classList.add("replying");
+    if (m.replyTo) row.classList.add("hasref");
     row.addEventListener("click", ev => { if (ev.target.closest(".acts,.editw,img,.ref")) return; document.querySelectorAll(".msg.tap").forEach(x => x !== row && x.classList.remove("tap")); row.classList.toggle("tap"); });
-    if (cont) row.appendChild(el("div", "sp"));
+    if (cont) row.appendChild(el("div", "sp", new Date(t).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })));
     else { const a = el("div", "av"); paint(a, m.uid, m.name); row.appendChild(a); }
     const body = el("div", "body");
     if (m.replyTo) {
-      const r = m.replyTo, ref = el("div", "ref");
-      ref.append("↪ "); ref.appendChild(el("b", "", (users.get(r.uid) || {}).name || r.name || "Friend")); ref.append(r.text || "");
+      const r = m.replyTo, ref = el("div", "ref"), orig = byId.get(r.id), rname = (users.get(r.uid) || {}).name || r.name || "Friend";
+      const rav = el("div", "rav"); paint(rav, r.uid, rname); ref.appendChild(rav);
+      ref.appendChild(el("b", "", (r.uid === uid ? "@" : "") + rname));
+      const rtxt = orig ? (orig.text || (orig.gif ? "GIF" : orig.img ? "Image" : "")) : (r.text || "");
+      const rt = el("span", "rt" + (rtxt ? "" : " gone"), rtxt || "Click to see the original message"); ref.appendChild(rt);
       ref.onclick = () => { const t2 = feed.querySelector('[data-id="' + r.id + '"]'); if (t2) { t2.scrollIntoView({ block: "center", behavior: "smooth" }); t2.classList.add("hl"); setTimeout(() => t2.classList.remove("hl"), 1500); } else toast("Original message not found."); };
       body.appendChild(ref);
     }
@@ -675,10 +754,11 @@ function renderFeed(msgs) {
     }
     row.appendChild(body);
     if (m.id && !isEd) {
-      const acts = el("div", "acts"), rp = el("button", "", "↩️"); rp.title = "Reply"; rp.onclick = () => startReply(m); acts.appendChild(rp);
-      if (iAmOwner() && m.uid !== uid && ranks.get(m.uid) !== "owner") { const isOg = ranks.get(m.uid) === "og", og = el("button", "", isOg ? "✖ OG" : "⭐ OG"); og.title = isOg ? "Remove OG rank" : "Give OG rank"; og.onclick = () => toggleOg(m); acts.appendChild(og); }
+      const acts = el("div", "acts");
+      if (iAmOwner() && m.uid !== uid && ranks.get(m.uid) !== "owner") { const isOg = ranks.get(m.uid) === "og", og = iconBtn("star", isOg ? "Remove OG rank" : "Give OG rank", "og"); og.append(isOg ? "Remove OG" : "OG"); og.onclick = () => toggleOg(m); acts.appendChild(og); }
+      const rp = iconBtn("reply", "Reply"); rp.onclick = () => startReply(m); acts.appendChild(rp);
       if (m.uid === uid) {
-        const ed = el("button", "", "✏️"), del = el("button", "", "🗑️"); ed.title = "Edit"; del.title = "Delete";
+        const ed = iconBtn("edit", "Edit"), del = iconBtn("del", "Delete", "del");
         ed.onclick = () => startEdit(m); del.onclick = () => askDelete(m); acts.append(ed, del);
       }
       row.appendChild(acts);
@@ -741,6 +821,7 @@ async function sendMsg(extra) {
   if (sendTimes.length > CHILL_MAX) { startChill(); return; }
   if (!extra) $("box").value = "";
   const rt = replyTo; replyTo = null; renderReplyBar();
+  if (rt && replyPing && rt.uid !== u.uid) mentionUids.push(rt.uid);
   try {
     await addDoc(cur.col, { uid: u.uid, name: myName(), text, ts: serverTimestamp(), ...(rt ? { replyTo: rt } : {}), ...(mentionUids.length ? { mentionUids: [...new Set(mentionUids)] } : {}), ...(extra || {}) });
     if (cur.chatRef) updateDoc(cur.chatRef, { lastText: (text || (extra && extra.gif ? "GIF" : "📷 Image")).slice(0, 60), updatedAt: serverTimestamp() }).catch(() => {});

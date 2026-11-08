@@ -86,9 +86,6 @@ input:focus{outline:2px solid var(--accent)}
 #settings .note{color:#00a8fc;font-size:.9rem}
 .body{min-width:0;flex:1}
 .hd b{color:var(--head);margin-right:8px}
-.rank{display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.06em;padding:1px 6px;border-radius:4px;margin-right:8px;vertical-align:1px;text-transform:uppercase}
-.rank.owner{background:linear-gradient(90deg,#f5b400,#ff7a00);color:#1a1200}
-.rank.og{background:#7c4dff;color:#fff}
 .tm,.ed{color:var(--muted);font-size:.72rem}
 .tx{white-space:pre-wrap;overflow-wrap:anywhere}.tx img.emoji{width:1.25em;height:1.25em;vertical-align:-.22em;display:inline-block;margin:0 .04em}
 .acts{position:absolute;right:16px;top:-14px;background:var(--main);border:1px solid var(--line);border-radius:6px;display:none;overflow:hidden}
@@ -231,7 +228,7 @@ img.media{display:block;max-width:min(320px,100%);max-height:300px;border-radius
   <div id="callincoming" class="callactions hidden"><button id="acceptcall">Accept</button><button id="declinecall" class="danger">Decline</button></div>
   <div id="callcontrols" class="hidden">
     <label for="micselect">Microphone input</label><div class="callrow"><select id="micselect"></select></div>
-    <label for="nrselect">Noise cancellation</label><div class="callrow"><select id="nrselect"><option value="dfn">DeepFilterNet AI · strong (recommended)</option><option value="dfn2">DeepFilterNet AI · maximum</option><option value="ai">RNNoise AI · light</option><option value="standard">Standard (browser only)</option><option value="off">Off</option></select></div>
+    <label for="nrselect">Noise cancellation</label><div class="callrow"><select id="nrselect"><option value="ai">AI voice isolation (recommended)</option><option value="ai2">AI voice isolation + strict gate (kills breaths/keys)</option><option value="standard">Standard (browser only)</option><option value="off">Off</option></select></div>
     <label for="speakerselect">Audio output</label><div class="callrow"><select id="speakerselect"></select></div>
     <div class="callactions"><button id="mutecall" class="soft">Mute mic</button><button id="hangup" class="danger">Hang up</button></div>
   </div>
@@ -282,26 +279,6 @@ const db = getFirestore(app);
 let signup = false, nav = { kind: "server", sid: "public" }, cur = null;
 let servers = [], chats = [], channels = [];
 let unsubThread = null, unsubList = null, unsubSrv = null, unsubCh = null, unsubMe = null;
-/* ---------- ranks: OWNER (fixed email, must be verified) can give or remove the OG rank. Enforced in firestore.rules too. ---------- */
-const OWNER_EMAIL = "legamerytb06@gmail.com";
-let ranks = new Map(), unsubRanks = null;
-const iAmOwner = () => { const u = auth.currentUser; return !!u && u.emailVerified && (u.email || "").toLowerCase() === OWNER_EMAIL; };
-function rankBadge(uid) { const r = ranks.get(uid); if (r !== "owner" && r !== "og") return null; return el("span", "rank " + r, r === "owner" ? "Owner" : "OG"); }
-async function toggleOg(m) {
-  const name = (users.get(m.uid) || {}).name || m.name || "this person";
-  try {
-    if (ranks.get(m.uid) === "og") { await deleteDoc(doc(db, "ranks", m.uid)); toast("Removed OG from " + name + "."); }
-    else { await setDoc(doc(db, "ranks", m.uid), { rank: "og", updatedAt: serverTimestamp() }); toast(name + " is now OG."); }
-  } catch (e) { console.warn("Rank", e); toast("Couldn’t change the rank. Check your Firestore rules."); }
-}
-function watchRanks(user) {
-  if (unsubRanks) unsubRanks();
-  unsubRanks = onSnapshot(collection(db, "ranks"), snap => {
-    ranks = new Map(snap.docs.map(d => [d.id, d.data().rank]));
-    if (iAmOwner() && ranks.get(user.uid) !== "owner") setDoc(doc(db, "ranks", user.uid), { rank: "owner", updatedAt: serverTimestamp() }).catch(e => console.warn("Owner rank", e));
-    if (cur && lastMsgs.length) renderFeed(lastMsgs);
-  }, e => console.warn("Ranks", e));
-}
 const users = new Map();
 let lastMsgs = [], pendingName = null, editing = null, replyTo = null, soundOn = true, lastPing = 0, actx = null;
 try { soundOn = localStorage.getItem("snd") !== "off"; } catch (e) {}
@@ -647,7 +624,7 @@ function renderFeed(msgs) {
       ref.onclick = () => { const t2 = feed.querySelector('[data-id="' + r.id + '"]'); if (t2) { t2.scrollIntoView({ block: "center", behavior: "smooth" }); t2.classList.add("hl"); setTimeout(() => t2.classList.remove("hl"), 1500); } else toast("Original message not found."); };
       body.appendChild(ref);
     }
-    if (!cont) { const h = el("div", "hd"); h.appendChild(el("b", "", (users.get(m.uid) || {}).name || m.name || "Friend")); const rb = rankBadge(m.uid); if (rb) h.appendChild(rb); h.appendChild(el("span", "tm", new Date(t).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }))); body.appendChild(h); }
+    if (!cont) { const h = el("div", "hd"); h.appendChild(el("b", "", (users.get(m.uid) || {}).name || m.name || "Friend")); h.appendChild(el("span", "tm", new Date(t).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }))); body.appendChild(h); }
     const isEd = editing && editing.id === m.id;
     if (isEd) body.appendChild(editBox(m));
     else {
@@ -658,7 +635,6 @@ function renderFeed(msgs) {
     row.appendChild(body);
     if (m.id && !isEd) {
       const acts = el("div", "acts"), rp = el("button", "", "↩️"); rp.title = "Reply"; rp.onclick = () => startReply(m); acts.appendChild(rp);
-      if (iAmOwner() && m.uid !== uid && ranks.get(m.uid) !== "owner") { const isOg = ranks.get(m.uid) === "og", og = el("button", "", isOg ? "✖ OG" : "⭐ OG"); og.title = isOg ? "Remove OG rank" : "Give OG rank"; og.onclick = () => toggleOg(m); acts.appendChild(og); }
       if (m.uid === uid) {
         const ed = el("button", "", "✏️"), del = el("button", "", "🗑️"); ed.title = "Edit"; del.title = "Delete";
         ed.onclick = () => startEdit(m); del.onclick = () => askDelete(m); acts.append(ed, del);
@@ -1110,70 +1086,28 @@ async function buildAiIsolation(raw, strict) {
   try {
     await ctx.resume().catch(() => {});
     await ctx.audioWorklet.addModule(base + "/dist/rnnoise/workletProcessor.js");
+    await ctx.audioWorklet.addModule(base + "/dist/noiseGate/workletProcessor.js");
     const src = ctx.createMediaStreamSource(raw);
     const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 90;
     const rn = new lib.RnnoiseWorkletNode(ctx, { wasmBinary: bin, maxChannels: 1 });
+    const gate = new lib.NoiseGateWorkletNode(ctx, strict ? { openThreshold: -42, closeThreshold: -48, holdMs: 250, maxChannels: 1 } : { openThreshold: -52, closeThreshold: -58, holdMs: 200, maxChannels: 1 });
     const dest = ctx.createMediaStreamDestination();
-    src.connect(hp); hp.connect(rn); rn.connect(dest);
+    src.connect(hp); hp.connect(rn); rn.connect(gate); gate.connect(dest);
     const out = dest.stream, track = out.getAudioTracks()[0], origStop = track.stop.bind(track);
     track.stop = () => { origStop(); try { rn.destroy(); } catch (e) {} raw.getTracks().forEach(t => t.stop()); ctx.close().catch(() => {}); };
     return out;
   } catch (e) { ctx.close().catch(() => {}); throw e; }
 }
-/* DeepFilterNet3 (github.com/Rikorose/DeepFilterNet, MIT/Apache-2.0): full-band 48 kHz neural speech enhancement.
-   Loaded through the open-source deepfilternet3-noise-filter package (github.com/mezonai/mezon-noise-suppression). */
-let dfnPromise = null;
-function loadDeepFilter() {
-  if (dfnPromise) return dfnPromise;
-  const V = "1.3.0";
-  const urls = ["https://cdn.jsdelivr.net/npm/deepfilternet3-noise-filter@" + V + "/dist/index.esm.js", "https://unpkg.com/deepfilternet3-noise-filter@" + V + "/dist/index.esm.js"];
-  dfnPromise = (async () => {
-    let lib, last;
-    for (const u of urls) { try { lib = await import(u); break; } catch (e) { last = e; console.warn("DeepFilterNet script failed from", u, e); } }
-    if (!lib) throw last || new Error("DeepFilterNet unavailable");
-    const core = new lib.DeepFilterNet3Core({ sampleRate: 48000, noiseReductionLevel: 85 });
-    await core.initialize();
-    return core;
-  })();
-  dfnPromise.catch(() => { dfnPromise = null; });
-  return dfnPromise;
-}
-async function buildDeepFilter(raw, level) {
-  const first = !dfnPromise;
-  if (first) toast("Loading AI noise cancellation… (first time takes a few seconds)");
-  const core = await loadDeepFilter();
-  const ctx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 48000, latencyHint: "interactive" });
-  try {
-    await ctx.resume().catch(() => {});
-    const node = await core.createAudioWorkletNode(ctx);
-    core.setSuppressionLevel(level);
-    const src = ctx.createMediaStreamSource(raw);
-    const dest = ctx.createMediaStreamDestination();
-    src.connect(node); node.connect(dest);
-    const out = dest.stream, track = out.getAudioTracks()[0], origStop = track.stop.bind(track);
-    track.stop = () => { origStop(); try { node.disconnect(); } catch (e) {} raw.getTracks().forEach(t => t.stop()); ctx.close().catch(() => {}); };
-    return out;
-  } catch (e) { ctx.close().catch(() => {}); throw e; }
-}
 async function chooseMicrophone(deviceId) {
-  let mode = ($("nrselect") && $("nrselect").value) || "dfn"; if (mode === "strong" || mode === "ai2") mode = "dfn";
+  let mode = ($("nrselect") && $("nrselect").value) || "ai"; if (mode === "strong") mode = "ai";
   const on = mode !== "off";
-  const neural = mode === "dfn" || mode === "dfn2" || mode === "ai";
-  /* The AI gets the untouched mic: browser suppression/auto-gain before it muddies the voice and pumps the noise up. */
-  const base = { echoCancellation: true, noiseSuppression: on && !neural, autoGainControl: !neural };
+  const base = { echoCancellation: true, noiseSuppression: on, autoGainControl: true, voiceIsolation: mode !== "standard" && mode !== "off" };
   const constraints = { audio: deviceId ? { deviceId: { exact: deviceId }, ...base } : base, video: false };
   const raw = await navigator.mediaDevices.getUserMedia(constraints);
   let next = raw;
-  if (mode === "dfn" || mode === "dfn2") {
-    try { next = await buildDeepFilter(raw, mode === "dfn2" ? 100 : 85); }
-    catch (e) {
-      console.warn("DeepFilterNet unavailable, trying RNNoise", e);
-      try { next = await buildAiIsolation(raw); toast("DeepFilterNet couldn’t load, using RNNoise instead."); }
-      catch (e2) { console.warn("RNNoise unavailable", e2); toast("AI noise cancellation couldn’t load."); next = raw; }
-    }
-  } else if (mode === "ai") {
-    try { next = await buildAiIsolation(raw); }
-    catch (e) { console.warn("RNNoise unavailable", e); toast("AI noise cancellation couldn’t load."); next = raw; }
+  if (mode === "ai" || mode === "ai2") {
+    try { next = await buildAiIsolation(raw, mode === "ai2"); }
+    catch (e) { console.warn("AI noise cancellation unavailable, using basic filter", e); toast("AI noise cancellation couldn’t load, using the basic filter."); try { next = buildVoiceIsolation(raw); } catch (e2) { next = raw; } }
   }
   const old = localStream;
   localStream = next;
@@ -1321,7 +1255,7 @@ $("hangup").onclick = hangupCall;
 $("mutecall").onclick = () => { if (!localStream) return; const track = localStream.getAudioTracks()[0]; if (!track) return; track.enabled = !track.enabled; $("mutecall").textContent = track.enabled ? "Mute mic" : "Unmute mic"; };
 $("micselect").onchange = async () => { try { if (activeCallId || pendingIncoming) { await chooseMicrophone($("micselect").value); } try { localStorage.setItem("callMic", $("micselect").value); } catch(e) {} } catch(e) { toast("Couldn’t switch microphone. Check permissions."); } };
 $("speakerselect").onchange = () => chooseSpeaker($("speakerselect").value);
-try { let nr = localStorage.getItem("callNR"); if (nr === "strong" || nr === "ai2") nr = "dfn"; if (nr) $("nrselect").value = nr; } catch(e) {}
+try { let nr = localStorage.getItem("callNR"); if (nr === "strong") nr = "ai"; if (nr) $("nrselect").value = nr; } catch(e) {}
 $("nrselect").onchange = async () => { try { localStorage.setItem("callNR", $("nrselect").value); } catch(e) {} if (localStream) { try { await chooseMicrophone($("micselect").value || ""); toast("Noise cancellation updated."); } catch(e) { toast("Couldn’t apply that setting."); } } };
 if (navigator.mediaDevices?.addEventListener) navigator.mediaDevices.addEventListener("devicechange", () => { if (!$('callui').classList.contains('hidden')) listAudioDevices().catch(() => {}); });
 
@@ -1343,7 +1277,6 @@ function watchGroupRoom(chatId, members) {
 function openVoiceChannel(sid, channel) {
   if (unsubThread) { unsubThread(); unsubThread = null; }
   cur = { sid, cid: channel.id, title: channel.name, channelType: "voice" };
-  if (["dfn", "dfn2"].includes($("nrselect").value)) loadDeepFilter().catch(() => {});
   setMain("voice"); closeNav();
   $("ttl").textContent = "🔊 " + channel.name;
   $("voiceheading").textContent = channel.name;
@@ -1396,3 +1329,160 @@ async function startOrJoinRoom(meta) {
   try {
     const activeQuery = meta.kind === "public"
       ? query(collection(db, "voiceRooms"), where("roomKey", "==", meta.roomKey), where("kind", "==", "public"), limit(10))
+      : query(collection(db, "voiceRooms"), where("roomKey", "==", meta.roomKey), where("members", "array-contains", auth.currentUser.uid), limit(10));
+    const [, membersRaw, active] = await Promise.all([chooseMicrophone($("micselect").value || ""), getRoomMembers(meta), getDocs(activeQuery)]);
+    const members = meta.kind === "public" ? [] : membersRaw;
+    listAudioDevices().catch(() => {});
+    const activeSession = active.docs.find(d => d.data().status === "active");
+    let roomDoc;
+    if (activeSession) roomDoc = activeSession.ref;
+    else {
+      roomDoc = doc(collection(db, "voiceRooms"));
+      await setDoc(roomDoc, { roomKey: meta.roomKey, kind: meta.kind, chatId: meta.chatId || null, serverId: meta.serverId || null, channelId: meta.channelId || null, members, createdBy: auth.currentUser.uid, status: "active", createdAt: serverTimestamp() });
+    }
+    roomSessionId = roomDoc.id; roomKeyActive = meta.roomKey; roomParticipantUid = auth.currentUser.uid; roomMetaActive = { ...meta, members };
+    await setDoc(doc(db, "voiceRooms", roomSessionId, "participants", auth.currentUser.uid), { uid: auth.currentUser.uid, name: myName(), joinedAt: serverTimestamp(), lastSeen: serverTimestamp() });
+    showCallUI(true); show("callcontrols", true); show("callincoming", false);
+    $("calltitle").textContent = meta.kind === "group" ? "Group voice call" : "Voice channel · " + (meta.channelName || "Connected");
+    callStatus("Joining voice room…"); $("joinvoice").textContent = "Leave voice channel";
+    if (meta.kind === "group") { $("callbtn").textContent = "🔊 In group call"; }
+    listAudioDevices().catch(() => {});
+    watchRoomParticipants(roomSessionId);
+    roomHeartbeat = setInterval(() => { if (roomSessionId) updateDoc(doc(db, "voiceRooms", roomSessionId, "participants", auth.currentUser.uid), { lastSeen: serverTimestamp() }).catch(() => {}); }, 15000);
+  } catch (e) { console.error(e); toast("Couldn’t join voice room: " + (e.message || e)); await cleanupRoomCall(); }
+}
+function dropPeer(uid) {
+  const entry = roomPeerEntries.get(uid); if (!entry) return;
+  entry.unsubs.forEach(f => f()); entry.sender?.stop(); try { entry.pc.close(); } catch (e) {} entry.audio?.remove(); roomPeerEntries.delete(uid);
+}
+async function watchRoomParticipants(sessionId) {
+  if (roomParticipantsUnsub) roomParticipantsUnsub();
+  roomParticipantsUnsub = onSnapshot(collection(db, "voiceRooms", sessionId, "participants"), snap => {
+    const me = auth.currentUser.uid;
+    const list = snap.docs.map(d => ({ uid: d.id, ...d.data() })).filter(x => x.uid === me || !x.lastSeen?.toMillis || Date.now() - x.lastSeen.toMillis() < 45000);
+    renderRoomUsers(list);
+    if (roomSessionId === sessionId && list.filter(x => x.uid !== me).length === 0) callStatus("In the room · waiting for others to join");
+    if (roomSessionId === sessionId) {
+      /* Each pair of people gets a connection id that includes when they joined, so rejoining never reuses a stale connection. */
+      const myJ = list.find(x => x.uid === me)?.joinedAt?.toMillis?.();
+      if (myJ) for (const m of list) { if (m.uid === me) continue; const oj = m.joinedAt?.toMillis?.(); if (oj) ensureRoomPeer(m.uid, String(Math.max(myJ, oj))).catch(e => { console.warn("Peer setup", e); toast("Voice connection problem: " + (e.message || e)); }); }
+    }
+    for (const uid of [...roomPeerEntries.keys()]) if (!list.some(x => x.uid === uid)) dropPeer(uid);
+  }, e => console.warn("Voice participants", e));
+}
+async function ensureRoomPeer(otherUid, suffix) {
+  if (!roomSessionId) return;
+  const existing = roomPeerEntries.get(otherUid);
+  if (existing) { if (existing.suffix === suffix) return; dropPeer(otherUid); }
+  const me = auth.currentUser.uid, sorted = [me, otherUid].sort(), a = sorted[0], b = sorted[1], pairId = pairIdFor(a, b) + "--" + suffix, sid = roomSessionId;
+  const pairRef = doc(db, "voiceRooms", sid, "pairs", pairId);
+  const pcRoom = new RTCPeerConnection(roomRTC), entry = { pc: pcRoom, unsubs: [], audio: null, remoteReady: false, queue: [], suffix, offering: false, sender: null };
+  roomPeerEntries.set(otherUid, entry);
+  pcRoom.onconnectionstatechange = () => {
+    const st = pcRoom.connectionState;
+    if (st === "connected") callStatus("Connected · voice channel active");
+    else if (st === "failed") { callStatus("Couldn’t connect to someone (network blocks direct calls)"); toast("Couldn’t connect to a member. Their network may block direct voice."); }
+  };
+  const track = localStream && localStream.getAudioTracks()[0];
+  if (me === a) pcRoom.addTransceiver(track || "audio", { direction: "sendrecv", streams: localStream ? [localStream] : [] });
+  pcRoom.ontrack = e => {
+    let audio = entry.audio;
+    if (!audio) { audio = document.createElement("audio"); audio.autoplay = true; audio.playsInline = true; audio.dataset.peer = otherUid; audio.style.display = "none"; $("callui").appendChild(audio); entry.audio = audio; const sink = $("speakerselect").value; if (sink && audio.setSinkId) audio.setSinkId(sink).catch(() => {}); }
+    audio.srcObject = e.streams[0] || new MediaStream([e.track]); audio.play().catch(() => {});
+  };
+  entry.sender = makeCandSender(collection(db, "voiceRooms", sid, "pairs", pairId, me === a ? "candidatesA" : "candidatesB"));
+  pcRoom.onicecandidate = e => { if (e.candidate) { console.log("ICE candidate:", e.candidate.type || (e.candidate.candidate.match(/ typ (\w+)/) || [])[1]); entry.sender.push(e.candidate.toJSON()); } };
+  const otherSide = me === a ? "candidatesB" : "candidatesA";
+  const iceUnsub = onSnapshot(collection(db, "voiceRooms", sid, "pairs", pairId, otherSide), snap => {
+    snap.docChanges().forEach(async change => { if (change.type !== "added") return; const c = change.doc.data().candidate; if (!c) return; if (!entry.remoteReady) entry.queue.push(c); else { try { await pcRoom.addIceCandidate(new RTCIceCandidate(c)); } catch(e) {} } });
+  });
+  entry.unsubs.push(iceUnsub);
+  const pairUnsub = onSnapshot(pairRef, async snap => {
+    try {
+      if (me === a) {
+        if (!snap.exists()) {
+          if (entry.offering) return; entry.offering = true;
+          const offer = await pcRoom.createOffer(); await pcRoom.setLocalDescription(offer);
+          const off = { type: offer.type, sdp: offer.sdp };
+          try { await setDoc(pairRef, { a, b, createdAt: serverTimestamp(), offer: off }); } catch (e1) { await setDoc(pairRef, { a, b, createdAt: serverTimestamp() }); await updateDoc(pairRef, { offer: off }); }
+          entry.sender.start();
+        } else if (snap.data().answer && !pcRoom.currentRemoteDescription) {
+          await pcRoom.setRemoteDescription(new RTCSessionDescription(snap.data().answer)); entry.remoteReady = true;
+          for (const c of entry.queue.splice(0)) await pcRoom.addIceCandidate(new RTCIceCandidate(c));
+        }
+      } else if (snap.exists() && snap.data().offer && !pcRoom.currentRemoteDescription) {
+        await pcRoom.setRemoteDescription(new RTCSessionDescription(snap.data().offer)); entry.remoteReady = true;
+        for (const c of entry.queue.splice(0)) await pcRoom.addIceCandidate(new RTCIceCandidate(c));
+        /* answering side: use the audio line from the offer, always send+receive, attach the mic now or when it arrives */
+        const tr = pcRoom.getTransceivers().find(x => x.receiver && x.receiver.track && x.receiver.track.kind === "audio");
+        if (tr) { tr.direction = "sendrecv"; const mt = localStream && localStream.getAudioTracks()[0]; if (mt) await tr.sender.replaceTrack(mt); }
+        const answer = await pcRoom.createAnswer(); await pcRoom.setLocalDescription(answer);
+        await updateDoc(pairRef, { answer: { type: answer.type, sdp: answer.sdp } });
+        entry.sender.start();
+      }
+    } catch(e) { console.warn("Room negotiation", e); }
+  });
+  entry.unsubs.push(pairUnsub);
+}
+async function leaveRoomCall() { await cleanupRoomCall(); }
+async function cleanupRoomCall() {
+  if (roomHeartbeat) clearInterval(roomHeartbeat); roomHeartbeat = null;
+  if (roomParticipantsUnsub) roomParticipantsUnsub(); roomParticipantsUnsub = null;
+  const oldId = roomSessionId;
+  roomPeerEntries.forEach(entry => { entry.unsubs.forEach(f => f()); entry.sender?.stop(); entry.pc.close(); entry.audio?.remove(); }); roomPeerEntries.clear();
+  if (oldId && roomParticipantUid) {
+    try { await deleteDoc(doc(db, "voiceRooms", oldId, "participants", roomParticipantUid)); } catch(e) {}
+    try { const left = await getDocs(collection(db, "voiceRooms", oldId, "participants")); if (left.empty) await updateDoc(doc(db, "voiceRooms", oldId), { status: "ended" }); } catch(e) {}
+  }
+  roomSessionId = null; roomKeyActive = null; roomParticipantUid = null; roomMetaActive = null;
+  if (localStream && !activeCallId) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
+  showCallUI(false); show("callcontrols", false);
+  if (cur?.channelType === "voice") $("joinvoice").textContent = "Join voice channel";
+  if (cur?.chatType === "group") $("callbtn").textContent = "📞 Start group call";
+}
+async function toggleGroupCall(chatId, knownMembers) {
+  const roomKey = "group_" + chatId;
+  if (roomSessionId && roomKeyActive === roomKey) { await leaveRoomCall(); return; }
+  await startOrJoinRoom({ roomKey, kind: "group", chatId, members: knownMembers });
+}
+$("joinvoice").onclick = async () => {
+  if (!joinVoiceRoomButtonMeta) return;
+  if (roomSessionId && roomKeyActive === joinVoiceRoomButtonMeta.roomKey) await leaveRoomCall();
+  else await startOrJoinRoom(joinVoiceRoomButtonMeta);
+};
+
+/* ---------- session ---------- */
+onAuthStateChanged(auth, user => {
+  [unsubThread, unsubList, unsubSrv, unsubCh, unsubMe].forEach(f => f && f());
+  unsubThread = unsubList = unsubSrv = unsubCh = unsubMe = null; stopGroupRoomWatch(); if (roomIndexUnsub) { roomIndexUnsub(); roomIndexUnsub = null; } if (roomSessionId) cleanupRoomCall(); if (incomingUnsub) { incomingUnsub(); incomingUnsub = null; } cleanupCall(); cur = null; users.clear(); stopWatchers(); clearInterval(chillTimer); chillUntil = 0; sendTimes = []; show("chill", false); $("box").disabled = false;
+  show("auth", !user); show("app", !!user);
+  if (!user) return;
+  watchIncomingCalls(user.uid);
+  listAudioDevices().catch(() => {});
+  updateMe();
+  try { const c = Number(localStorage.getItem("chill:" + user.uid)) || 0; if (c > Date.now()) { chillUntil = c; tickChill(); } } catch (e) {}
+  watch("srv:public:general", collection(db, "messages"));
+  createUserDoc(user).catch(() => {});
+  unsubMe = onSnapshot(doc(db, "users", user.uid), sn => {
+    if (!sn.exists()) return;
+    users.set(user.uid, sn.data()); updateMe();
+    if (cur && lastMsgs.length) renderFeed(lastMsgs);
+    if (nav.kind === "home") renderSide();
+  }, () => {});
+  unsubList = onSnapshot(query(collection(db, "chats"), where("members", "array-contains", user.uid)), snap => {
+    chats = snap.docs.map(d => ({ id: d.id, ...d.data({ serverTimestamps: "estimate" }) }));
+    chats.sort((a, b) => (b.updatedAt?.toMillis?.() || 0) - (a.updatedAt?.toMillis?.() || 0));
+    syncChatWatchers();
+    ensureUsers(chats.filter(c => c.type === "dm").map(c => c.members.find(m => m !== user.uid))).then(f => { if (f && nav.kind === "home") renderSide(); });
+    if (nav.kind === "home") renderSide();
+  }, () => {});
+  unsubSrv = onSnapshot(query(collection(db, "servers"), where("members", "array-contains", user.uid)), snap => {
+    servers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    syncServerWatchers();
+    renderRail(); if (nav.kind === "server") renderSide();
+  }, () => {});
+  selectServer("public");
+});
+</script>
+</body>
+</html>
